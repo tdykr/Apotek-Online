@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ApotekerMain">
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_alignParentRight="true"
+        android:background="@drawable/ic_exit_to_app_black_24dp"/>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:text="Apotek Tamansari"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="25dp"
+        android:hint="Apoteker Name"
+        android:layout_below="@id/textView"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="20dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="300dp"
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="#4444">
+
+        <ImageView
+            android:id="@+id/addNewProduct"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/medicine"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="50dp"/>
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/addNewProduct"
+            android:layout_marginLeft="50dp"
+            android:layout_marginTop="10dp"
+            android:textSize="12sp"
+            android:text="New Product"
+            android:textAlignment="center"/>
+
+        <ImageView
+            android:id="@+id/addNewStock"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/shopping_cart"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="50dp"/>
+
+        <TextView
+            android:layout_width="75dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/addNewStock"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:textSize="12sp"
+            android:layout_marginTop="10dp"
+            android:text="List Product"
+            android:textAlignment="center"/>
+
+        <ImageView
+            android:id="@+id/delivery"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/delivery_truck"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"/>
+
+        <TextView
+            android:id="@+id/txtDelivery"
+            android:layout_width="75dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="50dp"
+            android:textSize="12sp"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentBottom="true"
+            android:text="Delivery"
+            android:textAlignment="center"/>
+
+        <ImageView
+            android:id="@+id/newTransaction"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginRight="50dp"
+            android:background="@drawable/transaction"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"/>
+
+        <TextView
+            android:id="@+id/txtNewTransaction"
+            android:layout_width="75dp"
+            android:layout_height="25dp"
+            android:layout_marginRight="50dp"
+            android:textSize="12sp"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:text="Transaction"
+            android:textAlignment="center"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

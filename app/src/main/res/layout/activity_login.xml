@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <TextView
+        android:id="@+id/loginTxt"
+        android:layout_width="275dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="75dp"
+        android:text="Welcome to Apotek Tamansari"
+        android:textAlignment="center"
+        android:textSize="32sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="253dp"
+        android:layout_height="250dp"
+        android:layout_below="@+id/loginTxt"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp"
+        android:background="#4444">
+
+        <EditText
+            android:id="@+id/userEmail"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="10dp"
+            android:hint="Email"
+            android:inputType="textPersonName" />
+
+        <EditText
+            android:id="@+id/userPass"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/userEmail"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:hint="Password"
+            android:inputType="textPassword" />
+
+        <Button
+            android:id="@+id/showPassword"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="90dp"
+            android:layout_marginEnd="29dp"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/userPass"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="40dp"
+            android:text="Login"
+            android:textStyle="bold"
+            android:textColor="#fff"
+            android:background="#8033"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/registerTxt"
+        android:layout_below="@+id/rel1"
+        android:layout_width="235dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_centerHorizontal="true"
+        android:text="New user ? Register now"
+        android:textAlignment="center"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+</RelativeLayout>
