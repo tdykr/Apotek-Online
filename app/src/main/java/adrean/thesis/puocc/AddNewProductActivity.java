@@ -49,6 +49,7 @@ public class AddNewProductActivity extends AppCompatActivity {
                     Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
                     Intent in = new Intent(AddNewProductActivity.this,QRCodeImageAddProductActivity.class);
                     in.putExtra("bitmap",bitmap);
+                    in.putExtra("mdName",mdName);
                     startActivity(in);
                     //imageView.setImageBitmap(bitmap);
                 } catch (WriterException e) {
