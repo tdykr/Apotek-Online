@@ -2,6 +2,7 @@ package adrean.thesis.puocc;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaScannerConnection;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -19,20 +21,25 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.HashMap;
 
 public class QRCodeImageAddProductActivity extends AppCompatActivity {
 
     private Bitmap bp;
-    private String medName;
+    private String medName,medPrice,medDesc,medCategory;
     private ImageView qrImg;
     private OutputStream outputStream;
-
+    private TextView mdNameTxt,mdPriceTxt,mdDescriptionTxt,mdCategoryTxt;
     private static final int REQUEST_EXTERNAL_STORAGE = 1;
     private static String[] PERMISSIONS_STORAGE = {
             Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -45,11 +52,25 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         setContentView(R.layout.activity_qrcode_image_add_product);
 
         qrImg = (ImageView) findViewById(R.id.qrImg);
+        mdNameTxt = (TextView) findViewById(R.id.medName);
+        mdPriceTxt = (TextView) findViewById(R.id.medPrice);
+        mdCategoryTxt = (TextView) findViewById(R.id.medCategory);
+        mdDescriptionTxt = (TextView) findViewById(R.id.medDescription);
+
         Button save = (Button) findViewById(R.id.saveBtn);
 
         Intent in = getIntent();
         bp = in.getParcelableExtra("bitmap");
         medName = in.getStringExtra("mdName");
+        medPrice = in.getStringExtra("mdPrice");
+        medDesc = in.getStringExtra("mdDesc");
+        medCategory = in.getStringExtra("mdCat");
+
+        mdNameTxt.setText(medName);
+        mdPriceTxt.setText(medPrice);
+        mdDescriptionTxt.setText(medDesc);
+        mdCategoryTxt.setText(medCategory);
+
         qrImg.setImageBitmap(bp);
 
         save.setOnClickListener(new View.OnClickListener() {
@@ -70,7 +91,7 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         File dir = new File("/sdcard/Pictures/qrThesis");
         dir.mkdirs();
         File file = new File(dir, "QRImg-" + medName + ".jpg");
-        System.out.print(file.toString());
+
         outputStream = null;
         try {
             outputStream = new FileOutputStream(file);

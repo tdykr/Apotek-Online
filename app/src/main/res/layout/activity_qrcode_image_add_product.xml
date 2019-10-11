@@ -6,21 +6,110 @@
     android:layout_height="match_parent"
     tools:context=".QRCodeImageAddProductActivity">
 
-    <ImageView
-        android:id="@+id/qrImg"
-        android:layout_width="match_parent"
-        android:layout_height="400dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"/>
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="350dp"
+        android:layout_height="175dp"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true">
 
-    <Button
-        android:layout_width="125dp"
-        android:layout_height="50dp"
-        android:id="@+id/saveBtn"
-        android:text="Save"
-        android:layout_below="@id/qrImg"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"/>
+        <TextView
+            android:id="@+id/medCategoryTxt"
+            android:layout_width="125dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:text="Category : "/>
+
+        <TextView
+            android:id="@+id/medCategory"
+            android:layout_width="125dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/medCategoryTxt"/>
+
+        <TextView
+            android:id="@+id/medNameTxt"
+            android:layout_width="125dp"
+            android:layout_height="25dp"
+            android:text="Medicine Name :"
+            android:layout_below="@+id/medCategoryTxt"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentLeft="true"/>
+
+        <TextView
+            android:id="@+id/medName"
+            android:layout_width="175dp"
+            android:layout_height="25dp"
+            android:layout_marginTop="10dp"
+            android:layout_below="@id/medCategory"
+            android:layout_marginLeft="5dp"
+            android:layout_toRightOf="@id/medNameTxt"/>
+
+        <TextView
+            android:id="@+id/medPriceTxt"
+            android:layout_width="125dp"
+            android:layout_height="25dp"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:layout_below="@id/medNameTxt"
+            android:text="Medicine Price :"/>
+        
+        <TextView
+            android:id="@+id/medPrice"
+            android:layout_width="175dp"
+            android:layout_height="25dp"
+            android:layout_toRightOf="@id/medPriceTxt"
+            android:layout_below="@id/medName"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/medNotesTxt"
+            android:layout_width="125dp"
+            android:layout_height="25dp"
+            android:layout_below="@id/medPriceTxt"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="5dp"
+            android:text="Description :"/>
+
+        <TextView
+            android:id="@+id/medDescription"
+            android:layout_width="175dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/medPrice"
+            android:layout_toRightOf="@id/medNotesTxt"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_below="@id/rel1"
+        android:layout_marginTop="20dp"
+        android:layout_width="350dp"
+        android:layout_height="420dp"
+        android:layout_centerHorizontal="true">
+
+        <ImageView
+            android:id="@+id/qrImg"
+            android:layout_width="300dp"
+            android:layout_height="310dp"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"/>
+
+        <Button
+            android:layout_width="125dp"
+            android:layout_height="50dp"
+            android:id="@+id/saveBtn"
+            android:text="Save"
+            android:layout_below="@id/qrImg"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"/>
+
+    </RelativeLayout>
+
 
 </RelativeLayout>
