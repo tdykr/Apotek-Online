@@ -1,3 +1,4 @@
+
 package adrean.thesis.puocc;
 
 import android.content.Intent;
@@ -22,5 +23,13 @@ public class ApotekerMain extends AppCompatActivity {
             }
         });
 
+        final ImageView listMedicineActivity = (ImageView) findViewById(R.id.listMedicine);
+        listMedicineActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ApotekerMain.this,ListMedicineActivity.class);
+                startActivity(in);
+            }
+        });
     }
 }

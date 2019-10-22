@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MedicineDetailActivity">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="#F9FF">
+
+        <RelativeLayout
+            android:layout_width="175dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/medCategory"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/medName"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/medCategory"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/medPrice"
+                android:layout_width="100dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/medName"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_marginStart="10dp"
+            android:layout_width="175dp"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/medDesc"
+                android:layout_width="150dp"
+                android:layout_height="75dp"/>
+
+            <TextView
+                android:id="@+id/txt"
+                android:layout_marginTop="20dp"
+                android:layout_width="70dp"
+                android:layout_height="20dp"
+                android:layout_below="@id/medDesc"
+                android:text="Quantity"/>
+
+            <ImageView
+                android:id="@+id/qtMin"
+                android:background="@drawable/ic_indeterminate_check_box_black_24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/txt"/>
+
+            <EditText
+                android:id="@+id/qtVal"
+                style="@style/Theme.Design.Light"
+
+                android:layout_below="@+id/txt"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_toRightOf="@id/qtMin"
+                android:layout_marginTop="5dp"
+                android:inputType="number"/>
+
+            <ImageView
+                android:id="@+id/qtAdd"
+                android:background="@drawable/ic_add_box_black_24dp"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="5dp"
+                android:layout_below="@+id/txt"
+                android:layout_toRightOf="@id/qtVal"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel2"
+        android:layout_below="@id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="375dp">
+
+
+        <ImageView
+            android:id="@+id/qrImg"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_width="250dp"
+            android:layout_height="250dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel3"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/rel2">
+
+        <Button
+            android:id="@+id/saveBtn"
+            android:layout_width="125dp"
+            android:layout_height="45dp"
+            android:text="Save"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

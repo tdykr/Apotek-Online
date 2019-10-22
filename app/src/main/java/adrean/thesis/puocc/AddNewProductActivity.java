@@ -31,7 +31,7 @@ public class AddNewProductActivity extends AppCompatActivity {
     private ArrayAdapter<String> adapter;
     private String[] doc = {"Obat Batuk","Obat Pusing"};
     private String mdCategory,mdName,mdPrice,mdNotes,imgStr;
-    private String URL_INPUT_MED = "http://192.168.1.7/apotek/addMedicineDetail.php";
+    private String URL_INPUT_MED = "http://192.168.43.106/apotek/addMedicineDetail.php";
     boolean checkInput = false;
 
     @Override
@@ -77,8 +77,6 @@ public class AddNewProductActivity extends AppCompatActivity {
                 String text = "{\"category\":\"" + mdCategory + "\",\"name\":\""+ mdName +"\",\"price\":\""+ mdPrice +"\"}";
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
-                //insert to db here, if success then try passing bitmap
-
                 try {
                     BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE,200,200);
                     BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
@@ -89,14 +87,12 @@ public class AddNewProductActivity extends AppCompatActivity {
 
                     addMedicine();
 
-//                    if(checkInput){
-                        in.putExtra("bitmap",bitmap);
-                        in.putExtra("mdName",mdName);
-                        in.putExtra("mdPrice",mdPrice);
-                        in.putExtra("mdDesc",mdNotes);
-                        in.putExtra("mdCat",mdCategory);
-                        startActivity(in);
-//                    }
+                    in.putExtra("bitmap",bitmap);
+                    in.putExtra("mdName",mdName);
+                    in.putExtra("mdPrice",mdPrice);
+                    in.putExtra("mdDesc",mdNotes);
+                    in.putExtra("mdCat",mdCategory);
+                    startActivity(in);
 
                 } catch (WriterException e) {
                     e.printStackTrace();
