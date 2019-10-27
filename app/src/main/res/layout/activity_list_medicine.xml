@@ -14,19 +14,11 @@
         android:textAlignment="center"
         android:text="Medicine List"/>
 
-    <Spinner
-        android:id="@+id/sp1"
-        android:layout_width="100dp"
-        android:layout_height="25dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_below="@id/text"/>
-
     <ListView
         android:id="@+id/medList"
         android:layout_width="match_parent"
         android:layout_height="350dp"
-        android:layout_below="@id/sp1"
+        android:layout_below="@id/text"
         android:layout_marginTop="15dp"/>
 
 </RelativeLayout>

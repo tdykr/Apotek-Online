@@ -22,53 +22,83 @@
     <RelativeLayout
         android:id="@+id/rel1"
         android:layout_width="350dp"
-        android:layout_height="400dp"
+        android:layout_height="450dp"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
+        android:layout_marginTop="75dp"
         android:background="#4444">
 
         <Spinner
             android:id="@+id/medCategory"
             android:layout_width="250dp"
-            android:layout_height="40dp"
+            android:layout_height="30dp"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/medName"
             android:layout_width="250dp"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_below="@id/medCategory"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
+            android:textSize="14sp"
             android:hint="Name of Medicine"
             android:singleLine="false" />
 
         <EditText
             android:id="@+id/medPrice"
             android:layout_width="250dp"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_below="@id/medName"
             android:layout_centerHorizontal="true"
+            android:textSize="14sp"
             android:hint="Price"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="10dp"/>
 
         <EditText
             android:id="@+id/medNotes"
             android:layout_width="250dp"
-            android:layout_height="100dp"
+            android:layout_height="75dp"
             android:layout_below="@id/medPrice"
             android:layout_centerHorizontal="true"
+            android:textSize="14sp"
             android:hint="Notes"
-            android:layout_marginTop="15dp"/>
+            android:layout_marginTop="10dp"/>
+
+        <RelativeLayout
+            android:id="@+id/rel2"
+            android:layout_marginTop="10dp"
+            android:layout_width="250dp"
+            android:layout_height="150dp"
+            android:layout_below="@id/medNotes"
+            android:layout_centerHorizontal="true">
+
+            <Button
+                android:id="@+id/btnPict"
+                android:layout_width="100dp"
+                android:layout_height="50dp"
+                android:textSize="12sp"
+                android:layout_centerVertical="true"
+                android:text="Set Picture"/>
+
+            <ImageView
+                android:id="@+id/medicinePict"
+                android:layout_width="125dp"
+                android:layout_height="125dp"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:background="#777"
+                android:layout_toRightOf="@id/btnPict"/>
+
+        </RelativeLayout>
 
         <Button
             android:id="@+id/generateBtn"
-            android:layout_width="125dp"
+            android:layout_width="120dp"
             android:layout_height="50dp"
-            android:layout_below="@id/medNotes"
+            android:layout_below="@id/rel2"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="15dp"
+            android:layout_marginTop="10dp"
             android:text="Generate QR Code"
             android:textSize="12sp"/>
 

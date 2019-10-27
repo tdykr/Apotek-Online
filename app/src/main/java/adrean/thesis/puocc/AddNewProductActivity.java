@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -12,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -30,9 +32,11 @@ public class AddNewProductActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
     private String[] doc = {"Obat Batuk","Obat Pusing"};
-    private String mdCategory,mdName,mdPrice,mdNotes,imgStr;
-    private String URL_INPUT_MED = "http://192.168.43.106/apotek/addMedicineDetail.php";
-    boolean checkInput = false;
+    private String mdCategory,mdName,mdPrice,mdNotes,imgStr,mdBitmapStr;
+    private ImageView medPict;
+    private static final int PIC_ID = 123;
+    private Button takePict,generate;
+    private Bitmap medBitmap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +47,9 @@ public class AddNewProductActivity extends AppCompatActivity {
         final EditText medicineName = (EditText) findViewById(R.id.medName);
         final EditText medicinePrice = (EditText) findViewById(R.id.medPrice);
         final EditText medicineNotes = (EditText) findViewById(R.id.medNotes);
-        Button generate = (Button) findViewById(R.id.generateBtn);
+        generate = (Button) findViewById(R.id.generateBtn);
+        takePict = (Button) findViewById(R.id.btnPict);
+        medPict = (ImageView) findViewById(R.id.medicinePict);
 
         adapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,doc);
         sp.setAdapter(adapter);
@@ -67,6 +73,15 @@ public class AddNewProductActivity extends AppCompatActivity {
             }
         });
 
+        takePict.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+
+                startActivityForResult(camera_intent, PIC_ID);
+            }
+        });
+
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,9 +99,10 @@ public class AddNewProductActivity extends AppCompatActivity {
                     Intent in = new Intent(AddNewProductActivity.this,QRCodeImageAddProductActivity.class);
 
                     imgStr = getStringImage(bitmap);
-
+                    mdBitmapStr = getStringImage(medBitmap);
                     addMedicine();
 
+                    in.putExtra("mdPict",medBitmap);
                     in.putExtra("bitmap",bitmap);
                     in.putExtra("mdName",mdName);
                     in.putExtra("mdPrice",mdPrice);
@@ -99,6 +115,16 @@ public class AddNewProductActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+
+        if (requestCode == PIC_ID) {
+
+            medBitmap = (Bitmap)data.getExtras().get("data");
+
+            medPict.setImageBitmap(medBitmap);
+        }
     }
 
     public String getStringImage(Bitmap bmp){
@@ -136,9 +162,10 @@ public class AddNewProductActivity extends AppCompatActivity {
                 params.put("PRICE",mdPrice);
                 params.put("DESC",mdNotes);
                 params.put("QR",imgStr);
+                params.put("MEDICINE_PICT",mdBitmapStr);
 
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(URL_INPUT_MED, params);
+                String res = rh.sendPostRequest(phpConf.URL_INPUT_MED, params);
                 return res;
             }
         }

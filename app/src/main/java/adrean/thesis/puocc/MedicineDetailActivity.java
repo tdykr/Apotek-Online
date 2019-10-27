@@ -24,12 +24,9 @@ import static java.lang.Integer.parseInt;
 public class MedicineDetailActivity extends AppCompatActivity {
 
     private String id,medicineName,medicinePrice,medicineCategory,medicineQt,medicineDesc;
-    //192.168.43.106
-    //192.168.1.6
-    final String URL_GET_MEDICINE_DETAIL = "http://192.168.1.6/apotek/getMedicineDetail.php";
     TextView medName,medCategory,medPrice,medDesc;
     EditText qtVal;
-    ImageView qrCode,qtMin,qtAdd;
+    ImageView qrCode,qtMin,qtAdd,mdImg;
     Integer tempQt;
 
     @Override
@@ -45,6 +42,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
         medPrice = (TextView) findViewById(R.id.medPrice);
         medDesc = (TextView) findViewById(R.id.medDesc);
         qrCode = (ImageView) findViewById(R.id.qrImg);
+        mdImg = (ImageView) findViewById(R.id.medImg);
 
         Intent intent  = getIntent();
         id = intent.getStringExtra("ID");
@@ -91,7 +89,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
                 HashMap<String,String> data = new HashMap<>();
                 data.put("ID",id);
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendPostRequest(URL_GET_MEDICINE_DETAIL,data);
+                String s = rh.sendPostRequest(phpConf.URL_GET_MEDICINE_DETAIL,data);
                 return s;
             }
         }
@@ -111,7 +109,8 @@ public class MedicineDetailActivity extends AppCompatActivity {
             medicineQt= c.getString("QUANTITY");
             medicineDesc = c.getString("DESCRIPTION");
 
-            String encodedString = c.getString("QR_CODE");
+            String encodedQrString = c.getString("QR_CODE");
+            String encodedMedPictString = c.getString("MEDICINE_PICT");
             tempQt = parseInt(medicineQt);
 
             medName.setText(medicineName);
@@ -120,7 +119,8 @@ public class MedicineDetailActivity extends AppCompatActivity {
             medDesc.setText(medicineDesc);
             qtVal.setText(medicineQt);
 
-            qrCode.setImageBitmap(encodedStringImage(encodedString));
+            mdImg.setImageBitmap(encodedStringImage(encodedMedPictString));
+            qrCode.setImageBitmap(encodedStringImage(encodedQrString));
 
         } catch (JSONException e) {
             e.printStackTrace();

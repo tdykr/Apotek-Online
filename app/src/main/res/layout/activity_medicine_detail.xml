@@ -10,12 +10,13 @@
         android:orientation="horizontal"
         android:id="@+id/rel1"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="300dp"
         android:background="#F9FF">
 
         <RelativeLayout
             android:layout_width="175dp"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:id="@+id/medCategory"
@@ -39,53 +40,67 @@
                 android:layout_below="@id/medName"
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="10dp"/>
+
+            <TextView
+                android:id="@+id/medDesc"
+                android:layout_below="@id/medPrice"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_width="150dp"
+                android:layout_height="100dp"/>
+
         </RelativeLayout>
 
         <RelativeLayout
             android:layout_marginStart="10dp"
             android:layout_width="175dp"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:id="@+id/medDesc"
-                android:layout_width="150dp"
-                android:layout_height="75dp"/>
+            android:layout_height="match_parent"
+            android:layout_marginTop="15dp">
 
             <TextView
                 android:id="@+id/txt"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:layout_width="70dp"
                 android:layout_height="20dp"
-                android:layout_below="@id/medDesc"
                 android:text="Quantity"/>
 
             <ImageView
                 android:id="@+id/qtMin"
                 android:background="@drawable/ic_indeterminate_check_box_black_24dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="5dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
                 android:layout_below="@id/txt"/>
 
             <EditText
                 android:id="@+id/qtVal"
-                style="@style/Theme.Design.Light"
-
+                style="@android:style/Widget.Holo.EditText"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
                 android:layout_below="@+id/txt"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
+                android:layout_marginTop="10dp"
                 android:layout_toRightOf="@id/qtMin"
-                android:layout_marginTop="5dp"
-                android:inputType="number"/>
+                android:inputType="number"
+                android:singleLine="false"
+                android:textSize="12sp" />
 
             <ImageView
                 android:id="@+id/qtAdd"
                 android:background="@drawable/ic_add_box_black_24dp"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_marginTop="5dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginTop="10dp"
                 android:layout_below="@+id/txt"
                 android:layout_toRightOf="@id/qtVal"/>
+
+            <ImageView
+                android:id="@+id/qrImg"
+                android:layout_centerVertical="true"
+                android:layout_centerHorizontal="true"
+                android:layout_below="@id/qtVal"
+                android:layout_marginTop="10dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"/>
 
         </RelativeLayout>
     </LinearLayout>
@@ -98,7 +113,7 @@
 
 
         <ImageView
-            android:id="@+id/qrImg"
+            android:id="@+id/medImg"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_width="250dp"
