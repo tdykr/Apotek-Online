@@ -14,11 +14,30 @@
         android:textAlignment="center"
         android:text="Medicine List"/>
 
-    <ListView
-        android:id="@+id/medList"
-        android:layout_width="match_parent"
-        android:layout_height="350dp"
+    <RelativeLayout
+        android:id="@+id/rel"
         android:layout_below="@id/text"
-        android:layout_marginTop="15dp"/>
+        android:layout_margin="15dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ListView
+            android:id="@+id/medList"
+            android:background="@drawable/side"
+            android:layout_centerVertical="true"
+            android:layout_width="match_parent"
+            android:layout_height="425dp"/>
+
+        <Button
+            android:id="@+id/home"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/medList"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="12dp"
+            android:background="@drawable/button_shape"
+            android:text="Back" />
+    </RelativeLayout>
 
 </RelativeLayout>

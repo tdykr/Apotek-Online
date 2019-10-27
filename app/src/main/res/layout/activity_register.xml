@@ -17,7 +17,6 @@
         android:textSize="32sp"
         android:textStyle="bold" />
 
-
     <RelativeLayout
         android:id="@+id/relLayout"
         android:layout_width="300dp"
@@ -25,7 +24,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="15dp"
         android:layout_below="@+id/textView"
-        android:background="#4444">
+        android:background="@drawable/side"
+        android:backgroundTint="#CC999999">
 
         <EditText
             android:id="@+id/usernm"
@@ -56,19 +56,11 @@
             android:hint="Phone"
             android:inputType="textPersonName" />
 
-        <Spinner
-            android:layout_below="@+id/userPhone"
-            android:id="@+id/userKecamatan"
-            android:layout_width="200dp"
-            android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"/>
-
         <EditText
             android:id="@+id/userAddress"
             android:layout_width="275dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/userKecamatan"
+            android:layout_below="@+id/userPhone"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
             android:hint="Kecamatan"

@@ -9,22 +9,23 @@
     <RelativeLayout
         android:id="@+id/rel1"
         android:layout_width="350dp"
-        android:layout_height="175dp"
+        android:layout_height="225dp"
         android:layout_marginTop="15dp"
+        android:background="@drawable/side"
         android:layout_centerHorizontal="true">
 
         <TextView
             android:id="@+id/medCategoryTxt"
             android:layout_width="125dp"
-            android:layout_height="25dp"
+            android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:text="Category : "/>
 
         <TextView
             android:id="@+id/medCategory"
-            android:layout_width="125dp"
-            android:layout_height="25dp"
+            android:layout_width="175dp"
+            android:layout_height="35dp"
             android:layout_marginTop="5dp"
             android:layout_marginLeft="5dp"
             android:layout_toRightOf="@id/medCategoryTxt"/>
@@ -79,37 +80,53 @@
         <TextView
             android:id="@+id/medDescription"
             android:layout_width="175dp"
-            android:layout_height="50dp"
+            android:layout_height="100dp"
             android:layout_below="@id/medPrice"
             android:layout_toRightOf="@id/medNotesTxt"
             android:layout_marginLeft="5dp"
+            android:background="@drawable/text_box"
             android:layout_marginTop="10dp"/>
     </RelativeLayout>
 
     <RelativeLayout
         android:layout_below="@id/rel1"
+        android:id="@+id/rel2"
         android:layout_marginTop="20dp"
         android:layout_width="350dp"
-        android:layout_height="420dp"
+        android:background="@drawable/side"
+        android:layout_height="300dp"
         android:layout_centerHorizontal="true">
 
         <ImageView
             android:id="@+id/qrImg"
-            android:layout_width="300dp"
-            android:layout_height="310dp"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
             android:layout_marginTop="20dp"
             android:layout_centerHorizontal="true"/>
 
-        <Button
-            android:layout_width="125dp"
-            android:layout_height="50dp"
-            android:id="@+id/saveBtn"
-            android:text="Save"
-            android:layout_below="@id/qrImg"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"/>
-
     </RelativeLayout>
 
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:id="@+id/saveBtn"
+        android:text="Save Qr"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="30dp"
+        android:background="@drawable/button_shape"
+        android:layout_below="@id/rel2"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
 
+    <Button
+        android:layout_width="125dp"
+        android:layout_height="50dp"
+        android:id="@+id/mainMenu"
+        android:text="Home"
+        android:layout_marginLeft="30dp"
+        android:layout_alignParentLeft="true"
+        android:background="@drawable/button_shape"
+        android:layout_below="@id/rel2"
+        android:layout_marginTop="10dp"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

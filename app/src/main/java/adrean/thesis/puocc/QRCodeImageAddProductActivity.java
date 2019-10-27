@@ -2,7 +2,9 @@ package adrean.thesis.puocc;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -58,6 +60,15 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         mdDescriptionTxt = (TextView) findViewById(R.id.medDescription);
 
         Button save = (Button) findViewById(R.id.saveBtn);
+        Button home = (Button) findViewById(R.id.mainMenu);
+
+        home.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(QRCodeImageAddProductActivity.this,ApotekerMain.class);
+                startActivity(in);
+            }
+        });
 
         Intent in = getIntent();
         bp = in.getParcelableExtra("bitmap");
@@ -98,7 +109,7 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100,outputStream);
             outputStream.flush();
             outputStream.close();
-            Toast.makeText(QRCodeImageAddProductActivity.this, "Image Saved", Toast.LENGTH_SHORT).show();
+            Toast.makeText(QRCodeImageAddProductActivity.this, "Image has been Saved", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -116,5 +127,19 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
                     REQUEST_EXTERNAL_STORAGE
             );
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Really Exit?")
+                .setMessage("Are you sure you want to exit?")
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface arg0, int arg1) {
+                        QRCodeImageAddProductActivity.super.onBackPressed();
+                    }
+                }).create().show();
     }
 }
