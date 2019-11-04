@@ -8,6 +8,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.HashMap;
 
 public class ApotekerMain extends AppCompatActivity {
 
@@ -15,6 +18,11 @@ public class ApotekerMain extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_apoteker_main);
+
+        TextView userLogin = (TextView) findViewById(R.id.userLogin);
+        Intent in = getIntent();
+        HashMap<String,String> userData = (HashMap<String, String>)in.getSerializableExtra("userData");
+        userLogin.setText(userData.get("userName"));
 
         ImageView addNewProduct = (ImageView) findViewById(R.id.addNewProduct);
         addNewProduct.setOnClickListener(new View.OnClickListener() {
@@ -34,18 +42,18 @@ public class ApotekerMain extends AppCompatActivity {
             }
         });
     }
-
-    @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        ApotekerMain.super.onBackPressed();
-                    }
-                }).create().show();
-    }
+//
+//    @Override
+//    public void onBackPressed() {
+//        new AlertDialog.Builder(this)
+//                .setTitle("Really Exit?")
+//                .setMessage("Are you sure you want to exit?")
+//                .setNegativeButton(android.R.string.no, null)
+//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+//
+//                    public void onClick(DialogInterface arg0, int arg1) {
+//                        ApotekerMain.super.onBackPressed();
+//                    }
+//                }).create().show();
+//    }
 }
