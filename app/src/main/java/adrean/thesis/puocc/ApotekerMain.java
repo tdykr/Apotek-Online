@@ -14,6 +14,8 @@ import java.util.HashMap;
 
 public class ApotekerMain extends AppCompatActivity {
 
+    HashMap<String,String> userData;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +23,7 @@ public class ApotekerMain extends AppCompatActivity {
 
         TextView userLogin = (TextView) findViewById(R.id.userLogin);
         Intent in = getIntent();
-        HashMap<String,String> userData = (HashMap<String, String>)in.getSerializableExtra("userData");
+        userData = (HashMap<String, String>)in.getSerializableExtra("userData");
         userLogin.setText(userData.get("userName"));
 
         ImageView addNewProduct = (ImageView) findViewById(R.id.addNewProduct);
@@ -29,6 +31,7 @@ public class ApotekerMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ApotekerMain.this,AddNewProductActivity.class);
+                in.putExtra("userName",userData.get("userName"));
                 startActivity(in);
             }
         });

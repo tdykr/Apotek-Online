@@ -66,7 +66,7 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(QRCodeImageAddProductActivity.this,ApotekerMain.class);
-                startActivity(in);
+                finish();
             }
         });
 

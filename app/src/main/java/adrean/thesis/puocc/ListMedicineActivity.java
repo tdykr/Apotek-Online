@@ -46,7 +46,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ListMedicineActivity.this,ApotekerMain.class);
-                startActivity(in);
+                finish();
             }
         });
 
