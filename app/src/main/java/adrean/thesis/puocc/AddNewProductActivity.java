@@ -73,28 +73,6 @@ public class AddNewProductActivity extends AppCompatActivity {
 
         medPict = (ImageView) findViewById(R.id.medicinePict);
         getJSON();
-/*
-        adapter = new ArrayAdapter<>(this,R.layout.support_simple_spinner_dropdown_item,doc);
-        sp.setAdapter(adapter);*/
-        /*sp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                switch (i) {
-                    case 0:
-                        mdCategory = "Obat Batuk";
-                        break;
-
-                    case 1:
-                        mdCategory = "Obat Pusing";
-                        break;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });*/
 
         takePict.setOnClickListener(new View.OnClickListener() {
             @Override

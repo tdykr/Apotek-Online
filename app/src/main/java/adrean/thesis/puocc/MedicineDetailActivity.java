@@ -126,8 +126,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 Toast.makeText(MedicineDetailActivity.this, "Quantity Successfully Updated", Toast.LENGTH_SHORT).show();
-                Intent in = new Intent(MedicineDetailActivity.this,ListMedicineActivity.class);
-                startActivity(in);
+                finish();
             }
 
             @Override

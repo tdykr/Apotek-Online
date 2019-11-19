@@ -11,5 +11,5 @@ public class phpConf {
     public final static String URL_UPDATE_QT = "http://"+ ip +"/apotek/updateMedicineQt.php";
     public final static String URL_GET_MEDICINE_CATEGORY = "http://"+ ip +"/apotek/getListMedicineCategory.php";
     public final static String URL_LOGIN = "http://"+ ip +"/apotek/login.php";
-
+    public final static String URL_REGISTER = "http://"+ ip +"/apotek/registerUser.php";
 }
