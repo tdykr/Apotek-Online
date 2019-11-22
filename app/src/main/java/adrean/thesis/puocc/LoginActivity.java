@@ -16,6 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -102,11 +103,6 @@ public class LoginActivity extends AppCompatActivity {
                         userData.put("userAddress",userAddress);
                         userData.put("userPhone",userPhone);
                         apotekerAct.putExtra("userData",userData);
-                        /*apotekerAct.putExtra("userId",userId);
-                        apotekerAct.putExtra("userName",userName);
-                        apotekerAct.putExtra("userEmail",userEmail);
-                        apotekerAct.putExtra("userAddress",userAddress);
-                        apotekerAct.putExtra("userPhone",userPhone);*/
                         startActivity(apotekerAct);
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }else if(response.equals("1") && userRole.equals("user")){
@@ -117,11 +113,6 @@ public class LoginActivity extends AppCompatActivity {
                         userData.put("userAddress",userAddress);
                         userData.put("userPhone",userPhone);
                         customerAct.putExtra("userData",userData);
-                        /*customerAct.putExtra("userId",userId);
-                        customerAct.putExtra("userName",userName);
-                        customerAct.putExtra("userEmail",userEmail);
-                        customerAct.putExtra("userAddress",userAddress);
-                        customerAct.putExtra("userPhone",userPhone);*/
                         startActivity(customerAct);
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }else{

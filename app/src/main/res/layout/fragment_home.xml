@@ -1,12 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:padding="15dp"
+    android:orientation="vertical">
 
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:text="Home"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="300dp">
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/prescription"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@drawable/side"
+            android:layout_margin="5dp"
+            android:text="Have some Prescription ?"/>
+
+        <TextView
+            android:id="@+id/chatPharmacist"
+            android:layout_below="@id/prescription"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/side"
+            android:text="Need some Consultation With Our Pharmacist ?\nClick here"/>
+
+    </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:foregroundGravity="center"
+        android:id="@+id/medCat"
+        android:layout_centerInParent="true"
+        android:overScrollMode="never"
+        android:clipToPadding="false"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </android.support.v4.view.ViewPager>
+
+
+
+</LinearLayout>

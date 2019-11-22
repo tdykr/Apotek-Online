@@ -17,7 +17,6 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -29,7 +28,6 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class ListMedicineActivity extends AppCompatActivity implements ListView.OnItemClickListener{
 
@@ -92,7 +90,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
         }
 
         ListAdapter adapter = new SimpleAdapter(
-                ListMedicineActivity.this, list, R.layout.activity_medlist,
+                ListMedicineActivity.this, list, R.layout.list_medicine,
                 new String[]{"CATEGORY","MEDICINE_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
                 new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.qt, R.id.img});
 

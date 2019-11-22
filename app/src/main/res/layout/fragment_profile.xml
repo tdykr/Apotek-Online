@@ -3,9 +3,50 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="150dp"
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="375dp"
         android:layout_height="150dp"
-        android:text="Profile"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/profile_shape">
 
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rel2"
+        android:layout_below="@+id/rel1"
+        android:layout_width="375dp"
+        android:layout_height="425dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="15dp"
+        android:layout_centerHorizontal="true"
+        android:background="@color/bgcol">
+
+        <TextView
+            android:id="@+id/userNameTv"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:id="@+id/userEmailTv"
+            android:layout_below="@id/userNameTv"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+        <TextView
+            android:id="@+id/userPhoneTv"
+            android:layout_below="@id/userEmailTv"
+            android:layout_width="150dp"
+            android:layout_height="35dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"/>
+
+    </RelativeLayout>
 </RelativeLayout>
