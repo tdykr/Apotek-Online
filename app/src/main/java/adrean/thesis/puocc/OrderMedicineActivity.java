@@ -4,15 +4,21 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.TextView;
+import android.preference.PreferenceManager;
+import android.content.SharedPreferences;
 
 public class OrderMedicineActivity extends AppCompatActivity {
 
     private TextView ordAddress,ordChangeAddress,ordDetail,ordAmount,ordPrice,ordTotal;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_medicine);
+
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor mEditor = mPreferences.edit();
 
         ordAddress = (TextView) findViewById(R.id.address);
         ordChangeAddress = (TextView) findViewById(R.id.changeAddress);
@@ -21,7 +27,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
         ordPrice = (TextView) findViewById(R.id.confPrice);
         ordTotal = (TextView) findViewById(R.id.totalPrice);
 
-
+        ordChangeAddress.setText(mPreferences.getString("userAddress",""));
 
         Intent in = getIntent();
     }

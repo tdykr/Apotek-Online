@@ -20,6 +20,8 @@ import java.util.List;
 
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import adrean.thesis.puocc.phpConf;
 
 public class HomeFragment extends Fragment {
@@ -32,11 +34,35 @@ public class HomeFragment extends Fragment {
     private String JSON_STRING;
     private ViewPager listCategory;
     Adapter adapter;
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mEditor;
+    private HashMap<String,String> userData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        Intent in = getActivity().getIntent();
+        userData = (HashMap<String, String>) in.getSerializableExtra("userData");
+
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(view.getContext());
+        mEditor = mPreferences.edit();
+
+        mEditor.putString("userId",userData.get("userId"));
+        mEditor.commit();
+
+        mEditor.putString("userName",userData.get("userName"));
+        mEditor.commit();
+
+        mEditor.putString("userEmail",userData.get("userEmail"));
+        mEditor.commit();
+
+        mEditor.putString("userAddress",userData.get("userAddress"));
+        mEditor.commit();
+
+        mEditor.putString("userPhone",userData.get("userPhone"));
+        mEditor.commit();
 
         listCategory = (ViewPager) view.findViewById(R.id.medCat);
         getJSON();

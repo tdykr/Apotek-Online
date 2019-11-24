@@ -44,8 +44,6 @@ public class CustomerMain extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_main);
 
-
-
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);

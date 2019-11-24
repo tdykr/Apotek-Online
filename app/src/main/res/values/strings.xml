@@ -8,4 +8,8 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="userName">adrean.thesis.puocc.Fragment.userName</string>
+    <string name="userAddress">adrean.thesis.puocc.Fragment.userAddress</string>
+    <string name="userId">adrean.thesis.puocc.Fragment.userId</string>
+
 </resources>
