@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="15dp"
@@ -10,22 +11,39 @@
         android:layout_width="match_parent"
         android:layout_height="300dp">
 
-        <TextView
-            android:id="@+id/prescription"
+        <android.support.v7.widget.CardView
+            android:id="@+id/card1"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:background="@drawable/side"
-            android:layout_margin="5dp"
-            android:text="Have some Prescription ?"/>
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="@color/cardBg"
+            android:layout_margin="5dp">
+            <TextView
+                android:id="@+id/prescription"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:text="Have some Prescription ?\nClick here"/>
+        </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/chatPharmacist"
-            android:layout_below="@id/prescription"
+        <android.support.v7.widget.CardView
+            android:layout_below="@id/card1"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_margin="5dp"
-            android:background="@drawable/side"
-            android:text="Need some Consultation With Our Pharmacist ?\nClick here"/>
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="20dp"
+            app:cardBackgroundColor="@color/cardBg"
+            android:layout_margin="5dp">
+            <TextView
+                android:id="@+id/chatPharmacist"
+                android:layout_below="@id/prescription"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp"
+                android:text="Need some Consultation With Our Pharmacist ?\nClick here"/>
+        </android.support.v7.widget.CardView>
+
+
+
 
     </RelativeLayout>
     <android.support.v4.view.ViewPager

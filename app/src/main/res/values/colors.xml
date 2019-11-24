@@ -4,6 +4,7 @@
     <color name="black">#000000</color>
     <color name="trans">#CC007c90</color>
     <color name="transparent">#89BEFF</color>
-    <color name="bgcol">#8033</color>
+    <color name="bgcol">#8089BEFF</color>
+    <color name="cardBg">#80c5c6c7</color>
 
 </resources>

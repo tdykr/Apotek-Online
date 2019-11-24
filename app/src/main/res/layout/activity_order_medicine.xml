@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OrderMedicineActivity">
+
+    <TextView
+        android:id="@+id/text"
+        android:layout_width="300dp"
+        android:layout_height="50dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:text="Confirmation"
+        android:textSize="24sp"
+        android:textAlignment="center"/>
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_below="@id/text"
+        android:layout_width="350dp"
+        android:layout_height="500dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/side">
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="350dp"
+            android:layout_height="100dp"
+            android:layout_centerHorizontal="true"
+            android:layout_margin="10dp"/>
+
+        <TextView
+            android:id="@+id/changeAddress"
+            android:layout_width="250dp"
+            android:layout_height="35dp"
+            android:layout_below="@id/address"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="5dp"
+            android:text="Have different address ?\nClick here"/>
+
+        <RelativeLayout
+            android:id="@+id/rel2"
+            android:layout_below="@id/changeAddress"
+            android:layout_width="325dp"
+            android:layout_height="250dp"
+            android:layout_margin="5dp"
+            android:layout_centerHorizontal="true">
+
+            <TextView
+                android:id="@+id/confDetail"
+                android:layout_width="250dp"
+                android:layout_height="35dp"
+                android:layout_margin="10dp"/>
+
+            <TextView
+                android:id="@+id/confPrice"
+                android:layout_below="@id/confDetail"
+                android:layout_width="210dp"
+                android:layout_height="35dp"
+                android:layout_marginLeft="10dp"/>
+
+            <EditText
+                android:id="@+id/confAmount"
+                android:layout_below="@id/confDetail"
+                android:layout_toRightOf="@id/confPrice"
+                android:layout_marginLeft="5dp"
+                android:layout_width="35dp"
+                android:layout_height="35dp"/>
+
+            <TextView
+                android:layout_width="75dp"
+                android:layout_height="35dp"
+                android:layout_below="@id/confAmount"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="Total"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:id="@+id/total"
+                android:textAlignment="center"/>
+
+            <TextView
+                android:id="@+id/totalPrice"
+                android:layout_width="150dp"
+                android:layout_height="35dp"
+                android:layout_toRightOf="@id/total"
+                android:layout_below="@id/confAmount"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="15dp"
+                android:textSize="18sp"/>
+
+        </RelativeLayout>
+
+        <Button
+            android:layout_width="125dp"
+            android:layout_height="50dp"
+            android:layout_below="@id/rel2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:text="Place Order"/>
+    </RelativeLayout>
+
+</RelativeLayout>

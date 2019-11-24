@@ -38,9 +38,6 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
-        Intent in = getActivity().getIntent();
-        in.getStringExtra("");
-
         listCategory = (ViewPager) view.findViewById(R.id.medCat);
         getJSON();
 
@@ -59,12 +56,14 @@ public class HomeFragment extends Fragment {
             for(int i = 0; i<result.length(); i++){
                 JSONObject jo = result.getJSONObject(i);
                 String cat = jo.getString("CATEGORY");
+                String id = jo.getString("ID");
 
                 HashMap<String,String> category = new HashMap<>();
                 category.put("category",cat);
+                category.put("id",id);
 
                 data.add(category);
-                model.add(new Model(cat));
+                model.add(new Model(cat,id));
             }
 
         } catch (JSONException e) {

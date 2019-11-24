@@ -11,4 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"/>
 
+    <ListView
+        android:background="@drawable/side"
+        android:id="@+id/listCatDetail"
+        android:layout_below="@+id/text"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_margin="10dp"/>
+
 </RelativeLayout>

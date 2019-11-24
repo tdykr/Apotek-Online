@@ -15,8 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".CategoryDetailActivity"></activity>
-        <activity android:name=".CustomerMain"></activity>
+        <activity android:name=".OrderMedicineActivity"></activity>
+        <activity android:name=".CategoryDetailActivity" />
+        <activity android:name=".CustomerMain" />
         <activity android:name=".MedicineDetailActivity" />
         <activity android:name=".ListMedicineActivity" />
         <activity android:name=".QRCodeImageAddProductActivity" />

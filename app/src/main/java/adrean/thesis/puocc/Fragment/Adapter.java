@@ -53,6 +53,7 @@ public class Adapter extends PagerAdapter {
             public void onClick(View v) {
                 Intent intent = new Intent(context, CategoryDetailActivity.class);
                 intent.putExtra("category", models.get(position).getCategory());
+                intent.putExtra("id",models.get(position).getId());
                 context.startActivity(intent);
                 // finish();
             }
