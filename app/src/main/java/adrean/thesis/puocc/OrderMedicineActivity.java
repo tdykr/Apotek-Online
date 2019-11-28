@@ -1,34 +1,121 @@
 package adrean.thesis.puocc;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
+import android.widget.Toast;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import adrean.thesis.puocc.Fragment.HomeFragment;
 
 public class OrderMedicineActivity extends AppCompatActivity {
 
-    private TextView ordAddress,ordChangeAddress,ordDetail,ordAmount,ordPrice,ordTotal;
-
+    private TextView ordAddress,ordChangeAddress,confMedName,ordPrice,ordTotal;
+    private EditText ordAmount;
+    int amount,price,total;
+    String medId;
+    long delay = 1000; // 1 seconds after user stops typing
+    long last_text_edit = 0;
+    Handler handler = new Handler();
+    Button btnAddCart;
+    SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_medicine);
 
-        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        SharedPreferences.Editor mEditor = mPreferences.edit();
-
         ordAddress = (TextView) findViewById(R.id.address);
         ordChangeAddress = (TextView) findViewById(R.id.changeAddress);
-        ordDetail = (TextView) findViewById(R.id.confDetail);
-        ordAmount = (TextView) findViewById(R.id.confAmount);
+        confMedName = (TextView) findViewById(R.id.confMedName);
+        ordAmount = (EditText) findViewById(R.id.confAmount);
         ordPrice = (TextView) findViewById(R.id.confPrice);
         ordTotal = (TextView) findViewById(R.id.totalPrice);
+        btnAddCart = (Button) findViewById(R.id.btnAddCart);
 
-        ordChangeAddress.setText(mPreferences.getString("userAddress",""));
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        ordAddress.setText(mPreferences.getString("userAddress",""));
 
         Intent in = getIntent();
+        Map<String,String> data = (HashMap<String, String>) in.getSerializableExtra("data");
+
+        medId = data.get("ID");
+        Log.d("MedicineIdCheck", "onCreate: " + medId);
+        confMedName.setText(data.get("MEDICINE_NAME"));
+        ordPrice.setText(data.get("PRICE"));
+        ordTotal.setText(data.get("PRICE"));
+
+        btnAddCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addCart();
+            }
+        });
+
+        final Runnable input_finish_checker = new Runnable() {
+            public void run() {
+                if (System.currentTimeMillis() > (last_text_edit + delay - 500)) {
+                    // TODO: do what you need here
+                    // ............
+                    // ............
+                    Log.d("total", String.valueOf(total));
+
+
+                }
+            }
+        };
+
+    }
+
+    private void addCart(){
+
+        class addCart extends AsyncTask<Void,Void,String> {
+
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(OrderMedicineActivity.this,"Uploading Data...","Please Wait...",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                Toast.makeText(OrderMedicineActivity.this,s,Toast.LENGTH_LONG).show();
+                final Intent intent = new Intent(getApplicationContext(), CustomerMain.class);
+                startActivity(intent);
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String,String> params = new HashMap<>();
+                params.put("QUANTITY",ordAmount.getText().toString());
+                params.put("MED_ID",medId);
+                params.put("USER",mPreferences.getString("userName",""));
+
+                RequestHandler rh = new RequestHandler();
+                String res = rh.sendPostRequest(phpConf.URL_ADD_TO_CART, params);
+                return res;
+            }
+        }
+
+        addCart add = new addCart();
+        add.execute();
     }
 }

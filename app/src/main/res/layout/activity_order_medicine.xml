@@ -25,79 +25,107 @@
         android:layout_marginTop="20dp"
         android:background="@drawable/side">
 
-        <TextView
-            android:id="@+id/address"
-            android:layout_width="350dp"
-            android:layout_height="100dp"
-            android:layout_centerHorizontal="true"
-            android:layout_margin="10dp"/>
+        <android.support.v7.widget.CardView
+            android:id="@+id/card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
+            android:layout_margin="5dp">
 
-        <TextView
-            android:id="@+id/changeAddress"
-            android:layout_width="250dp"
-            android:layout_height="35dp"
-            android:layout_below="@id/address"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="5dp"
-            android:text="Have different address ?\nClick here"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <RelativeLayout
-            android:id="@+id/rel2"
-            android:layout_below="@id/changeAddress"
-            android:layout_width="325dp"
-            android:layout_height="250dp"
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="350dp"
+                    android:layout_height="100dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_margin="10dp"/>
+
+                <TextView
+                    android:id="@+id/changeAddress"
+                    android:layout_width="250dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/address"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginBottom="5dp"
+                    android:text="Have different address ?\nClick here"/>
+            </RelativeLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/card1"
+            android:layout_below="@id/card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="5dp"
             android:layout_margin="5dp"
-            android:layout_centerHorizontal="true">
+            app:cardBackgroundColor="#2239">
 
-            <TextView
-                android:id="@+id/confDetail"
-                android:layout_width="250dp"
-                android:layout_height="35dp"
-                android:layout_margin="10dp"/>
+            <RelativeLayout
+                android:id="@+id/rel2"
+                android:layout_width="325dp"
+                android:layout_height="200dp"
+                android:layout_margin="5dp"
+                android:layout_centerHorizontal="true">
 
-            <TextView
-                android:id="@+id/confPrice"
-                android:layout_below="@id/confDetail"
-                android:layout_width="210dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="10dp"/>
+                <TextView
+                    android:id="@+id/confMedName"
+                    android:layout_width="250dp"
+                    android:layout_height="35dp"
+                    android:layout_margin="10dp"/>
 
-            <EditText
-                android:id="@+id/confAmount"
-                android:layout_below="@id/confDetail"
-                android:layout_toRightOf="@id/confPrice"
-                android:layout_marginLeft="5dp"
-                android:layout_width="35dp"
-                android:layout_height="35dp"/>
+                <TextView
+                    android:id="@+id/confPrice"
+                    android:layout_below="@id/confMedName"
+                    android:layout_width="210dp"
+                    android:layout_height="35dp"
+                    android:layout_marginLeft="10dp"/>
 
-            <TextView
-                android:layout_width="75dp"
-                android:layout_height="35dp"
-                android:layout_below="@id/confAmount"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:text="Total"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:id="@+id/total"
-                android:textAlignment="center"/>
+                <EditText
+                    android:id="@+id/confAmount"
+                    android:layout_width="35dp"
+                    android:layout_height="35dp"
+                    android:textSize="12sp"
+                    android:text="1"
+                    android:layout_below="@id/confMedName"
+                    android:layout_marginLeft="5dp"
+                    android:layout_toRightOf="@id/confPrice" />
 
-            <TextView
-                android:id="@+id/totalPrice"
-                android:layout_width="150dp"
-                android:layout_height="35dp"
-                android:layout_toRightOf="@id/total"
-                android:layout_below="@id/confAmount"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="15dp"
-                android:textSize="18sp"/>
+                <TextView
+                    android:layout_width="75dp"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/confAmount"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:text="Total"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:id="@+id/total"
+                    android:textAlignment="center"/>
 
-        </RelativeLayout>
+                <TextView
+                    android:id="@+id/totalPrice"
+                    android:layout_width="150dp"
+                    android:layout_height="35dp"
+                    android:layout_toRightOf="@id/total"
+                    android:layout_below="@id/confAmount"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+                    android:textSize="18sp"/>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
 
         <Button
+            android:id="@+id/btnAddCart"
             android:layout_width="125dp"
             android:layout_height="50dp"
-            android:layout_below="@id/rel2"
+            android:layout_below="@id/card1"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
             android:text="Place Order"/>

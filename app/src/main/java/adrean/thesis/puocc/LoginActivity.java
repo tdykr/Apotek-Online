@@ -2,7 +2,9 @@ package adrean.thesis.puocc;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -21,6 +23,8 @@ import java.util.Map;
 public class LoginActivity extends AppCompatActivity {
 
     private String userEmail,userPass;
+    private android.content.SharedPreferences mPreferences;
+    private SharedPreferences.Editor mEditor;
     HashMap<String,String> userData = new HashMap<>();
 
     @Override
@@ -31,7 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         final TextView email = (TextView) findViewById(R.id.userEmail);
         final TextView pass = (TextView) findViewById(R.id.userPass);
         Button loginBtn = (Button) findViewById(R.id.btnLogin);
-
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        mEditor = mPreferences.edit();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,22 +102,32 @@ public class LoginActivity extends AppCompatActivity {
 
                     if(response.equals("1") && userRole.equals("admin")){
                         Intent apotekerAct = new Intent(LoginActivity.this, ApotekerMain.class);
-                        userData.put("userId",userId);
-                        userData.put("userName",userName);
-                        userData.put("userEmail",userEmail);
-                        userData.put("userAddress",userAddress);
-                        userData.put("userPhone",userPhone);
-                        apotekerAct.putExtra("userData",userData);
+                        mEditor.putString("userId",userId);
+                        mEditor.commit();
+                        mEditor.putString("userName",userName);
+                        mEditor.commit();
+                        mEditor.putString("userEmail",userEmail);
+                        mEditor.commit();
+                        mEditor.putString("userAddress",userAddress);
+                        mEditor.commit();
+                        mEditor.putString("userPhone",userPhone);
+                        mEditor.commit();
+//                        apotekerAct.putExtra("userData",userData);
                         startActivity(apotekerAct);
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }else if(response.equals("1") && userRole.equals("user")){
                         Intent customerAct = new Intent(LoginActivity.this, CustomerMain.class);
-                        userData.put("userId",userId);
-                        userData.put("userName",userName);
-                        userData.put("userEmail",userEmail);
-                        userData.put("userAddress",userAddress);
-                        userData.put("userPhone",userPhone);
-                        customerAct.putExtra("userData",userData);
+                        mEditor.putString("userId",userId);
+                        mEditor.commit();
+                        mEditor.putString("userName",userName);
+                        mEditor.commit();
+                        mEditor.putString("userEmail",userEmail);
+                        mEditor.commit();
+                        mEditor.putString("userAddress",userAddress);
+                        mEditor.commit();
+                        mEditor.putString("userPhone",userPhone);
+                        mEditor.commit();
+//                        customerAct.putExtra("userData",userData);
                         startActivity(customerAct);
                         Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }else{

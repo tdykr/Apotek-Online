@@ -1,7 +1,9 @@
 package adrean.thesis.puocc.Fragment;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,14 +32,16 @@ public class ProfileFragment extends Fragment {
         TextView uEmail = (TextView) view.findViewById(R.id.userEmailTv);
         TextView uPhone = (TextView) view.findViewById(R.id.userPhoneTv);
 
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+
         Intent in = getActivity().getIntent();
         userData = (HashMap<String, String>) in.getSerializableExtra("userData");
 
-        userId = userData.get("userId");
-        userName = userData.get("userName");
-        userEmail = userData.get("userEmail");
-        userAddress = userData.get("userAddress");
-        userPhone = userData.get("userPhone");
+        userId = mPreferences.getString("userId","");
+        userName = mPreferences.getString("userName","");
+        userEmail = mPreferences.getString("userEmail","");
+        userAddress = mPreferences.getString("userAddress","");
+        userPhone = mPreferences.getString("userPhone","");
 
         uName.setText(userName);
         uEmail.setText(userEmail);

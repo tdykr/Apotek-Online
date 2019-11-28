@@ -65,8 +65,9 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(QRCodeImageAddProductActivity.this,ApotekerMain.class);
-                finish();
+                final Intent intent = new Intent(getApplicationContext(), ApotekerMain.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         });
 

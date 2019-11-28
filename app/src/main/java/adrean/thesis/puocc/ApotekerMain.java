@@ -4,6 +4,8 @@ package adrean.thesis.puocc;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +16,7 @@ import java.util.HashMap;
 
 public class ApotekerMain extends AppCompatActivity {
 
-    HashMap<String,String> userData;
+    private String userName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +25,18 @@ public class ApotekerMain extends AppCompatActivity {
 
         TextView userLogin = (TextView) findViewById(R.id.userLogin);
         Intent in = getIntent();
-        userData = (HashMap<String, String>)in.getSerializableExtra("userData");
-        userLogin.setText(userData.get("userName"));
+
+        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        userName = mPreferences.getString("userName","");
+        userLogin.setText(userName);
+
 
         ImageView addNewProduct = (ImageView) findViewById(R.id.addNewProduct);
         addNewProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ApotekerMain.this,AddNewProductActivity.class);
-                in.putExtra("userName",userData.get("userName"));
+                in.putExtra("userName",userName);
                 startActivity(in);
             }
         });
@@ -45,18 +50,4 @@ public class ApotekerMain extends AppCompatActivity {
             }
         });
     }
-//
-//    @Override
-//    public void onBackPressed() {
-//        new AlertDialog.Builder(this)
-//                .setTitle("Really Exit?")
-//                .setMessage("Are you sure you want to exit?")
-//                .setNegativeButton(android.R.string.no, null)
-//                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-//
-//                    public void onClick(DialogInterface arg0, int arg1) {
-//                        ApotekerMain.super.onBackPressed();
-//                    }
-//                }).create().show();
-//    }
 }

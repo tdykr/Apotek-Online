@@ -36,7 +36,6 @@ public class HomeFragment extends Fragment {
     Adapter adapter;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
-    private HashMap<String,String> userData;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -44,25 +43,9 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         Intent in = getActivity().getIntent();
-        userData = (HashMap<String, String>) in.getSerializableExtra("userData");
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(view.getContext());
         mEditor = mPreferences.edit();
-
-        mEditor.putString("userId",userData.get("userId"));
-        mEditor.commit();
-
-        mEditor.putString("userName",userData.get("userName"));
-        mEditor.commit();
-
-        mEditor.putString("userEmail",userData.get("userEmail"));
-        mEditor.commit();
-
-        mEditor.putString("userAddress",userData.get("userAddress"));
-        mEditor.commit();
-
-        mEditor.putString("userPhone",userData.get("userPhone"));
-        mEditor.commit();
 
         listCategory = (ViewPager) view.findViewById(R.id.medCat);
         getJSON();

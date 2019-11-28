@@ -8,4 +8,11 @@
         android:layout_height="150dp"
         android:text="Cart"/>
 
+    <ListView
+        android:id="@+id/cartList"
+        android:background="@drawable/side"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="425dp"/>
+
 </RelativeLayout>

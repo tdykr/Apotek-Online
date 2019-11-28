@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="15dp"
+    android:padding="10dp"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -15,23 +15,21 @@
             android:id="@+id/card1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/cardBg"
+            app:cardCornerRadius="10dp"
             android:layout_margin="5dp">
             <TextView
                 android:id="@+id/prescription"
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
-                android:text="Have some Prescription ?\nClick here"/>
+                android:text="Have some Prescription ?"/>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
             android:layout_below="@id/card1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="20dp"
-            app:cardBackgroundColor="@color/cardBg"
+            app:cardCornerRadius="10dp"
             android:layout_margin="5dp">
             <TextView
                 android:id="@+id/chatPharmacist"
@@ -39,13 +37,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="40dp"
                 android:layout_margin="5dp"
-                android:text="Need some Consultation With Our Pharmacist ?\nClick here"/>
+                android:text="Need some Consultation With Our Pharmacist ?"/>
         </android.support.v7.widget.CardView>
-
-
-
-
     </RelativeLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Medicine Category"
+        android:textSize="20sp"
+        android:textStyle="bold"/>
     <android.support.v4.view.ViewPager
         android:foregroundGravity="center"
         android:id="@+id/medCat"
@@ -55,7 +55,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </android.support.v4.view.ViewPager>
-
-
-
 </LinearLayout>

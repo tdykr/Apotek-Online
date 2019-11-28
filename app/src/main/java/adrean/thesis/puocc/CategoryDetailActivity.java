@@ -72,7 +72,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
                 medicine.put("ID",id);
                 medicine.put("CATEGORY","Category : " + category);
                 medicine.put("MEDICINE_NAME",medName);
-                medicine.put("PRICE","Rp." + medPrice);
+                medicine.put("PRICE",medPrice);
                 medicine.put("QUANTITY","Quantity : " + medQuantity);
                 medicine.put("MEDICINE_PICT",imgUri);
 
@@ -129,8 +129,8 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(this, OrderMedicineActivity.class);
         HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
-        String medicineId = map.get("ID");
-        intent.putExtra("ID",medicineId);
+
+        intent.putExtra("data",map);
         startActivity(intent);
     }
 
