@@ -27,7 +27,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
     private TextView ordAddress,ordChangeAddress,confMedName,ordPrice,ordTotal;
     private EditText ordAmount;
     int amount,price,total;
-    String medId;
+    private String medId, qtDb, orderAmount;
     long delay = 1000; // 1 seconds after user stops typing
     long last_text_edit = 0;
     Handler handler = new Handler();
@@ -46,6 +46,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
         ordPrice = (TextView) findViewById(R.id.confPrice);
         ordTotal = (TextView) findViewById(R.id.totalPrice);
         btnAddCart = (Button) findViewById(R.id.btnAddCart);
+        orderAmount = ordAmount.getText().toString();
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         ordAddress.setText(mPreferences.getString("userAddress",""));
@@ -53,7 +54,9 @@ public class OrderMedicineActivity extends AppCompatActivity {
         Intent in = getIntent();
         Map<String,String> data = (HashMap<String, String>) in.getSerializableExtra("data");
 
+        qtDb = data.get("QUANTITY");
         medId = data.get("ID");
+
         Log.d("MedicineIdCheck", "onCreate: " + medId);
         confMedName.setText(data.get("MEDICINE_NAME"));
         ordPrice.setText(data.get("PRICE"));
@@ -62,7 +65,11 @@ public class OrderMedicineActivity extends AppCompatActivity {
         btnAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addCart();
+                if(Integer.parseInt(qtDb) > Integer.parseInt(orderAmount)){
+                    addCart();
+                }else{
+                    Toast.makeText(OrderMedicineActivity.this, "Item Out of Stock! Available only " + qtDb + " item(s).", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -99,13 +106,14 @@ public class OrderMedicineActivity extends AppCompatActivity {
                 loading.dismiss();
                 Toast.makeText(OrderMedicineActivity.this,s,Toast.LENGTH_LONG).show();
                 final Intent intent = new Intent(getApplicationContext(), CustomerMain.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
 
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("QUANTITY",ordAmount.getText().toString());
+                params.put("QUANTITY",orderAmount);
                 params.put("MED_ID",medId);
                 params.put("USER",mPreferences.getString("userName",""));
 

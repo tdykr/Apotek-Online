@@ -4,11 +4,14 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +25,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -37,8 +41,9 @@ public class CartFragment extends Fragment {
     }
 
     SharedPreferences mPreferences;
-    TextView id, medId;
-    String JSON_STRING;
+    TextView id, medNameTv;
+    String JSON_STRING,medId,medName,medCategory,medPrice,medDesc;
+    Bitmap medPict;
     ListView listCart;
 
     @Override
@@ -49,7 +54,7 @@ public class CartFragment extends Fragment {
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
         listCart = (ListView) view.findViewById(R.id.cartList);
         id = (TextView) view.findViewById(R.id.medCategory);
-        medId = (TextView) view.findViewById(R.id.medName);
+        medNameTv = (TextView) view.findViewById(R.id.medName);
 
         getJSON();
         return view;
@@ -65,12 +70,22 @@ public class CartFragment extends Fragment {
 
             for(int i = 0; i<result.length(); i++){
                 JSONObject jo = result.getJSONObject(i);
-                String id = jo.getString("ID");
-                String category = jo.getString("MED_ID");
+                medId = jo.getString("CART_ID");
+                medName = jo.getString("MED_NAME");
+                medCategory = jo.getString("CATEGORY");
+                medPrice = jo.getString("PRICE");
+                medDesc = jo.getString("DESCRIPTION");
+                medPict = encodedStringImage(jo.getString("MEDICINE_PICT"));
+
+                Uri imgUri = getImageUri(context,medPict);
 
                 HashMap<String,Object> medicine = new HashMap<>();
-                medicine.put("ID",id);
-                medicine.put("MED_ID","Category : " + category);
+                medicine.put("CART_ID",id);
+                medicine.put("MED_NAME",medName);
+                medicine.put("CATEGORY",medCategory);
+                medicine.put("PRICE","Rp. " + medPrice);
+                medicine.put("DESCRIPTION",medDesc);
+                medicine.put("MEDICINE_PICT",imgUri);
 
                 Log.d("tag", String.valueOf(medicine));
 
@@ -82,9 +97,9 @@ public class CartFragment extends Fragment {
         }
 
         ListAdapter adapter = new SimpleAdapter(
-                getContext(), list, R.layout.list_medicine,
-                new String[]{"ID","MED_ID","PRICE","QUANTITY","MEDICINE_PICT"},
-                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.qt, R.id.img});
+                getContext(), list, R.layout.list_cart,
+                new String[]{"MED_NAME","CATEGORY","PRICE","QUANTITY","MEDICINE_PICT"},
+                new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medPrice, R.id.qt, R.id.img});
 
         listCart.setAdapter(adapter);
     }
@@ -119,5 +134,19 @@ public class CartFragment extends Fragment {
         }
         GetJSON gj = new GetJSON();
         gj.execute();
+    }
+
+    public Bitmap encodedStringImage(String imgString){
+        byte[] decodedString = Base64.decode(imgString, Base64.DEFAULT);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+
+        return decodedBitmap;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
     }
 }

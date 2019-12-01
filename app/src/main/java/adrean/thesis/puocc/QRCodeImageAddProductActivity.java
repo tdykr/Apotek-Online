@@ -100,7 +100,7 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) qrImg.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
 
-        File dir = new File("/sdcard/Pictures/qrThesis");
+        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/Pictures/QRObat");
         dir.mkdirs();
         File file = new File(dir, "QRImg-" + medName + ".jpg");
 

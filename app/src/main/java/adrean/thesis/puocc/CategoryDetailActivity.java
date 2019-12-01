@@ -73,7 +73,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
                 medicine.put("CATEGORY","Category : " + category);
                 medicine.put("MEDICINE_NAME",medName);
                 medicine.put("PRICE",medPrice);
-                medicine.put("QUANTITY","Quantity : " + medQuantity);
+                medicine.put("QUANTITY",medQuantity);
                 medicine.put("MEDICINE_PICT",imgUri);
 
                 Log.d("tag", String.valueOf(medicine));

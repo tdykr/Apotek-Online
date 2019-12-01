@@ -18,6 +18,13 @@
             android:layout_height="match_parent"
             android:background="@color/bgcol">
 
+            <CheckBox
+                android:id="@+id/rowCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                />
+
             <TextView
                 android:id="@+id/medCategory"
                 android:layout_width="wrap_content"
@@ -26,20 +33,12 @@
                 android:layout_marginLeft="10dp"/>
 
             <TextView
-                android:id="@+id/medName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/medCategory"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp" />
-
-            <TextView
                 android:id="@+id/medPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/medName"
+                android:layout_toRightOf="@id/rowCheckBox"
                 android:layout_below="@id/medCategory"
-                android:layout_marginTop="5dp"
+                android:layout_centerVertical="true"
                 android:layout_marginLeft="10dp" />
 
             <TextView
