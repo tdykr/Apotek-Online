@@ -26,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private android.content.SharedPreferences mPreferences;
     private SharedPreferences.Editor mEditor;
     HashMap<String,String> userData = new HashMap<>();
+    SharedPreferences mPreferencesGet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,12 +35,14 @@ public class LoginActivity extends AppCompatActivity {
 
         final TextView email = (TextView) findViewById(R.id.userEmail);
         final TextView pass = (TextView) findViewById(R.id.userPass);
+
         Button loginBtn = (Button) findViewById(R.id.btnLogin);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mEditor = mPreferences.edit();
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 userEmail = email.getText().toString();
                 userPass = pass.getText().toString();
 

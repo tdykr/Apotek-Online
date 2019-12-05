@@ -4,7 +4,7 @@ public class phpConf {
     //192.168.43.53 hp
     //192.168.1.7 wifi rumah
     //10.107.139.86 sbucks benhil
-    private final static String ip = "192.168.1.7";
+    private final static String ip = "192.168.1.5";
 
     public final static String URL_GET_ALL_MEDICINE_LIST = "http://"+ ip +"/apotek/getListMedicine.php";
     public final static String URL_GET_MEDICINE_DETAIL = "http://"+ ip +"/apotek/getMedicineDetail.php";
@@ -16,5 +16,6 @@ public class phpConf {
     public final static String URL_GET_LIST_MEDICINE_BY_CATEGORY = "http://"+ ip +"/apotek/getMedicineDetailByCategory.php";
     public final static String URL_ADD_TO_CART = "http://"+ ip +"/apotek/addNewCart.php";
     public final static String URL_GET_CART = "http://"+ ip +"/apotek/cartList.php";
+    public final static String URL_UPDATE_CART_ORDER = "http://"+ ip +"/apotek/updateCartOrderStatus.php";
 
 }
