@@ -65,7 +65,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
         btnAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(Integer.parseInt(qtDb) > Integer.parseInt(orderAmount)){
+                if(Integer.parseInt(qtDb) >= Integer.parseInt(orderAmount)){
                     addCart();
                 }else{
                     Toast.makeText(OrderMedicineActivity.this, "Item Out of Stock! Available only " + qtDb + " item(s).", Toast.LENGTH_SHORT).show();

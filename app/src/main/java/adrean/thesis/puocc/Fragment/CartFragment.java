@@ -2,14 +2,18 @@ package adrean.thesis.puocc.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
@@ -34,14 +38,16 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import adrean.thesis.puocc.CategoryDetailActivity;
+import adrean.thesis.puocc.CustomerMain;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
 import adrean.thesis.puocc.phpConf;
 
-public class CartFragment extends Fragment {
+public class CartFragment extends Fragment{
 
     public CartFragment(){
 
@@ -49,56 +55,88 @@ public class CartFragment extends Fragment {
 
     SharedPreferences mPreferences;
     TextView id, medNameTv;
-    String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt;
+    String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,check;
     Bitmap medPict;
     Button btnSubmitCart;
-    ListView listCart;
-    CheckBox checkItem;
-    ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
-    HashMap<String,Object> data = new HashMap<>();
+    ListView listViewCart;
+    CheckBox checkBox;
+    ListAdapter adapter;
+    ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
+    View view1;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
-        View view1 = inflater.inflate(R.layout.list_cart,container,false);
+        view1 = inflater.inflate(R.layout.list_cart,container,false);
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
-        listCart = (ListView) view.findViewById(R.id.cartList);
+        listViewCart = (ListView) view.findViewById(R.id.cartList);
         id = (TextView) view.findViewById(R.id.medCategory);
         btnSubmitCart = (Button) view.findViewById(R.id.btnSubmitCart);
         medNameTv = (TextView) view.findViewById(R.id.medName);
 
+        checkBox = (CheckBox) view1.findViewById(R.id.rowCheckBox);
         getJSON();
 
-        checkItem = (CheckBox) view1.findViewById(R.id.rowCheckBox);
-        checkItem.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        listViewCart.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
-                int id =compoundButton.getId();
-                Toast.makeText(getContext(), ""+id, Toast.LENGTH_SHORT).show();
+            public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l) {
 
-                if(isChecked){
+                final HashMap<String,Object> data = (HashMap<String, Object>) adapterView.getItemAtPosition(i);
+                check = (String) data.get("isChecked");
+
+                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+                        if(check.equals("false")){
+                            compoundButton.setChecked(true);
+                            data.put("isChecked","true");
+                            listData.set(i,data);
+                        }else if(check.equals("true")){
+                            compoundButton.setChecked(false);
+                            data.put("isChecked","false");
+                            listData.set(i,data);
+                        }
+
+                    }
+                });
+
+                if(check.equals("false")){
+                    CheckBox check1 = view.findViewById(R.id.rowCheckBox);
+                    check1.setChecked(true);
                     data.put("isChecked","true");
-                }else{
+                    listData.set(i,data);
+                }else if(check.equals("true")){
+                    CheckBox check1 = view.findViewById(R.id.rowCheckBox);
+                    check1.setChecked(false);
                     data.put("isChecked","false");
+                    listData.set(i,data);
                 }
-
             }
         });
 
         btnSubmitCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(getContext(), ""+list, Toast.LENGTH_SHORT).show();
-                Log.d("CheckDataChecked", "" + list);
+                List<String> currCartID = new ArrayList<>();
+
+                for(HashMap<String,Object> mapData : listData){
+                    if(mapData.get("isChecked").equals("true")){
+                        Log.d("CheckDataChecked", "" + mapData.get("CART_ID"));
+                        String tempCurrCartID = (String) mapData.get("CART_ID");
+                        currCartID.add(tempCurrCartID);
+                    }
+                }
+                addOrder(currCartID);
             }
         });
 
         return view;
     }
 
-    private void addOrder(){
+    public void addOrder(final List<String> cartID){
 
         class addOrder extends AsyncTask<Void,Void,String> {
 
@@ -112,26 +150,38 @@ public class CartFragment extends Fragment {
             }
 
             @Override
-            protected void onPostExecute(String s) {
+            protected void onPostExecute(final String s) {
                 super.onPostExecute(s);
-                loading.dismiss();
-                Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        loading.dismiss();
+                        Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+                    }
+                }, 2000);
+                final Intent intent = new Intent(getContext(), CustomerMain.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        startActivity(intent);
+                    }
+                }, 2000);
             }
 
             @Override
             protected String doInBackground(Void... v) {
 
-                if(list.size() > 0){
-                    for(Map<String,Object> data : list){
-                        data.get("ID");
-
-                    }
-                }
                 HashMap<String,String> params = new HashMap<>();
-                params.put("ID",cartId);
+                String res = "";
+                for(String cartData : cartID){
+                    params.put("ID",cartData);
 
-                RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);
+                    RequestHandler rh = new RequestHandler();
+                    res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);
+
+                }
                 return res;
             }
         }
@@ -141,6 +191,7 @@ public class CartFragment extends Fragment {
     }
 
     private void getListMedicine(){
+        listViewCart.setAdapter(null);
         JSONObject jsonObject = null;
         Context context = getContext();
         try {
@@ -167,22 +218,23 @@ public class CartFragment extends Fragment {
                 medicine.put("DESCRIPTION",medDesc);
                 medicine.put("QUANTITY",medQt);
                 medicine.put("MEDICINE_PICT",imgUri);
+                medicine.put("isChecked","false");
 
                 Log.d("tag", String.valueOf(medicine));
 
-                list.add(medicine);
+                listData.add(medicine);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ListAdapter adapter = new SimpleAdapter(
-                getContext(), list, R.layout.list_cart,
-                new String[]{"false","CATEGORY","MED_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
+         adapter = new SimpleAdapter(
+                getContext(), listData, R.layout.list_cart,
+                new String[]{"MED_NAME","CATEGORY","MED_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
                 new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medName,R.id.medPrice, R.id.medQuantity, R.id.img});
 
-        listCart.setAdapter(adapter);
+        listViewCart.setAdapter(adapter);
     }
 
     private void getJSON(){
