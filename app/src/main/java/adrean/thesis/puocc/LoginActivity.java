@@ -7,7 +7,9 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -37,14 +39,51 @@ public class LoginActivity extends AppCompatActivity {
         final TextView pass = (TextView) findViewById(R.id.userPass);
 
         Button loginBtn = (Button) findViewById(R.id.btnLogin);
+        Button showhideShowPass = (Button) findViewById(R.id.showPassword);
+
+        showhideShowPass.setOnTouchListener(new View.OnTouchListener() {
+            public boolean onTouch(View v, MotionEvent event) {
+
+                switch ( event.getAction() ) {
+
+                    case MotionEvent.ACTION_UP:
+                        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                        break;
+
+                    case MotionEvent.ACTION_DOWN:
+                        pass.setInputType(InputType.TYPE_CLASS_TEXT);
+                        break;
+
+                }
+                return true;
+            }
+        });
+
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mEditor = mPreferences.edit();
+
+        userEmail = mPreferences.getString("userEmail","");
+        userPass = mPreferences.getString("userPass","");
+
+        if(!userEmail.equals("") && !userPass.equals("")){
+            login();
+        }
+
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                userEmail = email.getText().toString();
-                userPass = pass.getText().toString();
+                if(userEmail.equals("")){
+                    userEmail = email.getText().toString();
+                    mEditor.putString("userEmail",userEmail);
+                    mEditor.commit();
+                }
+
+                if(userPass.equals("")){
+                    userPass = pass.getText().toString();
+                    mEditor.putString("userPass",userPass);
+                    mEditor.commit();
+                }
 
                 if(userEmail.isEmpty()){
                     email.setError("Email Can't be Empty");

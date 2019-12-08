@@ -7,9 +7,10 @@
     tools:context=".ApotekerMain">
 
     <ImageView
+        android:id="@+id/logout"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentLeft="true"
         android:background="@drawable/ic_exit_to_app_black_24dp"/>
 
     <ImageView

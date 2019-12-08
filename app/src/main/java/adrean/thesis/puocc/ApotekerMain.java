@@ -24,12 +24,22 @@ public class ApotekerMain extends AppCompatActivity {
         setContentView(R.layout.activity_apoteker_main);
 
         TextView userLogin = (TextView) findViewById(R.id.userLogin);
-        Intent in = getIntent();
 
-        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         userName = mPreferences.getString("userName","");
         userLogin.setText(userName);
 
+        ImageView logoutBtn = (ImageView) findViewById(R.id.logout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ApotekerMain.this,LoginActivity.class);
+                mPreferences.edit().clear().apply();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+
+            }
+        });
 
         ImageView addNewProduct = (ImageView) findViewById(R.id.addNewProduct);
         addNewProduct.setOnClickListener(new View.OnClickListener() {
@@ -41,11 +51,20 @@ public class ApotekerMain extends AppCompatActivity {
             }
         });
 
-        final ImageView listMedicineActivity = (ImageView) findViewById(R.id.listMedicine);
+        ImageView listMedicineActivity = (ImageView) findViewById(R.id.listMedicine);
         listMedicineActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(ApotekerMain.this,ListMedicineActivity.class);
+                startActivity(in);
+            }
+        });
+
+        ImageView transactionActivity = (ImageView) findViewById(R.id.newTransaction);
+        transactionActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ApotekerMain.this,TransactionActivity.class);
                 startActivity(in);
             }
         });

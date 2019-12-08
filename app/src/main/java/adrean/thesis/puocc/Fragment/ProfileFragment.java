@@ -8,17 +8,19 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.HashMap;
 
+import adrean.thesis.puocc.LoginActivity;
 import adrean.thesis.puocc.R;
 
 public class ProfileFragment extends Fragment {
 
     HashMap<String,String> userData = new HashMap<>();
     private String userId,userName,userEmail,userAddress,userPhone;
-
+    SharedPreferences mPreferences;
     public ProfileFragment(){
 
     }
@@ -32,7 +34,18 @@ public class ProfileFragment extends Fragment {
         TextView uEmail = (TextView) view.findViewById(R.id.userEmailTv);
         TextView uPhone = (TextView) view.findViewById(R.id.userPhoneTv);
 
-        SharedPreferences mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+
+        Button logoutBtn = (Button) view.findViewById(R.id.logout);
+        logoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getContext(), LoginActivity.class);
+                mPreferences.edit().clear().apply();
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
         Intent in = getActivity().getIntent();
         userData = (HashMap<String, String>) in.getSerializableExtra("userData");

@@ -90,15 +90,29 @@ public class CartFragment extends Fragment{
                     @Override
                     public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
 
-                        if(check.equals("false")){
-                            compoundButton.setChecked(true);
+                        if(b){
+                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
                             data.put("isChecked","true");
                             listData.set(i,data);
-                        }else if(check.equals("true")){
-                            compoundButton.setChecked(false);
+                        }else{
+                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
                             data.put("isChecked","false");
                             listData.set(i,data);
                         }
+
+//                        if(check.equals("false")){
+//                            compoundButton = view.findViewById(R.id.rowCheckBox);
+//                            compoundButton.setChecked(true);
+//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
+//                            data.put("isChecked","true");
+//                            listData.set(i,data);
+//                        }else if(check.equals("true")){
+//                            compoundButton = view.findViewById(R.id.rowCheckBox);
+//                            compoundButton.setChecked(false);
+//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
+//                            data.put("isChecked","false");
+//                            listData.set(i,data);
+//                        }
 
                     }
                 });

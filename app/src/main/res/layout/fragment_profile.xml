@@ -47,6 +47,15 @@
             android:layout_height="35dp"
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"/>
-
+        <Button
+            android:layout_alignParentBottom="true"
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_margin="15dp"
+            android:textSize="16sp"
+            android:text="Sign Out"
+            android:textColor="#ffff"
+            android:background="@drawable/button_shape"/>
     </RelativeLayout>
 </RelativeLayout>

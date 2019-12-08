@@ -82,7 +82,7 @@ public class AddNewProductActivity extends AppCompatActivity {
                 startActivityForResult(camera_intent, PIC_ID);
             }
         });
-
+ 
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

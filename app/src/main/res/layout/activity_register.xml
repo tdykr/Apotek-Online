@@ -24,7 +24,7 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/side"
-        android:backgroundTint="#CC999999">
+        android:backgroundTint="@color/bgcol">
 
         <EditText
             android:id="@+id/userName"
@@ -62,7 +62,7 @@
             android:layout_below="@+id/userPhone"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="5dp"
-            android:hint="Kecamatan"
+            android:hint="Address"
             android:inputType="textPersonName" />
 
         <EditText
@@ -93,7 +93,7 @@
             android:textColor="#fff"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/reTypePass"
-            android:background="#8033"
+            android:background="@drawable/button_shape"
             android:layout_marginTop="5dp"/>
 
     </RelativeLayout>
