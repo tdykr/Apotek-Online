@@ -86,36 +86,36 @@ public class CartFragment extends Fragment{
                 final HashMap<String,Object> data = (HashMap<String, Object>) adapterView.getItemAtPosition(i);
                 check = (String) data.get("isChecked");
 
-                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
-                        if(b){
-                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-                            data.put("isChecked","true");
-                            listData.set(i,data);
-                        }else{
-                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-                            data.put("isChecked","false");
-                            listData.set(i,data);
-                        }
-
-//                        if(check.equals("false")){
-//                            compoundButton = view.findViewById(R.id.rowCheckBox);
-//                            compoundButton.setChecked(true);
+//                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//
+//                        if(b){
 //                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
 //                            data.put("isChecked","true");
 //                            listData.set(i,data);
-//                        }else if(check.equals("true")){
+//                        }else{
+//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
+//                            data.put("isChecked","false");
+//                            listData.set(i,data);
+//                        }
+//
+//                        if(check.equals("false")){
+//                          compoundButton = view.findViewById(R.id.rowCheckBox);
+//                            compoundButton.setChecked(true);
+//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
+//                         data.put("isChecked","true");
+//                          listData.set(i,data);
+//                       }else if(check.equals("true")){
 //                            compoundButton = view.findViewById(R.id.rowCheckBox);
 //                            compoundButton.setChecked(false);
 //                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
 //                            data.put("isChecked","false");
 //                            listData.set(i,data);
 //                        }
-
-                    }
-                });
+//
+//                    }
+//                });
 
                 if(check.equals("false")){
                     CheckBox check1 = view.findViewById(R.id.rowCheckBox);

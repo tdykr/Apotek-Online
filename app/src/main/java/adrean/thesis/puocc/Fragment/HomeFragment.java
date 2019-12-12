@@ -22,6 +22,8 @@ import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.widget.Button;
+
 import adrean.thesis.puocc.phpConf;
 
 public class HomeFragment extends Fragment {
@@ -32,6 +34,7 @@ public class HomeFragment extends Fragment {
 
     private List<Model> model;
     private String JSON_STRING;
+
     private ViewPager listCategory;
     Adapter adapter;
     private SharedPreferences mPreferences;
@@ -41,6 +44,7 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        Button uploadReceiptBtn = (Button) view.findViewById(R.id.uploadReceipt);
 
         Intent in = getActivity().getIntent();
 
@@ -48,6 +52,14 @@ public class HomeFragment extends Fragment {
         mEditor = mPreferences.edit();
 
         listCategory = (ViewPager) view.findViewById(R.id.medCat);
+
+        uploadReceiptBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         getJSON();
 
         return view;

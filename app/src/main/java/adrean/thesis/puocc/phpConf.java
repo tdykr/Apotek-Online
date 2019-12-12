@@ -17,5 +17,8 @@ public class phpConf {
     public final static String URL_ADD_TO_CART = "http://"+ ip +"/apotek/addNewCart.php";
     public final static String URL_GET_CART = "http://"+ ip +"/apotek/cartList.php";
     public final static String URL_UPDATE_CART_ORDER = "http://"+ ip +"/apotek/updateCartOrderStatus.php";
+    public final static String URL_GET_LIST_HISTORY_CUST = "http://"+ ip +"/apotek/getListPendingPaidCustomer.php";
+    public final static String URL_GET_LIST_PENDING_APOTEKER = "http://"+ ip +"/apotek/getListMedicinePendingApoteker.php";
+    public final static String URL_UPDATE_CART_ORDER_STATUS_PAID = "http://"+ ip +"/apotek/updateCartOrderStatusPaid.php";
 
 }

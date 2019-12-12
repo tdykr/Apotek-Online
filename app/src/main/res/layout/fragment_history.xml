@@ -8,4 +8,10 @@
         android:layout_height="150dp"
         android:text="History"/>
 
+    <ListView
+        android:id="@+id/cartList"
+        android:background="@drawable/side"
+        android:layout_centerVertical="true"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"/>
 </RelativeLayout>

@@ -82,7 +82,7 @@ public class AddNewProductActivity extends AppCompatActivity {
                 startActivityForResult(camera_intent, PIC_ID);
             }
         });
- 
+
         generate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -91,7 +91,7 @@ public class AddNewProductActivity extends AppCompatActivity {
                 mdName = medicineName.getText().toString();
                 mdPrice = medicinePrice.getText().toString();
                 mdNotes = medicineNotes.getText().toString();
-                String text = "{\"category\":\"" + mdCategory + "\",\"name\":\""+ mdName +"\",\"price\":\""+ mdPrice +"\"}";
+                String text = "{\"category\":\"" + mdCategory + "\",\"name\":\""+ mdName +"\"}";
                 MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
                 if(mdName.equals("")){
