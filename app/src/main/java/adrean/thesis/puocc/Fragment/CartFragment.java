@@ -36,6 +36,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +46,7 @@ import adrean.thesis.puocc.CategoryDetailActivity;
 import adrean.thesis.puocc.CustomerMain;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
+import adrean.thesis.puocc.UploadReceiptConfirmationPayActivity;
 import adrean.thesis.puocc.phpConf;
 
 public class CartFragment extends Fragment{
@@ -85,38 +87,6 @@ public class CartFragment extends Fragment{
 
                 final HashMap<String,Object> data = (HashMap<String, Object>) adapterView.getItemAtPosition(i);
                 check = (String) data.get("isChecked");
-
-//                checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//                    @Override
-//                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//
-//                        if(b){
-//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-//                            data.put("isChecked","true");
-//                            listData.set(i,data);
-//                        }else{
-//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-//                            data.put("isChecked","false");
-//                            listData.set(i,data);
-//                        }
-//
-//                        if(check.equals("false")){
-//                          compoundButton = view.findViewById(R.id.rowCheckBox);
-//                            compoundButton.setChecked(true);
-//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-//                         data.put("isChecked","true");
-//                          listData.set(i,data);
-//                       }else if(check.equals("true")){
-//                            compoundButton = view.findViewById(R.id.rowCheckBox);
-//                            compoundButton.setChecked(false);
-//                            Toast.makeText(getContext(), "checked", Toast.LENGTH_SHORT).show();
-//                            data.put("isChecked","false");
-//                            listData.set(i,data);
-//                        }
-//
-//                    }
-//                });
-
                 if(check.equals("false")){
                     CheckBox check1 = view.findViewById(R.id.rowCheckBox);
                     check1.setChecked(true);
@@ -135,15 +105,21 @@ public class CartFragment extends Fragment{
             @Override
             public void onClick(View view) {
                 List<String> currCartID = new ArrayList<>();
+                List<Map<String,Object>> tempData = new ArrayList<>();
 
                 for(HashMap<String,Object> mapData : listData){
                     if(mapData.get("isChecked").equals("true")){
+                        tempData.add(mapData);
                         Log.d("CheckDataChecked", "" + mapData.get("CART_ID"));
                         String tempCurrCartID = (String) mapData.get("CART_ID");
                         currCartID.add(tempCurrCartID);
                     }
                 }
-                addOrder(currCartID);
+                Intent in = new Intent(getContext(), UploadReceiptConfirmationPayActivity.class);
+                in.putExtra("data", (Serializable) tempData);
+                startActivity(in);
+                Log.d("MapData", tempData.toString());
+//                addOrder(currCartID);
             }
         });
 
@@ -228,7 +204,7 @@ public class CartFragment extends Fragment{
                 medicine.put("CART_ID",cartId);
                 medicine.put("MED_NAME",medName);
                 medicine.put("CATEGORY",medCategory);
-                medicine.put("PRICE","Rp. " + medPrice);
+                medicine.put("PRICE",medPrice);
                 medicine.put("DESCRIPTION",medDesc);
                 medicine.put("QUANTITY",medQt);
                 medicine.put("MEDICINE_PICT",imgUri);

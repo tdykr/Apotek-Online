@@ -2,8 +2,8 @@ package adrean.thesis.puocc;
 
 public class phpConf {
     //192.168.43.53 hp
-    //192.168.1.7 wifi rumah
-    //10.107.214.68 sbucks benhil
+    //192.168.1.5 wifi rumah
+    //10.107.237.27 sbucks benhil
     private final static String ip = "192.168.1.5";
 
     public final static String URL_GET_ALL_MEDICINE_LIST = "http://"+ ip +"/apotek/getListMedicine.php";
