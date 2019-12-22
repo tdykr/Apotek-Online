@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +24,7 @@ import adrean.thesis.puocc.RequestHandler;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.widget.Button;
+import android.widget.Toast;
 
 import adrean.thesis.puocc.phpConf;
 
@@ -52,6 +54,26 @@ public class HomeFragment extends Fragment {
         mEditor = mPreferences.edit();
 
         listCategory = (ViewPager) view.findViewById(R.id.medCat);
+        CardView card1 = (CardView) view.findViewById(R.id.card1);
+
+        card1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                try{
+                    Intent sendIntent =new Intent("android.intent.action.MAIN");
+//                    sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
+                    sendIntent.putExtra("jid", "6281297444885@s.whatsapp.net"); //set nomor hp whatsapp
+                    sendIntent.putExtra(Intent.EXTRA_TEXT, "test");
+                    sendIntent.setAction(Intent.ACTION_SEND);
+                    sendIntent.setPackage("com.whatsapp");//buka whatsapp
+                    sendIntent.setType("text/plain");
+                    startActivity(sendIntent);
+                }catch(Exception e){
+                    Toast.makeText(getContext(),"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         uploadReceiptBtn.setOnClickListener(new View.OnClickListener() {
             @Override
