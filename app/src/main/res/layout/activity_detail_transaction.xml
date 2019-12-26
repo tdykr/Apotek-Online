@@ -9,22 +9,21 @@
     <RelativeLayout
         android:id="@+id/rel1"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
-        android:layout_margin="5dp">
+        android:layout_height="400dp">
 
         <ListView
             android:id="@+id/detailList"
             android:background="@drawable/side"
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="300dp"
             android:layout_marginTop="25dp"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"/>
 
         <Button
-            android:id="@+id/uploadReceipt"
-            android:layout_width="125dp"
-            android:layout_height="55dp"
+            android:id="@+id/uploadReceiptBtn"
+            android:layout_width="115dp"
+            android:layout_height="45dp"
             android:background="@drawable/button_shape"
             android:layout_centerHorizontal="true"
             android:layout_below="@id/detailList"
@@ -44,8 +43,19 @@
             android:id="@+id/imgBill"
             android:layout_width="175dp"
             android:layout_height="175dp"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"/>
+            android:layout_marginTop="5dp"
+            android:layout_centerHorizontal="true"/>
 
+        <Button
+            android:id="@+id/submitBill"
+            android:layout_width="115dp"
+            android:layout_height="45dp"
+            android:background="@drawable/button_shape"
+            android:layout_below="@id/imgBill"
+            android:text="Submit"
+            android:textColor="#ffff"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"/>
     </RelativeLayout>
+
 </RelativeLayout>

@@ -1,12 +1,18 @@
 package adrean.thesis.puocc.Fragment;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.CardView;
+import android.util.Base64;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +21,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,8 +89,8 @@ public class HomeFragment extends Fragment {
     private void getMedicineCategory(){
         JSONObject jsonObject = null;
         model = new ArrayList<>();
-
-        ArrayList<HashMap<String,String>> data = new ArrayList<>();
+        Context context = getContext();
+        ArrayList<HashMap<String,Object>> data = new ArrayList<>();
         try {
             jsonObject = new JSONObject(JSON_STRING);
             JSONArray result = jsonObject.getJSONArray("result");
@@ -92,13 +99,17 @@ public class HomeFragment extends Fragment {
                 JSONObject jo = result.getJSONObject(i);
                 String cat = jo.getString("CATEGORY");
                 String id = jo.getString("ID");
+                String catImg = jo.getString("CAT_IMG");
+                Bitmap bp = encodedStringImage(catImg);
 
-                HashMap<String,String> category = new HashMap<>();
+                Uri uri = getImageUri(context,bp);
+                HashMap<String,Object> category = new HashMap<>();
                 category.put("category",cat);
                 category.put("id",id);
+                category.put("image",uri);
 
                 data.add(category);
-                model.add(new Model(cat,id));
+                model.add(new Model(uri,cat,id));
             }
 
         } catch (JSONException e) {
@@ -131,6 +142,19 @@ public class HomeFragment extends Fragment {
             }
         });
 
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+    public Bitmap encodedStringImage(String imgString){
+        byte[] decodedString = Base64.decode(imgString, Base64.DEFAULT);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+
+        return decodedBitmap;
     }
 
     private void getJSON(){

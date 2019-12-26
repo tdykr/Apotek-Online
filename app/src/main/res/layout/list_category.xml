@@ -13,8 +13,13 @@
         android:layout_margin="8dp">
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:background="@color/transparent">
+            android:layout_height="300dp">
+
+            <ImageView
+                android:id="@+id/image"
+                android:scaleType="centerCrop"
+                android:layout_width="match_parent"
+                android:layout_height="200dp" />
 
             <TextView
                 android:id="@+id/category"

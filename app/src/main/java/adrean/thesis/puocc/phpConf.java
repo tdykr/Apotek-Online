@@ -22,5 +22,7 @@ public class phpConf {
     public final static String URL_UPDATE_CART_ORDER_STATUS_PAID = "http://"+ ip +"/apotek/updateCartOrderStatusPaid.php";
     public final static String URL_ADD_TRANSACTION = "http://"+ ip +"/apotek/addTransactionId.php";
     public final static String URL_GET_LIST_TRANSACTION = "http://"+ ip +"/apotek/getListTransaction.php";
+    public final static String URL_UPLOAD_BILL_TRANSACTION = "http://"+ ip +"/apotek/uploadBillTrxImg.php";
+
 
 }
