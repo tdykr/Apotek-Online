@@ -61,29 +61,30 @@ public class LoginActivity extends AppCompatActivity {
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mEditor = mPreferences.edit();
-
-        userEmail = mPreferences.getString("userEmail","");
-        userPass = mPreferences.getString("userPass","");
-
-        if(!userEmail.equals("") && !userPass.equals("")){
-            login();
-        }
+//
+//        userEmail = mPreferences.getString("userEmail","");
+//        userPass = mPreferences.getString("userPass","");
+//
+//        if(!userEmail.equals("") && !userPass.equals("") || !userEmail.isEmpty() && userPass.isEmpty()){
+//            login();
+//        }
 
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if(userEmail.equals("")){
-                    userEmail = email.getText().toString();
-                    mEditor.putString("userEmail",userEmail);
-                    mEditor.commit();
-                }
-
-                if(userPass.equals("")){
-                    userPass = pass.getText().toString();
-                    mEditor.putString("userPass",userPass);
-                    mEditor.commit();
-                }
+                userEmail = email.getText().toString();
+                userPass = pass.getText().toString();
+//                if(userEmail.equals("") || userEmail.isEmpty()){
+//                    userEmail = email.getText().toString();
+//                    mEditor.putString("userEmail",userEmail);
+//                    mEditor.commit();
+//                }
+//
+//                if(userPass.equals("") || userPass.isEmpty()){
+//                    userPass = pass.getText().toString();
+//                    mEditor.putString("userPass",userPass);
+//                    mEditor.commit();
+//                }
 
                 if(userEmail.isEmpty()){
                     email.setError("Email Can't be Empty");

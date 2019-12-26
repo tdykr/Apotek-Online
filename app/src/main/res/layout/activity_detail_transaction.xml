@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".DetailTransactionActivity">
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="500dp"
+        android:layout_margin="5dp">
+
+        <ListView
+            android:id="@+id/detailList"
+            android:background="@drawable/side"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"/>
+
+        <Button
+            android:id="@+id/uploadReceipt"
+            android:layout_width="125dp"
+            android:layout_height="55dp"
+            android:background="@drawable/button_shape"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/detailList"
+            android:layout_marginTop="10dp"
+            android:textColor="#ffff"
+            android:text="Upload Receipt"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/rel1">
+
+        <ImageView
+            android:id="@+id/imgBill"
+            android:layout_width="175dp"
+            android:layout_height="175dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"/>
+
+    </RelativeLayout>
+</RelativeLayout>

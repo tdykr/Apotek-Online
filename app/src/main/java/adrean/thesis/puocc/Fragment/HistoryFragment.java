@@ -2,6 +2,7 @@ package adrean.thesis.puocc.Fragment;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -28,15 +30,16 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import adrean.thesis.puocc.DetailTransactionActivity;
+import adrean.thesis.puocc.MedicineDetailActivity;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
 import adrean.thesis.puocc.phpConf;
 
-public class HistoryFragment extends Fragment {
+public class HistoryFragment extends Fragment implements ListView.OnItemClickListener {
 
-    String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,check;
-    Bitmap medPict;
-    ListView listViewCart;
+    String JSON_STRING;
+    ListView listViewTrx;
     ListAdapter adapter;
     ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     SharedPreferences mPreferences;
@@ -49,16 +52,17 @@ public class HistoryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
-        listViewCart = (ListView) view.findViewById(R.id.cartList);
+        listViewTrx = (ListView) view.findViewById(R.id.cartList);
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
 
-        getJSON();
+        listViewTrx.setOnItemClickListener(this);
+        getJSONTrans();
 
         return view;
     }
 
-    private void getListMedicine(){
-        listViewCart.setAdapter(null);
+    private void getListTransaction(){
+        listViewTrx.setAdapter(null);
         JSONObject jsonObject = null;
         Context context = getContext();
         try {
@@ -67,29 +71,13 @@ public class HistoryFragment extends Fragment {
 
             for(int i = 0; i<result.length(); i++){
                 JSONObject jo = result.getJSONObject(i);
-                cartId = jo.getString("CART_ID");
-                medName = jo.getString("MED_NAME");
-                medCategory = jo.getString("CATEGORY");
-                medPrice = jo.getString("PRICE");
-                medQt = jo.getString("QUANTITY");
-                medDesc = jo.getString("DESCRIPTION");
-                medPict = encodedStringImage(jo.getString("MEDICINE_PICT"));
+                String transId = jo.getString("ID");
 
-                Uri imgUri = getImageUri(context,medPict);
+                HashMap<String,Object> trx = new HashMap<>();
+                trx.put("NO",i+1);
+                trx.put("TRANS_ID","TRX-" + transId);
 
-                HashMap<String,Object> medicine = new HashMap<>();
-                medicine.put("CART_ID",cartId);
-                medicine.put("MED_NAME",medName);
-                medicine.put("CATEGORY",medCategory);
-                medicine.put("PRICE","Rp. " + medPrice);
-                medicine.put("DESCRIPTION",medDesc);
-                medicine.put("QUANTITY",medQt);
-                medicine.put("MEDICINE_PICT",imgUri);
-                medicine.put("isChecked","false");
-
-                Log.d("tag", String.valueOf(medicine));
-
-                listData.add(medicine);
+                listData.add(trx);
             }
 
         } catch (JSONException e) {
@@ -97,14 +85,14 @@ public class HistoryFragment extends Fragment {
         }
 
         adapter = new SimpleAdapter(
-                getContext(), listData, R.layout.list_history_item_customer,
-                new String[]{"MED_NAME","CATEGORY","MED_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
-                new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medName,R.id.medPrice, R.id.medQuantity, R.id.img});
+                getContext(), listData, R.layout.list_transaction_history,
+                new String[]{"NO","TRANS_ID"},
+                new int[]{R.id.no,R.id.transactionId});
 
-        listViewCart.setAdapter(adapter);
+        listViewTrx.setAdapter(adapter);
     }
 
-    private void getJSON(){
+    private void getJSONTrans(){
         class GetJSON extends AsyncTask<Void,Void,String> {
 
             ProgressDialog loading;
@@ -119,7 +107,7 @@ public class HistoryFragment extends Fragment {
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
-                getListMedicine();
+                getListTransaction();
             }
 
             @Override
@@ -128,7 +116,7 @@ public class HistoryFragment extends Fragment {
                 params.put("USER",mPreferences.getString("userName",""));
 
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendPostRequest(phpConf.URL_GET_LIST_HISTORY_CUST,params);
+                String s = rh.sendPostRequest(phpConf.URL_GET_LIST_TRANSACTION,params);
                 return s;
             }
         }
@@ -136,17 +124,12 @@ public class HistoryFragment extends Fragment {
         gj.execute();
     }
 
-    public Bitmap encodedStringImage(String imgString){
-        byte[] decodedString = Base64.decode(imgString, Base64.DEFAULT);
-        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
-
-        return decodedBitmap;
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        Intent intent = new Intent(this.getContext(), DetailTransactionActivity.class);
+        HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
+        String trxId = map.get("TRANS_ID");
+        intent.putExtra("TRANS_ID",trxId);
+        startActivity(intent);
     }
 }

@@ -1,12 +1,18 @@
 package adrean.thesis.puocc;
 
+import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
+import android.os.Environment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -21,6 +27,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.HashMap;
 
 import static java.lang.Integer.parseInt;
@@ -28,12 +37,18 @@ import static java.lang.Integer.parseInt;
 public class MedicineDetailActivity extends AppCompatActivity {
 
     private String id,medicineName,medicinePrice,medicineCategory,medicineQt,medicineDesc;
-    TextView medName,medCategory,medPrice,medDesc;
-    EditText qtVal;
-    String updatedQt;
-    ImageView qrCode,qtMin,qtAdd,mdImg;
-    Integer tempQt;
-    Button updateBtn;
+    private TextView medName,medCategory,medDesc;
+    private EditText qtVal,medPrice;
+    private String updatedQt,updatedPrice;
+    private OutputStream outputStream;
+    private ImageView qrCode,qtMin,qtAdd,mdImg;
+    private Integer tempQt;
+    private Button updateBtn,saveQrBtn;
+    private static final int REQUEST_EXTERNAL_STORAGE = 1;
+    private static String[] PERMISSIONS_STORAGE = {
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,11 +60,12 @@ public class MedicineDetailActivity extends AppCompatActivity {
         qtVal = (EditText) findViewById(R.id.qtVal);
         medName = (TextView) findViewById(R.id.medName);
         medCategory = (TextView) findViewById(R.id.medCategory);
-        medPrice = (TextView) findViewById(R.id.medPrice);
+        medPrice = (EditText) findViewById(R.id.medPrice);
         medDesc = (TextView) findViewById(R.id.medDesc);
         qrCode = (ImageView) findViewById(R.id.qrImg);
         mdImg = (ImageView) findViewById(R.id.medImg);
         updateBtn = (Button) findViewById(R.id.btnUpdate);
+        saveQrBtn = (Button) findViewById(R.id.saveQR);
 
         Intent intent  = getIntent();
         id = intent.getStringExtra("ID");
@@ -78,9 +94,53 @@ public class MedicineDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 updatedQt = qtVal.getText().toString();
+                updatedPrice = medPrice.getText().toString();
                 updateQuantity();
             }
         });
+
+        saveQrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Intent intent = new Intent(getApplicationContext(), ApotekerMain.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void saveImg(Bitmap bp) {
+        BitmapDrawable drawable = (BitmapDrawable) qrCode.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+
+        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/Pictures/QRObat");
+        dir.mkdirs();
+        File file = new File(dir, "QRImg-" + medName + ".jpg");
+
+        outputStream = null;
+        try {
+            outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100,outputStream);
+            outputStream.flush();
+            outputStream.close();
+            Toast.makeText(MedicineDetailActivity.this, "Image has been Saved", Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void verifyStoragePermissions(Activity activity) {
+        // Check if we have write permission
+        int permission = ActivityCompat.checkSelfPermission(activity, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+
+        if (permission != PackageManager.PERMISSION_GRANTED) {
+            // We don't have permission so prompt the user
+            ActivityCompat.requestPermissions(
+                    activity,
+                    PERMISSIONS_STORAGE,
+                    REQUEST_EXTERNAL_STORAGE
+            );
+        }
     }
 
     private void getMedicine(){
@@ -134,6 +194,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
                 HashMap<String,String> data = new HashMap<>();
                 data.put("ID",id);
                 data.put("QUANTITY",updatedQt);
+                data.put("PRICE",updatedPrice);
                 RequestHandler rh = new RequestHandler();
                 String s = rh.sendPostRequest(phpConf.URL_UPDATE_QT,data);
                 return s;

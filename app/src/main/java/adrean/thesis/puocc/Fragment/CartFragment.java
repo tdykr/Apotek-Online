@@ -41,6 +41,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import adrean.thesis.puocc.CategoryDetailActivity;
 import adrean.thesis.puocc.CustomerMain;
@@ -119,7 +120,7 @@ public class CartFragment extends Fragment{
                 in.putExtra("data", (Serializable) tempData);
                 startActivity(in);
                 Log.d("MapData", tempData.toString());
-//                addOrder(currCartID);
+                addOrder(currCartID);
             }
         });
 
@@ -165,12 +166,22 @@ public class CartFragment extends Fragment{
 
                 HashMap<String,String> params = new HashMap<>();
                 String res = "";
+                RequestHandler rh = new RequestHandler();
+
+                UUID uuid = UUID.randomUUID();
+                String id = uuid.toString().replace("-","").toUpperCase();
+
+                HashMap<String,String> param = new HashMap<>();
+                param.put("UUID",id);
+                param.put("USER",mPreferences.getString("userName",""));
+                res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
+
                 for(String cartData : cartID){
                     params.put("ID",cartData);
+                    params.put("USER",mPreferences.getString("userName",""));
+                    params.put("UUID",id);
 
-                    RequestHandler rh = new RequestHandler();
                     res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);
-
                 }
                 return res;
             }

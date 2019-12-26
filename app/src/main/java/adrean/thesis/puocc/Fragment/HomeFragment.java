@@ -46,7 +46,6 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
-        Button uploadReceiptBtn = (Button) view.findViewById(R.id.uploadReceipt);
 
         Intent in = getActivity().getIntent();
 
@@ -72,13 +71,6 @@ public class HomeFragment extends Fragment {
                 }catch(Exception e){
                     Toast.makeText(getContext(),"Error/n"+ e.toString(),Toast.LENGTH_SHORT).show();
                 }
-            }
-        });
-
-        uploadReceiptBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
             }
         });
 

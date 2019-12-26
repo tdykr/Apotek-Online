@@ -15,7 +15,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".UploadReceiptConfirmationPayActivity"></activity>
+        <activity android:name=".DetailTransactionActivity"></activity>
+        <activity android:name=".UploadReceiptConfirmationPayActivity" />
         <activity android:name=".PaymentConfirmationApotekerActivity" />
         <activity android:name=".TransactionActivity" />
         <activity android:name=".OrderMedicineActivity" />

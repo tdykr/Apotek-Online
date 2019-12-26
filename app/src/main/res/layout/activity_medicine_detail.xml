@@ -39,8 +39,9 @@
                     android:layout_marginStart="20dp"
                     android:layout_marginTop="10dp"/>
 
-                <TextView
+                <EditText
                     android:id="@+id/medPrice"
+                    style="@android:style/Widget.Holo.EditText"
                     android:layout_width="100dp"
                     android:layout_height="30dp"
                     android:layout_below="@id/medName"
@@ -101,7 +102,7 @@
                     android:layout_toRightOf="@id/qtVal"/>
 
                 <ImageView
-                    android:id="@+id/qrImg"
+                    android:id="@+id/medImg"
                     android:layout_centerVertical="true"
                     android:layout_centerHorizontal="true"
                     android:layout_below="@id/qtVal"
@@ -121,6 +122,7 @@
             android:background="@drawable/button_shape"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
+            android:textColor="#ffff"
             android:layout_below="@id/rel1"/>
 
     </RelativeLayout>
@@ -132,11 +134,22 @@
         android:layout_height="375dp">
 
         <ImageView
-            android:id="@+id/medImg"
+            android:id="@+id/qrImg"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
             android:layout_width="250dp"
             android:layout_height="250dp"/>
+
+        <Button
+            android:id="@+id/saveQR"
+            android:background="@drawable/button_shape"
+            android:text="Save QR"
+            android:layout_width="100dp"
+            android:layout_height="45dp"
+            android:layout_below="@id/qrImg"
+            android:textColor="#ffff"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"/>
     </RelativeLayout>
 
 </RelativeLayout>
