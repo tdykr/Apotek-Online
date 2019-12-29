@@ -100,6 +100,7 @@ public class HomeFragment extends Fragment {
                 String cat = jo.getString("CATEGORY");
                 String id = jo.getString("ID");
                 String catImg = jo.getString("CAT_IMG");
+                catImg.split("/");
                 Bitmap bp = encodedStringImage(catImg);
 
                 Uri uri = getImageUri(context,bp);

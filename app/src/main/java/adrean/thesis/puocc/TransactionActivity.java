@@ -29,7 +29,7 @@ import java.util.HashMap;
 public class TransactionActivity extends AppCompatActivity{
 
     private ListView listMed;
-    private String JSON_STRING, cartId;
+    private String JSON_STRING, trxId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +44,8 @@ public class TransactionActivity extends AppCompatActivity{
             public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l) {
 
                     HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
-                    cartId = map.get("CART_ID");
-                    updateTransactionPaid(cartId);
+                    trxId = map.get("ID");
+                    updateTransactionPaid(trxId);
                 }
             });
     }
@@ -60,24 +60,14 @@ public class TransactionActivity extends AppCompatActivity{
 
             for(int i = 0; i<result.length(); i++){
                 JSONObject jo = result.getJSONObject(i);
-                String id = jo.getString("CART_ID");
-                String category = jo.getString("CATEGORY");
-                String medName = jo.getString("MED_NAME");
-                String medPrice = jo.getString("PRICE");
+                String id = jo.getString("ID");
                 String createdBy = jo.getString("CREATED_BY");
-                String medQuantity = jo.getString("QUANTITY");
-                Bitmap medImg = encodedStringImage(jo.getString("MEDICINE_PICT"));
-
-                Uri imgUri = getImageUri(context,medImg);
+                String createdDate = jo.getString("CREATED_DT");
 
                 HashMap<String,Object> medicine = new HashMap<>();
-                medicine.put("CART_ID",id);
-                medicine.put("CATEGORY","Category : " + category);
-                medicine.put("MEDICINE_NAME",medName);
-                medicine.put("PRICE","Rp." + medPrice);
-                medicine.put("QUANTITY","Quantity : " + medQuantity);
+                medicine.put("ID","TRX-"+id);
                 medicine.put("CREATED_BY",createdBy);
-                medicine.put("MEDICINE_PICT",imgUri);
+                medicine.put("CREATED_DT",createdDate);
 
                 Log.d("tag", String.valueOf(medicine));
 
@@ -89,9 +79,9 @@ public class TransactionActivity extends AppCompatActivity{
         }
 
         ListAdapter adapter = new SimpleAdapter(
-                TransactionActivity.this, list, R.layout.list_medicine,
-                new String[]{"CATEGORY","MEDICINE_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
-                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.qt, R.id.img});
+                TransactionActivity.this, list, R.layout.list_transaction_admin,
+                new String[]{"ID","CREATED_BY","CREATED_DT"},
+                new int[]{R.id.id, R.id.createdBy, R.id.createdDate});
 
         listMed.setAdapter(adapter);
     }

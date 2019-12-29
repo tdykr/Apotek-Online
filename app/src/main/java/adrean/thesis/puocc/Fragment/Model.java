@@ -4,11 +4,11 @@ import android.net.Uri;
 
 public class Model {
 
-    private Uri image;
     private String category;
     private String id;
+    private Uri image;
 
-    public Model(Uri image,String category,String id){
+    public Model(Uri image, String category, String id){
         this.image = image;
         this.category = category;
         this.id = id;
