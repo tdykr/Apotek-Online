@@ -26,27 +26,30 @@
 
                 <TextView
                     android:id="@+id/medCategory"
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="30dp"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/medName"
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="30dp"
                     android:layout_below="@id/medCategory"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"/>
 
                 <EditText
                     android:id="@+id/medPrice"
                     style="@android:style/Widget.Holo.EditText"
-                    android:layout_width="100dp"
+                    android:layout_width="150dp"
                     android:layout_height="30dp"
                     android:layout_below="@id/medName"
                     android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"/>
+                    android:layout_marginTop="10dp"
+                    android:textSize="16sp"/>
 
                 <TextView
                     android:id="@+id/medDesc"
@@ -137,8 +140,8 @@
             android:id="@+id/qrImg"
             android:layout_centerVertical="true"
             android:layout_centerHorizontal="true"
-            android:layout_width="250dp"
-            android:layout_height="250dp"/>
+            android:layout_width="225dp"
+            android:layout_height="225dp"/>
 
         <Button
             android:id="@+id/saveQR"

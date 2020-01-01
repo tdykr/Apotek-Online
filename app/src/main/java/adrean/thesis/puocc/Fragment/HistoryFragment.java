@@ -72,10 +72,16 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
             for(int i = 0; i<result.length(); i++){
                 JSONObject jo = result.getJSONObject(i);
                 String transId = jo.getString("ID");
+                String status = jo.getString("STATUS");
+                String createdDt = jo.getString("DATE");
+                String amount = jo.getString("TOTAL_PRICE");
 
                 HashMap<String,Object> trx = new HashMap<>();
-                trx.put("NO",i+1);
+                trx.put("NO",i+1 + ". ");
                 trx.put("TRANS_ID","TRX-" + transId);
+                trx.put("STATUS","Transaction Status : " + status);
+                trx.put("DATE","Transaction Date : " + createdDt);
+                trx.put("AMOUNT","Total Price : " + amount);
 
                 listData.add(trx);
             }
@@ -86,8 +92,8 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
 
         adapter = new SimpleAdapter(
                 getContext(), listData, R.layout.list_transaction_history,
-                new String[]{"NO","TRANS_ID"},
-                new int[]{R.id.no,R.id.transactionId});
+                new String[]{"NO","TRANS_ID","STATUS","DATE","AMOUNT"},
+                new int[]{R.id.no,R.id.transactionId,R.id.trxStatus,R.id.trxDate,R.id.trxAmount});
 
         listViewTrx.setAdapter(adapter);
     }

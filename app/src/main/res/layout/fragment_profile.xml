@@ -69,7 +69,8 @@
                 android:layout_height="45dp"
                 android:layout_margin="10dp"
                 android:hint="Password"
-                android:textSize="16sp"/>
+                android:textSize="16sp"
+                android:inputType="textPassword"/>
 
             <EditText
                 android:id="@+id/newPassConf"
@@ -78,6 +79,7 @@
                 android:layout_height="45dp"
                 android:layout_marginLeft="10dp"
                 android:hint="Retype Password"
+                android:inputType="textPassword"
                 android:textSize="16sp"/>
 
             <Button

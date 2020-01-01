@@ -102,12 +102,16 @@ public class MedicineDetailActivity extends AppCompatActivity {
         saveQrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Intent intent = new Intent(getApplicationContext(), ApotekerMain.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                verifyStoragePermissions(MedicineDetailActivity.this);
+                BitmapDrawable drawable = (BitmapDrawable) qrCode.getDrawable();
+                Bitmap bp = drawable.getBitmap();
+
+                saveImg(bp);
             }
         });
     }
+
+
 
     private void saveImg(Bitmap bp) {
         BitmapDrawable drawable = (BitmapDrawable) qrCode.getDrawable();
@@ -123,9 +127,13 @@ public class MedicineDetailActivity extends AppCompatActivity {
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100,outputStream);
             outputStream.flush();
             outputStream.close();
+            final Intent intent = new Intent(getApplicationContext(), ApotekerMain.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             Toast.makeText(MedicineDetailActivity.this, "Image has been Saved", Toast.LENGTH_SHORT).show();
+            startActivity(intent);
         } catch (Exception e) {
             e.printStackTrace();
+            Toast.makeText(MedicineDetailActivity.this, "Failed to Save This Image!", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -186,7 +194,9 @@ public class MedicineDetailActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 Toast.makeText(MedicineDetailActivity.this, "Quantity Successfully Updated", Toast.LENGTH_SHORT).show();
-                finish();
+                Intent intent = new Intent(MedicineDetailActivity.this, ApotekerMain.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
 
             @Override

@@ -119,77 +119,77 @@ public class CartFragment extends Fragment{
                 Intent in = new Intent(getContext(), UploadReceiptConfirmationPayActivity.class);
                 in.putExtra("data", (Serializable) tempData);
                 startActivity(in);
-                Log.d("MapData", tempData.toString());
-                addOrder(currCartID);
+//                addOrder(currCartID);
             }
         });
 
         return view;
     }
 
-    public void addOrder(final List<String> cartID){
-
-        class addOrder extends AsyncTask<Void,Void,String> {
-
-            ProgressDialog loading;
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-
-                loading = ProgressDialog.show(getContext(),"Uploading Data...","Please Wait...",false,false);
-            }
-
-            @Override
-            protected void onPostExecute(final String s) {
-                super.onPostExecute(s);
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        loading.dismiss();
-                        Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
-                    }
-                }, 2000);
-                final Intent intent = new Intent(getContext(), CustomerMain.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(intent);
-                    }
-                }, 2000);
-            }
-
-            @Override
-            protected String doInBackground(Void... v) {
-
-                HashMap<String,String> params = new HashMap<>();
-                String res = "";
-                RequestHandler rh = new RequestHandler();
-
-                UUID uuid = UUID.randomUUID();
-                String id = uuid.toString().replace("-","").toUpperCase();
-
-                HashMap<String,String> param = new HashMap<>();
-                param.put("UUID",id);
-                param.put("USER",mPreferences.getString("userName",""));
-                res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
-
-                for(String cartData : cartID){
-                    params.put("ID",cartData);
-                    params.put("USER",mPreferences.getString("userName",""));
-                    params.put("UUID",id);
-
-                    res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);
-                }
-                return res;
-            }
-        }
-
-        addOrder add = new addOrder();
-        add.execute();
-    }
+//    public void addOrder(final List<String> cartID){
+//
+//        class addOrder extends AsyncTask<Void,Void,String> {
+//
+//            ProgressDialog loading;
+//
+//            @Override
+//            protected void onPreExecute() {
+//                super.onPreExecute();
+//
+//                loading = ProgressDialog.show(getContext(),"Uploading Data...","Please Wait...",false,false);
+//            }
+//
+//            @Override
+//            protected void onPostExecute(final String s) {
+//                super.onPostExecute(s);
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        loading.dismiss();
+//                        Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
+//                    }
+//                }, 2000);
+//                final Intent intent = new Intent(getContext(), CustomerMain.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+//
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        startActivity(intent);
+//                    }
+//                }, 2000);
+//            }
+//
+//            @Override
+//            protected String doInBackground(Void... v) {
+//
+//                HashMap<String,String> params = new HashMap<>();
+//                String res = "";
+//                RequestHandler rh = new RequestHandler();
+//
+//                UUID uuid = UUID.randomUUID();
+//                String id = uuid.toString().replace("-","").toUpperCase();
+//
+//                HashMap<String,String> param = new HashMap<>();
+//                param.put("UUID",id);
+//                param.put("USER",mPreferences.getString("userName",""));
+//                param.put("TOTAL_PRICE",);
+//                res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
+//
+//                for(String cartData : cartID){
+//                    params.put("ID",cartData);
+//                    params.put("USER",mPreferences.getString("userName",""));
+//                    params.put("UUID",id);
+//
+//                    res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);
+//                }
+//                return res;
+//            }
+//        }
+//
+//        addOrder add = new addOrder();
+//        add.execute();
+//    }
 
     private void getListMedicine(){
         listViewCart.setAdapter(null);

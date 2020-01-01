@@ -46,7 +46,6 @@ public class OrderMedicineActivity extends AppCompatActivity {
         ordPrice = (TextView) findViewById(R.id.confPrice);
         ordTotal = (TextView) findViewById(R.id.totalPrice);
         btnAddCart = (Button) findViewById(R.id.btnAddCart);
-        orderAmount = ordAmount.getText().toString();
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         ordAddress.setText(mPreferences.getString("userAddress",""));
@@ -65,6 +64,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
         btnAddCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                orderAmount = ordAmount.getText().toString();
                 if(Integer.parseInt(qtDb) >= Integer.parseInt(orderAmount)){
                     addCart();
                 }else{

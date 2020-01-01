@@ -30,8 +30,28 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/no"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp" />
+                android:layout_marginTop="5dp" />
+
+            <TextView
+                android:id="@+id/trxStatus"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/transactionId"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/trxDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/trxStatus"
+                android:layout_marginLeft="20dp"/>
+
+            <TextView
+                android:id="@+id/trxAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/trxDate"
+                android:layout_marginLeft="20dp"/>
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
