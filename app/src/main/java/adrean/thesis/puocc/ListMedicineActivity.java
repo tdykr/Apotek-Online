@@ -10,10 +10,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -33,20 +36,18 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
 
     private ListView listMed;
     private String JSON_STRING;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_medicine);
 
-        Button home = (Button) findViewById(R.id.home);
-        home.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent in = new Intent(ListMedicineActivity.this,ApotekerMain.class);
-                finish();
-            }
-        });
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Medicine List");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listMed = (ListView) findViewById(R.id.medList);
         getJSON();
@@ -74,10 +75,10 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
 
                 HashMap<String,Object> medicine = new HashMap<>();
                 medicine.put("ID",id);
-                medicine.put("CATEGORY","Category : " + category);
+                medicine.put("CATEGORY", category);
                 medicine.put("MEDICINE_NAME",medName);
                 medicine.put("PRICE","Rp." + medPrice);
-                medicine.put("QUANTITY","Quantity : " + medQuantity);
+                medicine.put("QUANTITY", medQuantity + "Pcs");
                 medicine.put("MEDICINE_PICT",imgUri);
 
                 Log.d("tag", String.valueOf(medicine));
@@ -150,16 +151,12 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
     }
 
     @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        ListMedicineActivity.super.onBackPressed();
-                    }
-                }).create().show();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

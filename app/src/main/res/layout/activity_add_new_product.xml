@@ -4,114 +4,92 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".AddNewProductActivity">
 
-    <ImageView
-        android:id="@+id/backBtn"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:background="@drawable/ic_arrow_back_black_24dp"/>
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <TextView
-        android:layout_width="35dp"
-        android:layout_height="20dp"
-        android:layout_below="@id/backBtn"
-        android:text="Home"
-        android:textSize="12sp"/>
-
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="5dp"
-        android:text="Add Medicine"
-        android:textSize="20sp"
-        android:textAlignment="center"
-        android:layout_centerHorizontal="true"/>
-    <RelativeLayout
-        android:id="@+id/rel1"
-        android:layout_width="350dp"
-        android:layout_height="475dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="75dp"
-        android:background="@drawable/side">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:layout_below="@id/toolbar"
+        android:weightSum="1">
 
         <Spinner
             android:id="@+id/medCategory"
-            android:layout_width="250dp"
-            android:layout_height="30dp"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"/>
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/medName"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@id/medCategory"
-            android:layout_centerHorizontal="true"
             android:layout_marginTop="10dp"
+            android:hint="@string/name_of_medicine"
+            android:singleLine="false"
             android:textSize="14sp"
-            android:hint="Name of Medicine"
-            android:singleLine="false" />
+            android:backgroundTint="@color/colorPrimaryDark"/>
 
-        <EditText
+        <android.support.design.widget.TextInputEditText
             android:id="@+id/medPrice"
-            android:layout_width="250dp"
+            android:layout_width="match_parent"
             android:layout_height="40dp"
-            android:layout_below="@id/medName"
-            android:layout_centerHorizontal="true"
-            android:textSize="14sp"
-            android:hint="Price"
-            android:layout_marginTop="10dp"/>
-
-        <EditText
-            android:id="@+id/medNotes"
-            android:layout_width="250dp"
-            android:layout_height="75dp"
-            android:layout_below="@id/medPrice"
-            android:layout_centerHorizontal="true"
-            android:textSize="14sp"
-            android:hint="Notes"
-            android:layout_marginTop="10dp"/>
-
-        <RelativeLayout
-            android:id="@+id/rel2"
             android:layout_marginTop="10dp"
-            android:layout_width="250dp"
-            android:layout_height="150dp"
-            android:layout_below="@id/medNotes"
-            android:layout_centerHorizontal="true">
+            android:hint="@string/price"
+            android:textSize="14sp"
+            android:backgroundTint="@color/colorPrimaryDark"/>
 
-            <Button
-                android:id="@+id/btnPict"
-                android:layout_width="100dp"
-                android:layout_height="45dp"
-                android:textSize="12sp"
-                android:background="@drawable/button_shape"
-                android:layout_centerVertical="true"
-                android:text="Set Picture"/>
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/medNotes"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_marginTop="10dp"
+            android:hint="@string/notes"
+            android:textSize="14sp"
+            android:backgroundTint="@color/colorPrimaryDark"/>
 
-            <ImageView
-                android:id="@+id/medicinePict"
-                android:layout_width="125dp"
-                android:layout_height="125dp"
-                android:layout_marginLeft="5dp"
-                android:layout_centerVertical="true"
-                android:background="#009eb7"
-                android:layout_toRightOf="@id/btnPict"/>
-
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/medicinePict"
+            android:layout_width="125dp"
+            android:layout_height="125dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="20dp"
+            android:background="@color/colorAccent"
+            tools:ignore="ContentDescription" />
 
         <Button
-            android:id="@+id/generateBtn"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:layout_below="@id/rel2"
-            android:background="@drawable/button_shape"
-            android:layout_centerHorizontal="true"
+            android:id="@+id/btnPict"
+            style="@style/Button.Neutral"
+            android:layout_width="125dp"
+            android:layout_height="40dp"
+            android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:text="Submit"
-            android:textSize="12sp"/>
+            android:background="@drawable/btn_neutral"
+            android:text="@string/set_picture"
+            android:textSize="12sp" />
 
-    </RelativeLayout>
+    </LinearLayout>
 
+    <Button
+        android:id="@+id/generateBtn"
+        style="@style/Button.Positive"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="16dp"
+        android:layout_gravity="bottom"
+        android:layout_marginTop="10dp"
+        android:background="@drawable/btn_positive"
+        android:text="@string/submit"
+        android:textSize="12sp"
+        android:layout_alignParentBottom="true"/>
 </RelativeLayout>

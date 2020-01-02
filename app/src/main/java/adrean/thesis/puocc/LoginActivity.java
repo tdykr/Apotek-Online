@@ -39,25 +39,6 @@ public class LoginActivity extends AppCompatActivity {
         final TextView pass = (TextView) findViewById(R.id.userPass);
 
         Button loginBtn = (Button) findViewById(R.id.btnLogin);
-        Button showhideShowPass = (Button) findViewById(R.id.showPassword);
-
-        showhideShowPass.setOnTouchListener(new View.OnTouchListener() {
-            public boolean onTouch(View v, MotionEvent event) {
-
-                switch ( event.getAction() ) {
-
-                    case MotionEvent.ACTION_UP:
-                        pass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                        break;
-
-                    case MotionEvent.ACTION_DOWN:
-                        pass.setInputType(InputType.TYPE_CLASS_TEXT);
-                        break;
-
-                }
-                return true;
-            }
-        });
 
         mPreferences = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         mEditor = mPreferences.edit();
@@ -126,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
                 super.onPostExecute(s);
 
                 loading.dismiss();
-                Toast.makeText(LoginActivity.this,s,Toast.LENGTH_LONG).show();
                 try {
+                    Log.d("Json Login", s);
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray data = jsonObject.getJSONArray("result");
 
@@ -146,36 +127,26 @@ public class LoginActivity extends AppCompatActivity {
                     if(response.equals("1") && userRole.equals("admin")){
                         Intent apotekerAct = new Intent(LoginActivity.this, ApotekerMain.class);
                         mEditor.putString("userId",userId);
-                        mEditor.commit();
                         mEditor.putString("userName",userName);
-                        mEditor.commit();
                         mEditor.putString("userEmail",userEmail);
-                        mEditor.commit();
                         mEditor.putString("userAddress",userAddress);
-                        mEditor.commit();
                         mEditor.putString("userPhone",userPhone);
                         mEditor.commit();
 //                        apotekerAct.putExtra("userData",userData);
                         startActivity(apotekerAct);
-                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+
                     }else if(response.equals("1") && userRole.equals("user")){
                         Intent customerAct = new Intent(LoginActivity.this, CustomerMain.class);
                         mEditor.putString("userId",userId);
-                        mEditor.commit();
                         mEditor.putString("userName",userName);
-                        mEditor.commit();
                         mEditor.putString("userEmail",userEmail);
-                        mEditor.commit();
                         mEditor.putString("userAddress",userAddress);
-                        mEditor.commit();
                         mEditor.putString("userPhone",userPhone);
                         mEditor.commit();
 //                        customerAct.putExtra("userData",userData);
                         startActivity(customerAct);
-                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
-                    }else{
-                        Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
                     }
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
