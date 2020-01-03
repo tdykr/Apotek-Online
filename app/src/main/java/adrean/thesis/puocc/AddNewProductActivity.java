@@ -1,15 +1,20 @@
 package adrean.thesis.puocc;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -45,6 +50,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import static android.Manifest.permission.CAMERA;
+
 public class AddNewProductActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
@@ -79,9 +86,10 @@ public class AddNewProductActivity extends AppCompatActivity {
         takePict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                startActivityForResult(camera_intent, PIC_ID);
+                if(isCameraPermissionGranted()){
+                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(camera_intent, PIC_ID);
+                }else Toast.makeText(AddNewProductActivity.this, "Please allow camera permission!", Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -252,5 +260,18 @@ public class AddNewProductActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public  boolean isCameraPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{CAMERA}, 1);                return false;
+            }
+        }
+        else {
+            return true;
+        }
     }
 }

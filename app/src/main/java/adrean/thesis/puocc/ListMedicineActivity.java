@@ -1,16 +1,20 @@
 package adrean.thesis.puocc;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +53,8 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
         listMed = (ListView) findViewById(R.id.medList);
         getJSON();
         listMed.setOnItemClickListener(this);
@@ -78,7 +84,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                 medicine.put("CATEGORY", category);
                 medicine.put("MEDICINE_NAME",medName);
                 medicine.put("PRICE","Rp." + medPrice);
-                medicine.put("QUANTITY", medQuantity + "Pcs");
+                medicine.put("QUANTITY", medQuantity + " Pcs");
                 medicine.put("MEDICINE_PICT",imgUri);
 
                 Log.d("tag", String.valueOf(medicine));
@@ -159,4 +165,5 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
         }
         return super.onOptionsItemSelected(item);
     }
+
 }
