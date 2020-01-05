@@ -19,7 +19,7 @@ public class UserPreference {
 
     private final SharedPreferences preferences;
 
-    UserPreference(Context context) {
+    public UserPreference(Context context) {
         preferences = context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE);
     }
 
@@ -38,7 +38,7 @@ public class UserPreference {
         editor.apply();
     }
 
-    UserModel getUser() {
+    public UserModel getUser() {
         UserModel model = new UserModel();
         model.setUserId(preferences.getString(USER_ID, ""));
         model.setUserPassword(preferences.getString(USER_PASSWORD, ""));

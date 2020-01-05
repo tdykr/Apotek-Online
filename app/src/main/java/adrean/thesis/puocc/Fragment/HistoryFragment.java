@@ -34,15 +34,18 @@ import adrean.thesis.puocc.DetailTransactionActivity;
 import adrean.thesis.puocc.MedicineDetailActivity;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
+import adrean.thesis.puocc.UserModel;
+import adrean.thesis.puocc.UserPreference;
 import adrean.thesis.puocc.phpConf;
 
 public class HistoryFragment extends Fragment implements ListView.OnItemClickListener {
 
-    String JSON_STRING;
+    String JSON_STRING,billImg = "";
     ListView listViewTrx;
     ListAdapter adapter;
     ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
-    SharedPreferences mPreferences;
+    private UserModel userModel;
+    private UserPreference mUserPreference;
 
     public HistoryFragment(){
 
@@ -53,7 +56,8 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_history, container, false);
         listViewTrx = (ListView) view.findViewById(R.id.cartList);
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        mUserPreference = new UserPreference(getContext());
+        userModel = mUserPreference.getUser();
 
         listViewTrx.setOnItemClickListener(this);
         getJSONTrans();
@@ -75,6 +79,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
                 String status = jo.getString("STATUS");
                 String createdDt = jo.getString("DATE");
                 String amount = jo.getString("TOTAL_PRICE");
+                billImg = jo.getString("TF_IMG");
 
                 HashMap<String,Object> trx = new HashMap<>();
                 trx.put("NO",i+1 + ". ");
@@ -119,7 +124,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("USER",mPreferences.getString("userName",""));
+                params.put("USER",userModel.getUserName());
 
                 RequestHandler rh = new RequestHandler();
                 String s = rh.sendPostRequest(phpConf.URL_GET_LIST_TRANSACTION,params);
@@ -130,12 +135,29 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
         gj.execute();
     }
 
+    public Bitmap encodedStringImage(String imgString){
+        byte[] decodedString = Base64.decode(imgString, Base64.DEFAULT);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+
+        return decodedBitmap;
+    }
+
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(this.getContext(), DetailTransactionActivity.class);
         HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
         String trxId = map.get("TRANS_ID");
         intent.putExtra("TRANS_ID",trxId);
+        if(billImg != null) {
+            intent.putExtra("BILL_IMG", billImg);
+        }
         startActivity(intent);
     }
 }
