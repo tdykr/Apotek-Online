@@ -1,159 +1,235 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/gray4"
+    android:orientation="vertical"
     tools:context=".MedicineDetailActivity">
 
     <RelativeLayout
-        android:orientation="vertical"
-        android:id="@+id/rel"
         android:layout_width="match_parent"
-        android:layout_height="305dp"
-        android:background="#F9FF">
+        android:layout_height="wrap_content">
 
-        <RelativeLayout
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimaryDark"
+            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+        <LinearLayout
+            android:id="@+id/ll_first"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/toolbar"
+            android:layout_centerHorizontal="true"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/medImg"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_margin="16dp"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/rel1"
             android:layout_width="match_parent"
-            android:layout_height="255dp">
+            android:layout_height="wrap_content"
+            android:layout_below="@id/ll_first"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorWhite"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="20dp">
 
-            <RelativeLayout
-                android:id="@+id/relLeft"
-                android:layout_width="175dp"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/category" />
 
                 <TextView
                     android:id="@+id/medCategory"
-                    android:layout_width="150dp"
-                    android:layout_height="30dp"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="16sp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="medCategory" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/name" />
 
                 <TextView
                     android:id="@+id/medName"
-                    android:layout_width="150dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/medCategory"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:textSize="16sp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="medName" />
+            </LinearLayout>
 
-                <EditText
-                    android:id="@+id/medPrice"
-                    style="@android:style/Widget.Holo.EditText"
-                    android:layout_width="150dp"
-                    android:layout_height="30dp"
-                    android:layout_below="@id/medName"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:inputType="numberDecimal"
-                    android:textSize="16sp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/description" />
 
                 <TextView
                     android:id="@+id/medDesc"
-                    android:layout_below="@id/medPrice"
-                    android:layout_marginStart="20dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="150dp"
-                    android:layout_height="100dp"/>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:text="medDescription" />
+            </LinearLayout>
 
-            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <RelativeLayout
-                android:layout_marginStart="10dp"
-                android:layout_width="175dp"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/relLeft"
-                android:layout_marginTop="15dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="20dp"
+                    android:layout_weight="1"
+                    android:text="@string/price" />
+
+                <EditText
+                    android:id="@+id/medPrice"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:hint="@string/price"
+                    android:inputType="numberDecimal"
+                    android:singleLine="false"
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="Autofill" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/txt"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="70dp"
+                    android:layout_width="0dp"
                     android:layout_height="20dp"
-                    android:text="Quantity"/>
+                    android:layout_marginTop="10dp"
+                    android:layout_weight="1"
+                    android:text="@string/quantity" />
 
                 <ImageView
                     android:id="@+id/qtMin"
-                    android:background="@drawable/ic_indeterminate_check_box_black_24dp"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@id/txt"/>
+                    android:layout_weight="0.01"
+                    android:background="@drawable/ic_minus"
+                    tools:ignore="ContentDescription" />
 
                 <EditText
                     android:id="@+id/qtVal"
-                    style="@android:style/Widget.Holo.EditText"
-                    android:layout_width="35dp"
+                    android:layout_width="0dp"
                     android:layout_height="35dp"
-                    android:layout_below="@+id/txt"
                     android:layout_marginTop="10dp"
-                    android:layout_toRightOf="@id/qtMin"
+                    android:layout_weight="0.64"
+                    android:gravity="center"
                     android:inputType="number"
                     android:singleLine="false"
-                    android:textSize="12sp" />
+                    android:textSize="15sp"
+                    android:textStyle="bold"
+                    tools:ignore="Autofill,LabelFor" />
 
                 <ImageView
                     android:id="@+id/qtAdd"
-                    android:background="@drawable/ic_add_box_black_24dp"
                     android:layout_width="35dp"
                     android:layout_height="35dp"
                     android:layout_marginTop="10dp"
-                    android:layout_below="@+id/txt"
-                    android:layout_toRightOf="@id/qtVal"/>
+                    android:layout_weight="0.01"
+                    android:background="@drawable/ic_plus"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
 
-                <ImageView
-                    android:id="@+id/medImg"
-                    android:layout_centerVertical="true"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@id/qtVal"
-                    android:layout_marginTop="10dp"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"/>
+        </LinearLayout>
 
-            </RelativeLayout>
 
-        </RelativeLayout>
+        <LinearLayout
+            android:id="@+id/ll_qr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rel1"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorWhite"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <ImageView
+                android:id="@+id/qrImg"
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                tools:ignore="ContentDescription" />
+
+            <Button
+                android:id="@+id/saveQR"
+                style="@style/Button.Neutral"
+                android:layout_width="200dp"
+                android:layout_height="40dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:text="@string/save_qr" />
+        </LinearLayout>
+
 
         <Button
             android:id="@+id/btnUpdate"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:text="Update"
-            android:background="@drawable/button_shape"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:textColor="#ffff"
-            android:layout_below="@id/rel1"/>
+            style="@style/Button.Positive"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:layout_below="@id/ll_qr"
+            android:layout_margin="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/btn_positive"
+            android:text="@string/update"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rel2"
-        android:layout_below="@id/rel"
-        android:layout_width="match_parent"
-        android:layout_height="375dp">
-
-        <ImageView
-            android:id="@+id/qrImg"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:layout_width="225dp"
-            android:layout_height="225dp"/>
-
-        <Button
-            android:id="@+id/saveQR"
-            android:background="@drawable/button_shape"
-            android:text="Save QR"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:layout_below="@id/qrImg"
-            android:textColor="#ffff"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"/>
-    </RelativeLayout>
-
-</RelativeLayout>
+</ScrollView>

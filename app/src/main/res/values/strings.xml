@@ -17,12 +17,18 @@
     <string name="login">Login</string>
     <string name="new_user_register_now">New user ? Register now</string>
     <string name="name_of_medicine">Name of Medicine</string>
-    <string name="price">Price</string>
     <string name="notes">Notes</string>
     <string name="submit">Submit</string>
     <string name="set_picture">Set Picture</string>
     <string name="apotek_taman_sari">Apotek Taman Sari</string>
     <string name="logout">Logout</string>
     <string name="new_product">New Product</string>
+    <string name="quantity">Quantity</string>
+    <string name="update">Update</string>
+    <string name="save_qr">Save QR</string>
+    <string name="price">Price (Rp)</string>
+    <string name="category">Category</string>
+    <string name="name">Name</string>
+    <string name="description">Description</string>
 
 </resources>
