@@ -33,6 +33,9 @@ import java.util.HashMap;
 
 import adrean.thesis.puocc.Fragment.HomeFragment;
 
+import static android.view.View.INVISIBLE;
+import static android.view.View.VISIBLE;
+
 public class DetailTransactionActivity extends AppCompatActivity {
 
     private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr;
@@ -41,7 +44,8 @@ public class DetailTransactionActivity extends AppCompatActivity {
     private ListAdapter adapter;
     private Button uploadBillBtn,submitBillBtn;
     private ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
-    private SharedPreferences mPreferences;
+    private UserModel userModel;
+    private UserPreference mUserPreference;
     private Uri selectedImage;
     private Bitmap bitmap;
     private ImageView targetImage;
@@ -56,9 +60,12 @@ public class DetailTransactionActivity extends AppCompatActivity {
         targetImage = (ImageView) findViewById(R.id.imgBill);
         Intent in = getIntent();
         trxId = in.getStringExtra("TRANS_ID");
+        String billImg = in.getStringExtra("BILL_IMG");
         trxId = trxId.replace("TRX-","");
         listViewCart = (ListView) findViewById(R.id.detailList);
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+
+        mUserPreference = new UserPreference(this);
+        userModel = mUserPreference.getUser();
 
         getJSON();
 
@@ -71,7 +78,6 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
         });
 
-
         submitBillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +89,16 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 }
             }
         });
+
+        if(billImg == null){
+            submitBillBtn.setVisibility(INVISIBLE);
+            uploadBillBtn.setVisibility(INVISIBLE);
+            Bitmap imgBillBp = encodedStringImage(billImg);
+            targetImage.setImageBitmap(imgBillBp);
+        }else{
+            submitBillBtn.setVisibility(VISIBLE);
+            uploadBillBtn.setVisibility(VISIBLE);
+        }
     }
 
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
@@ -167,7 +183,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("USER",mPreferences.getString("userName",""));
+                params.put("USER",userModel.getUserName());
                 params.put("TRX_ID",trxId);
 
                 RequestHandler rh = new RequestHandler();
@@ -197,6 +213,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 Intent intent = new Intent(DetailTransactionActivity.this, CustomerMain.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
             }
 
             @Override
