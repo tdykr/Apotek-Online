@@ -48,6 +48,8 @@ import adrean.thesis.puocc.CustomerMain;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
 import adrean.thesis.puocc.UploadReceiptConfirmationPayActivity;
+import adrean.thesis.puocc.UserModel;
+import adrean.thesis.puocc.UserPreference;
 import adrean.thesis.puocc.phpConf;
 
 public class CartFragment extends Fragment{
@@ -56,7 +58,9 @@ public class CartFragment extends Fragment{
 
     }
 
-    SharedPreferences mPreferences;
+
+    private UserModel userModel;
+    private UserPreference mUserPreference;
     TextView id, medNameTv;
     String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,check;
     Bitmap medPict;
@@ -73,7 +77,8 @@ public class CartFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         view1 = inflater.inflate(R.layout.list_cart,container,false);
 
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        mUserPreference = new UserPreference(getContext());
+        userModel = mUserPreference.getUser();
         listViewCart = (ListView) view.findViewById(R.id.cartList);
         id = (TextView) view.findViewById(R.id.medCategory);
         btnSubmitCart = (Button) view.findViewById(R.id.btnSubmitCart);
@@ -125,71 +130,6 @@ public class CartFragment extends Fragment{
 
         return view;
     }
-
-//    public void addOrder(final List<String> cartID){
-//
-//        class addOrder extends AsyncTask<Void,Void,String> {
-//
-//            ProgressDialog loading;
-//
-//            @Override
-//            protected void onPreExecute() {
-//                super.onPreExecute();
-//
-//                loading = ProgressDialog.show(getContext(),"Uploading Data...","Please Wait...",false,false);
-//            }
-//
-//            @Override
-//            protected void onPostExecute(final String s) {
-//                super.onPostExecute(s);
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        loading.dismiss();
-//                        Toast.makeText(getContext(),s,Toast.LENGTH_LONG).show();
-//                    }
-//                }, 2000);
-//                final Intent intent = new Intent(getContext(), CustomerMain.class);
-//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        startActivity(intent);
-//                    }
-//                }, 2000);
-//            }
-//
-//            @Override
-//            protected String doInBackground(Void... v) {
-//
-//                HashMap<String,String> params = new HashMap<>();
-//                String res = "";
-//                RequestHandler rh = new RequestHandler();
-//
-//                UUID uuid = UUID.randomUUID();
-//                String id = uuid.toString().replace("-","").toUpperCase();
-//
-//                HashMap<String,String> param = new HashMap<>();
-//                param.put("UUID",id);
-//                param.put("USER",mPreferences.getString("userName",""));
-//                param.put("TOTAL_PRICE",);
-//                res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
-//
-//                for(String cartData : cartID){
-//                    params.put("ID",cartData);
-//                    params.put("USER",mPreferences.getString("userName",""));
-//                    params.put("UUID",id);
-//
-//                    res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);
-//                }
-//                return res;
-//            }
-//        }
-//
-//        addOrder add = new addOrder();
-//        add.execute();
-//    }
 
     private void getListMedicine(){
         listViewCart.setAdapter(null);
@@ -259,7 +199,7 @@ public class CartFragment extends Fragment{
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("USER",mPreferences.getString("userName",""));
+                params.put("USER",userModel.getUserName());
 
                 RequestHandler rh = new RequestHandler();
                 String s = rh.sendPostRequest(phpConf.URL_GET_CART,params);
