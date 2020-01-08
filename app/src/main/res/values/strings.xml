@@ -12,8 +12,6 @@
     <string name="userAddress">adrean.thesis.puocc.Fragment.userAddress</string>
     <string name="userId">adrean.thesis.puocc.Fragment.userId</string>
     <string name="apotek_tamansari">Apotek Tamansari</string>
-    <string name="password">Password</string>
-    <string name="email">Email</string>
     <string name="login">Login</string>
     <string name="new_user_register_now">New user ? Register now</string>
     <string name="name_of_medicine">Name of Medicine</string>
@@ -30,5 +28,15 @@
     <string name="category">Category</string>
     <string name="name">Name</string>
     <string name="description">Description</string>
+    <string name="filter">Filter</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="phone_number">Phone Number</string>
+    <string name="address">Address</string>
+    <string name="password">Password</string>
+    <string name="re_type_password">Re-Type Password</string>
+    <string name="register">Register</string>
+    <string name="have_a_prescription">Have a Prescription ?\n Chat with our Doctor here!</string>
+    <string name="medicine_category">Medicine Category</string>
 
 </resources>

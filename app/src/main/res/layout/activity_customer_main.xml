@@ -8,24 +8,22 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <!-- Appbar -->
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/AppTheme.AppBarOverlay"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
-        <!-- Toolbar -->
-        <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="65dp"
-            android:background="@color/trans" />
-
-    </android.support.design.widget.AppBarLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_pharmacy_white"
+            tools:ignore="ContentDescription" />
+    </android.support.v7.widget.Toolbar>
 
     <!-- Fragments Container -->
 
@@ -36,12 +34,13 @@
         app:layout_constraintBottom_toTopOf="@+id/navigation"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBarLayout" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
 
     <!-- Bottom Navigation View -->
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
+        android:backgroundTint="@color/colorWhite"
         android:layout_width="0dp"
         android:layout_height="65dp"
         android:layout_marginEnd="0dp"

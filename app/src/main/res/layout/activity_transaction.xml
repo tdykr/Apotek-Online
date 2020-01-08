@@ -1,53 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".TransactionActivity">
 
-    <TextView
-        android:id="@+id/text"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:text="Transaction List"
-        android:textSize="16sp"
-        android:layout_margin="10dp"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <RelativeLayout
-        android:layout_below="@id/text"
-        android:id="@+id/rel"
-        android:layout_margin="10dp"
+
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
         <Spinner
             android:id="@+id/trxCategory"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
             android:layout_margin="10dp"
+            android:layout_gravity="center"
             android:backgroundTint="@color/colorPrimaryDark"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <Button
             android:id="@+id/btnFilter"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="40dp"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/trxCategory"
-            android:textColor="#ffff"
-            android:background="@drawable/button_shape"
-            android:text="Filter"
-            android:layout_marginBottom="5dp"/>
+            android:layout_weight="0.4"
+            android:layout_gravity="center"
+            style="@style/Button.Positive"
+            android:text="@string/filter" />
+    </LinearLayout>
 
-        <ListView
-            android:id="@+id/medList"
-            android:background="@drawable/side"
-            android:layout_below="@+id/btnFilter"
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="450dp"/>
+    <ListView
+        android:id="@+id/medList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
-    </RelativeLayout>
-
-</RelativeLayout>
+</LinearLayout>

@@ -4,7 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
+    android:padding="16dp"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -21,10 +21,19 @@
             <TextView
                 android:id="@+id/prescription"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:text="Have some Prescription ?"/>
+                android:layout_height="wrap_content"
+                android:padding="5dp"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="@string/have_a_prescription"/>
+
         </android.support.v7.widget.CardView>
+
+        <ImageView
+            android:layout_below="@id/card1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_pharmacy_illustration"/>
 
         <!--<android.support.v7.widget.CardView
             android:layout_below="@id/card1"
@@ -47,7 +56,9 @@
         android:id="@+id/txt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Medicine Category"
+        android:text="@string/medicine_category"
+        android:textColor="@color/colorDarkGreen"
+        android:layout_marginBottom="10dp"
         android:textSize="20sp"
         android:textStyle="bold"/>
 

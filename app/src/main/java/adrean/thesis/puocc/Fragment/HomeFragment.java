@@ -69,7 +69,7 @@ public class HomeFragment extends Fragment {
                 try{
                     Intent sendIntent =new Intent("android.intent.action.MAIN");
 //                    sendIntent.setComponent(new ComponentName("com.whatsapp", "com.whatsapp.Conversation"));
-                    sendIntent.putExtra("jid", "6281297444885@s.whatsapp.net"); //set nomor hp whatsapp
+                    sendIntent.putExtra("jid", "+6281297444885@s.whatsapp.net"); //set nomor hp whatsapp
                     sendIntent.putExtra(Intent.EXTRA_TEXT, "test");
                     sendIntent.setAction(Intent.ACTION_SEND);
                     sendIntent.setPackage("com.whatsapp");//buka whatsapp

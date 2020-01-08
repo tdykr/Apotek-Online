@@ -57,7 +57,7 @@ public class ApotekerMain extends AppCompatActivity {
                     Intent in = new Intent(ApotekerMain.this,ListMedicineActivity.class);
                     startActivity(in);
                 }else{
-                    Toast.makeText(ApotekerMain.this, "Please allow permisiion for storage!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(ApotekerMain.this, "Please allow permission for storage!", Toast.LENGTH_SHORT).show();
                 }
 
             }
