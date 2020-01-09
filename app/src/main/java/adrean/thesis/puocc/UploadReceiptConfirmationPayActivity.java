@@ -25,9 +25,12 @@ import static java.security.AccessController.getContext;
 
 public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
 
-    SharedPreferences mPreferences;
+
     int totalPrice = 0;
     List<String> listCartId = new ArrayList<>();
+//    UserPreference mUserPreference;
+//    UserModel userModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,7 +43,8 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
         Intent in = getIntent();
         List<Map<String,String>> data = (List<Map<String, String>>) in.getSerializableExtra("data");
 
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+//        mUserPreference = new UserPreference(this);
+//        userModel = mUserPreference.getUser();
 
         String totalMedicine = "";
 
@@ -112,13 +116,13 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
 
                 HashMap<String,String> param = new HashMap<>();
                 param.put("UUID",id);
-                param.put("USER",mPreferences.getString("userName",""));
+//                param.put("USER",userModel.getUserName());
                 param.put("TOTAL_PRICE",totPrice);
                 res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
 
                 for(String cartData : cartID){
                     params.put("ID",cartData);
-                    params.put("USER",mPreferences.getString("userName",""));
+//                    params.put("USER",userModel.getUserName());
                     params.put("UUID",id);
 
                     res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);

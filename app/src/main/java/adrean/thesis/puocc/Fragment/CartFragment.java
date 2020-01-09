@@ -58,8 +58,6 @@ public class CartFragment extends Fragment{
 
     }
 
-//    private UserModel userModel;
-//    private UserPreference mUserPreference;
     TextView id, medNameTv;
     String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,check;
     Bitmap medPict;
@@ -69,6 +67,8 @@ public class CartFragment extends Fragment{
     ListAdapter adapter;
     ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     View view1;
+//    UserPreference mUserPreferences;
+//    UserModel userModel;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,8 +76,9 @@ public class CartFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         view1 = inflater.inflate(R.layout.list_cart,container,false);
 
-//        mUserPreference = new UserPreference(getContext());
-//        userModel = mUserPreference.getUser();
+//        mUserPreferences = new UserPreference(getContext());
+//        userModel = mUserPreferences.getUser();
+
         listViewCart = (ListView) view.findViewById(R.id.cartList);
         id = (TextView) view.findViewById(R.id.medCategory);
         btnSubmitCart = (Button) view.findViewById(R.id.btnSubmitCart);
