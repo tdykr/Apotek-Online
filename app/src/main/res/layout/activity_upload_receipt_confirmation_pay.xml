@@ -28,17 +28,34 @@
        <ListView
            android:id="@+id/list"
            android:layout_width="match_parent"
-           android:layout_height="300dp"
+           android:layout_height="250dp"
            android:layout_below="@+id/txt"
            android:layout_margin="10dp"/>
 
        <TextView
-           android:id="@+id/text"
+           android:id="@+id/custName"
            android:layout_below="@id/list"
-           android:layout_width="150dp"
+           android:layout_width="250dp"
            android:layout_height="30dp"
            android:layout_marginLeft="10dp"
            android:textSize="16sp"/>
+
+       <TextView
+           android:id="@+id/totalPrice"
+           android:layout_below="@id/custName"
+           android:layout_width="250dp"
+           android:layout_height="30dp"
+           android:layout_marginLeft="10dp"
+           android:textSize="16sp"/>
+
+       <TextView
+           android:id="@+id/address"
+           android:layout_below="@id/totalPrice"
+           android:layout_width="250dp"
+           android:layout_height="30dp"
+           android:layout_marginLeft="10dp"
+           android:textSize="16sp"/>
+
 
        <Button
            android:id="@+id/btnConfirm"

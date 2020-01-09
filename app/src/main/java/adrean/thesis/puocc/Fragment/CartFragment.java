@@ -48,8 +48,8 @@ import adrean.thesis.puocc.CustomerMain;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
 import adrean.thesis.puocc.UploadReceiptConfirmationPayActivity;
-import adrean.thesis.puocc.UserModel;
-import adrean.thesis.puocc.UserPreference;
+//import adrean.thesis.puocc.UserModel;
+//import adrean.thesis.puocc.UserPreference;
 import adrean.thesis.puocc.phpConf;
 
 public class CartFragment extends Fragment{
@@ -58,9 +58,8 @@ public class CartFragment extends Fragment{
 
     }
 
-
-    private UserModel userModel;
-    private UserPreference mUserPreference;
+//    private UserModel userModel;
+//    private UserPreference mUserPreference;
     TextView id, medNameTv;
     String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,check;
     Bitmap medPict;
@@ -77,8 +76,8 @@ public class CartFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         view1 = inflater.inflate(R.layout.list_cart,container,false);
 
-        mUserPreference = new UserPreference(getContext());
-        userModel = mUserPreference.getUser();
+//        mUserPreference = new UserPreference(getContext());
+//        userModel = mUserPreference.getUser();
         listViewCart = (ListView) view.findViewById(R.id.cartList);
         id = (TextView) view.findViewById(R.id.medCategory);
         btnSubmitCart = (Button) view.findViewById(R.id.btnSubmitCart);
@@ -199,7 +198,7 @@ public class CartFragment extends Fragment{
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("USER",userModel.getUserName());
+//                params.put("USER",userModel.getUserName());
 
                 RequestHandler rh = new RequestHandler();
                 String s = rh.sendPostRequest(phpConf.URL_GET_CART,params);

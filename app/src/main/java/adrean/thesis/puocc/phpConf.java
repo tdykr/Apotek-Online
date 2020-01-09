@@ -4,6 +4,8 @@ public class phpConf {
     //192.168.43.53 hp
     //192.168.1.5 wifi rumah
     //10.107.237.27 sbucks benhil
+    //192.168.10.114 jatiluhur 2
+    //192.168.43.93 hp icha
     private final static String ip = "192.168.1.5";
 
     public final static String URL_GET_ALL_MEDICINE_LIST = "http://"+ ip +"/apotek/getListMedicine.php";
@@ -18,11 +20,12 @@ public class phpConf {
     public final static String URL_GET_CART = "http://"+ ip +"/apotek/cartList.php";
     public final static String URL_UPDATE_CART_ORDER = "http://"+ ip +"/apotek/updateCartOrderStatus.php";
     public final static String URL_GET_LIST_HISTORY_SHOPPING_BY_TRXID = "http://"+ ip +"/apotek/getListShoppingCartByTrxId.php";
-    public final static String URL_GET_LIST_PENDING_APOTEKER = "http://"+ ip +"/apotek/getListMedicinePendingApoteker.php";
-    public final static String URL_UPDATE_CART_ORDER_STATUS_PAID = "http://"+ ip +"/apotek/updateCartOrderStatusPaid.php";
+    public final static String URL_GET_LIST_ALL_TRANSACTION_APOTEKER = "http://"+ ip +"/apotek/getListAllTransactionApoteker.php";
+    public final static String URL_UPDATE_CART_ORDER_STATUS_CONFIRMED = "http://"+ ip +"/apotek/updateCartOrderStatusConfirmed.php";
     public final static String URL_ADD_TRANSACTION = "http://"+ ip +"/apotek/addTransactionId.php";
     public final static String URL_GET_LIST_TRANSACTION = "http://"+ ip +"/apotek/getListTransaction.php";
     public final static String URL_UPLOAD_BILL_TRANSACTION = "http://"+ ip +"/apotek/uploadBillTrxImg.php";
     public final static String URL_UPDATE_PASSWORD = "http://"+ ip +"/apotek/updatePassword.php";
+    public final static String URL_GET_LIST_STATUS = "http://"+ ip +"/apotek/getListStatus.php";
 
 }
