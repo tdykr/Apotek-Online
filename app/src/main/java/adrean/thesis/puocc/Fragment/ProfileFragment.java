@@ -3,6 +3,7 @@ package adrean.thesis.puocc.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -38,6 +39,7 @@ public class ProfileFragment extends Fragment {
     private EditText newPassET,newPassConfET;
     UserModel userModel;
     UserPreference mUserPreference;
+
     public ProfileFragment(){
 
     }
@@ -55,7 +57,7 @@ public class ProfileFragment extends Fragment {
         userModel = mUserPreference.getUser();
 
         relPass = view.findViewById(R.id.relPass);
-        relPass.setVisibility(View.INVISIBLE);
+        relPass.setVisibility(View.GONE);
 
         changePassBtn = (Button) view.findViewById(R.id.changePassBtn);
         newPassET = (EditText) view.findViewById(R.id.newPass);
@@ -64,7 +66,9 @@ public class ProfileFragment extends Fragment {
         changePassTrigger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                relPass.setVisibility(View.VISIBLE);
+                if(relPass.getVisibility()== View.GONE){
+                    relPass.setVisibility(View.VISIBLE);
+                }else relPass.setVisibility(View.GONE);
             }
         });
 

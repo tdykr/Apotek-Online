@@ -29,7 +29,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
-                android:layout_marginStart="@dimen/activity_horizontal_margin"
                 android:background="@drawable/ic_card"
                 android:ellipsize="end"
                 android:gravity="center_vertical"

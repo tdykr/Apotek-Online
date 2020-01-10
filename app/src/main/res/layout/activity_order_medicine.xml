@@ -4,132 +4,179 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray4"
     tools:context=".OrderMedicineActivity">
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="300dp"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:id="@+id/ll_address"
+        android:layout_below="@id/toolbar"
+        android:padding="16dp"
+        android:layout_marginBottom="8dp"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:id="@+id/txt_address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:text="@string/address"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/address"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            tools:text="Address zdfghjk xdfcgvbhn tghb oikujhg ujhnbrfg ytfgcvg ygtfg trfgvb hgbn" />
+
+    </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="vertical"
+      android:layout_below="@id/ll_address"
+      android:background="@color/colorWhite">
+
+      <TextView
+          android:id="@+id/txt_Order_Item"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_margin="16dp"
+          android:layout_marginBottom="5dp"
+          android:text="@string/order_item"
+          android:textStyle="bold" />
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          android:paddingBottom="16dp">
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="0.5"
+              android:text="@string/name" />
+
+          <TextView
+              android:id="@+id/confMedName"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              tools:text="Med Name" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:paddingStart="16dp"
+          android:paddingEnd="16dp"
+          android:paddingBottom="16dp">
+
+          <TextView
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="0.5"
+              android:text="@string/price" />
+
+          <TextView
+              android:id="@+id/confPrice"
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1"
+              tools:text="price" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:layout_marginBottom="5dp"
+          android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/txt_amount"
+              android:layout_width="0dp"
+              android:layout_height="40dp"
+              android:layout_gravity="center"
+              android:layout_weight="0.5"
+              android:gravity="center|start"
+              android:text="@string/amount" />
+
+          <EditText
+              android:id="@+id/confAmount"
+              android:layout_width="wrap_content"
+              android:layout_height="40dp"
+              android:layout_weight="1"
+              android:hint="0"
+              android:inputType="number"
+              android:textAlignment="textEnd" />
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_marginStart="16dp"
+          android:layout_marginEnd="16dp"
+          android:layout_marginBottom="16dp"
+          android:orientation="horizontal">
+
+          <TextView
+              android:id="@+id/txt_total"
+              android:layout_width="0dp"
+              android:layout_height="40dp"
+              android:layout_gravity="center"
+              android:layout_weight="0.5"
+              android:gravity="center|start"
+              android:text="@string/total"
+              android:textSize="18sp"
+              android:textStyle="bold" />
+
+
+          <TextView
+              android:id="@+id/totalPrice"
+              android:layout_width="wrap_content"
+              android:layout_height="40dp"
+              android:layout_gravity="center"
+              android:layout_weight="1"
+              android:gravity="center|end"
+              android:textSize="18sp"
+              android:textStyle="bold"
+              tools:text="total" />
+      </LinearLayout>
+  </LinearLayout>
+
+
+    <Button
+        android:id="@+id/btnAddCart"
+        style="@style/Button.Positive"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="Confirmation"
-        android:textSize="24sp"
-        android:textAlignment="center"/>
-
-    <RelativeLayout
-        android:id="@+id/rel1"
-        android:layout_below="@id/text"
-        android:layout_width="350dp"
-        android:layout_height="500dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="@drawable/side">
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_margin="5dp">
-
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="350dp"
-                    android:layout_height="100dp"
-                    android:layout_centerHorizontal="true"
-                    android:layout_margin="10dp"/>
-
-                <TextView
-                    android:id="@+id/changeAddress"
-                    android:layout_width="250dp"
-                    android:layout_height="35dp"
-                    android:layout_below="@id/address"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginBottom="5dp"
-                    android:text="Have different address ?\nClick here"/>
-            </RelativeLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/card1"
-            android:layout_below="@id/card"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:cardCornerRadius="5dp"
-            android:layout_margin="5dp"
-            app:cardBackgroundColor="#2239">
-
-            <RelativeLayout
-                android:id="@+id/rel2"
-                android:layout_width="325dp"
-                android:layout_height="200dp"
-                android:layout_margin="5dp"
-                android:layout_centerHorizontal="true">
-
-                <TextView
-                    android:id="@+id/confMedName"
-                    android:layout_width="250dp"
-                    android:layout_height="35dp"
-                    android:layout_margin="10dp"/>
-
-                <TextView
-                    android:id="@+id/confPrice"
-                    android:layout_below="@id/confMedName"
-                    android:layout_width="210dp"
-                    android:layout_height="35dp"
-                    android:layout_marginLeft="10dp"/>
-
-                <EditText
-                    android:id="@+id/confAmount"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
-                    android:textSize="12sp"
-                    android:text="1"
-                    android:layout_below="@id/confMedName"
-                    android:layout_marginLeft="5dp"
-                    android:layout_toRightOf="@id/confPrice" />
-
-                <TextView
-                    android:layout_width="75dp"
-                    android:layout_height="35dp"
-                    android:layout_below="@id/confAmount"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="10dp"
-                    android:text="Total"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    android:id="@+id/total"
-                    android:textAlignment="center"/>
-
-                <TextView
-                    android:id="@+id/totalPrice"
-                    android:layout_width="150dp"
-                    android:layout_height="35dp"
-                    android:layout_toRightOf="@id/total"
-                    android:layout_below="@id/confAmount"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginLeft="15dp"
-                    android:textSize="18sp"/>
-
-            </RelativeLayout>
-
-
-        </android.support.v7.widget.CardView>
-
-        <Button
-            android:id="@+id/btnAddCart"
-            android:layout_width="125dp"
-            android:layout_height="50dp"
-            android:layout_below="@id/card1"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/button_shape"
-            android:text="Place Order"/>
-    </RelativeLayout>
+        android:layout_gravity="bottom"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/place_order"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

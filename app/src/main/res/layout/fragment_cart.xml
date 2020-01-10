@@ -4,28 +4,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Cart"/>
-
     <ListView
         android:id="@+id/cartList"
-        android:background="@drawable/side"
-        android:layout_centerVertical="true"
         android:layout_width="match_parent"
-        android:layout_height="400dp"/>
+        android:layout_height="match_parent"
+        android:layout_above="@id/btnSubmitCart"
+        android:layout_marginBottom="5dp"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
 
     <Button
         android:id="@+id/btnSubmitCart"
-        android:layout_width="125dp"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:layout_below="@id/cartList"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_marginTop="10dp"
-        android:textColor="#fff"
-        android:background="@drawable/button_shape"
-        android:text="Submit" />
+        android:layout_margin="16dp"
+        style="@style/Button.Positive"
+        android:text="@string/submit" />
 
 </RelativeLayout>

@@ -8,10 +8,13 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
@@ -31,18 +34,22 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
 
     String categoryId,JSON_STRING;
     ListView listMed;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_category_detail);
 
-        TextView category = (TextView) findViewById(R.id.text);
-        listMed = (ListView) findViewById(R.id.listCatDetail);
-
+        toolbar = findViewById(R.id.toolbar);
         Intent in = getIntent();
         categoryId = in.getStringExtra("id");
-        category.setText(in.getStringExtra("category") + "\n" + categoryId);
+        toolbar.setTitle(in.getStringExtra("category"));
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        listMed = (ListView) findViewById(R.id.listCatDetail);
 
         getJSON();
 
@@ -70,7 +77,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
 
                 HashMap<String,Object> medicine = new HashMap<>();
                 medicine.put("ID",id);
-                medicine.put("CATEGORY","Category : " + category);
+                medicine.put("CATEGORY", category);
                 medicine.put("MEDICINE_NAME",medName);
                 medicine.put("PRICE",medPrice);
                 medicine.put("QUANTITY",medQuantity);
@@ -146,5 +153,15 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

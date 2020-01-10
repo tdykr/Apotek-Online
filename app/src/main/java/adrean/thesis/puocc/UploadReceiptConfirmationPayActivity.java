@@ -6,9 +6,12 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,10 +31,18 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
     SharedPreferences mPreferences;
     int totalPrice = 0;
     List<String> listCartId = new ArrayList<>();
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_upload_receipt_confirmation_pay);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Order Confirmation");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView txt = (TextView) findViewById(R.id.text);
         ListView listItem = (ListView) findViewById(R.id.list);
@@ -129,5 +140,15 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
 
         addOrder add = new addOrder();
         add.execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

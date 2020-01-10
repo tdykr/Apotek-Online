@@ -1,56 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".UploadReceiptConfirmationPayActivity">
 
-
-
-   <RelativeLayout
-        android:id="@+id/rel"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@drawable/side"
-        android:layout_margin="10dp">
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-       <TextView
-           android:id="@+id/txt"
-           android:layout_width="250dp"
-           android:layout_height="35dp"
-           android:text="Order Confirmation"
-           android:textSize="24sp"
-           android:textAlignment="center"
-           android:layout_centerHorizontal="true"
-           android:layout_marginTop="20dp"/>
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_margin="10dp"/>
 
-       <ListView
-           android:id="@+id/list"
-           android:layout_width="match_parent"
-           android:layout_height="300dp"
-           android:layout_below="@+id/txt"
-           android:layout_margin="10dp"/>
+    <LinearLayout
+        android:id="@+id/ll_total"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp"
+        android:background="@color/colorWhite">
 
-       <TextView
-           android:id="@+id/text"
-           android:layout_below="@id/list"
-           android:layout_width="150dp"
-           android:layout_height="30dp"
-           android:layout_marginLeft="10dp"
-           android:textSize="16sp"/>
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:textSize="16sp"
+            android:layout_gravity="center"
+            tools:text="Total"/>
+    </LinearLayout>
 
-       <Button
-           android:id="@+id/btnConfirm"
-           android:layout_width="100dp"
-           android:layout_height="40dp"
-           android:layout_alignParentBottom="true"
-           android:layout_centerHorizontal="true"
-           android:text="Confirm"
-           android:background="@drawable/button_shape"
-           android:textColor="#ffff"/>
-
-    </RelativeLayout>
-
-
-</RelativeLayout>
+    <Button
+        android:id="@+id/btnConfirm"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_gravity="bottom"
+        android:layout_margin="16dp"
+        android:text="@string/confirm"
+        style="@style/Button.Positive"/>
+</LinearLayout>

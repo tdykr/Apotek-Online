@@ -1,83 +1,94 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_vertical">
-
+    android:padding="3dp"
+    android:orientation="vertical">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardCornerRadius="20dp"
-        android:layout_margin="8dp">
+        android:layout_margin="5dp"
+        app:cardCornerRadius="20dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/bgcol">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="16dp">
 
             <CheckBox
                 android:id="@+id/rowCheckBox"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="2dp"
+                android:layout_gravity="center"
                 android:clickable="true"
                 android:focusable="false" />
 
-            <TextView
-                android:id="@+id/medName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/medCategory"
-                android:layout_marginTop="3dp"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:id="@+id/medQuantity"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/medCategory"
-                android:layout_toRightOf="@id/medName"
-                android:layout_marginTop="3dp"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:id="@+id/medCategory"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"/>
-
-            <TextView
-                android:id="@+id/medPrice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/rowCheckBox"
-                android:layout_below="@id/medCategory"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/qt"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="20dp"/>
-
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
                 android:id="@+id/img"
-                android:layout_alignParentRight="true"
-                android:layout_below="@id/qt"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="5dp"/>
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                tools:ignore="ContentDescription" />
+
+            <LinearLayout
+                android:weightSum="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="2dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/medName"
+                    android:drawableStart="@drawable/ic_tag"
+                    android:drawablePadding="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Med Name" />
+
+                <TextView
+                    android:id="@+id/medQuantity"
+                    android:drawableStart="@drawable/ic_pill"
+                    android:drawablePadding="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Med Quantity" />
+
+                <TextView
+                    android:id="@+id/medCategory"
+                    android:drawableStart="@drawable/ic_category"
+                    android:drawablePadding="5dp"
+                    tools:text="Med Category"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/medPrice"
+                    android:drawableStart="@drawable/ic_cash"
+                    android:drawablePadding="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:text="Med Price" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+
+
+
+
 
         </RelativeLayout>
     </android.support.v7.widget.CardView>
-
-
 
 </LinearLayout>
