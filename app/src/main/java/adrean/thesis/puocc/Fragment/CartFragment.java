@@ -8,28 +8,22 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -41,13 +35,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import adrean.thesis.puocc.CategoryDetailActivity;
-import adrean.thesis.puocc.CustomerMain;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
-import adrean.thesis.puocc.UploadReceiptConfirmationPayActivity;
+import adrean.thesis.puocc.ReceiptConfirmationPayActivity;
 import adrean.thesis.puocc.phpConf;
 
 public class CartFragment extends Fragment{
@@ -116,7 +107,7 @@ public class CartFragment extends Fragment{
                         currCartID.add(tempCurrCartID);
                     }
                 }
-                Intent in = new Intent(getContext(), UploadReceiptConfirmationPayActivity.class);
+                Intent in = new Intent(getContext(), ReceiptConfirmationPayActivity.class);
                 in.putExtra("data", (Serializable) tempData);
                 startActivity(in);
 //                addOrder(currCartID);

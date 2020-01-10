@@ -2,7 +2,6 @@ package adrean.thesis.puocc;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -14,7 +13,9 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,19 +25,21 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static java.security.AccessController.getContext;
+public class ReceiptConfirmationPayActivity extends AppCompatActivity {
 
-public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
-
-    SharedPreferences mPreferences;
     int totalPrice = 0;
     List<String> listCartId = new ArrayList<>();
     Toolbar toolbar;
 
+    UserPreference mUserPreferences;
+    UserModel userModel;
+    ListAdapter adapter;
+    String id;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_upload_receipt_confirmation_pay);
+        setContentView(R.layout.activity_receipt_confirmation_pay);
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Order Confirmation");
@@ -45,13 +48,17 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         TextView txt = (TextView) findViewById(R.id.text);
+        TextView totPrice= (TextView) findViewById(R.id.totalPrice);
+        TextView custName = (TextView) findViewById(R.id.custName);
+        TextView address = (TextView) findViewById(R.id.address);
         ListView listItem = (ListView) findViewById(R.id.list);
         Button confirmBtn = (Button) findViewById(R.id.btnConfirm);
 
         Intent in = getIntent();
         List<Map<String,String>> data = (List<Map<String, String>>) in.getSerializableExtra("data");
 
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+        mUserPreferences = new UserPreference(this);
+        userModel = mUserPreferences.getUser();
 
         String totalMedicine = "";
 
@@ -66,8 +73,17 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
             totalMedicine += med;
         }
 
+        adapter = new SimpleAdapter(
+                this, data, R.layout.list_detail_trx_conf,
+                new String[]{"MED_NAME",},
+                new int[]{R.id.medName});
+
+        listItem.setAdapter(adapter);
+
         Log.d("totalPrice", String.valueOf(totalPrice));
-        txt.setText("Total Price : "+ String.valueOf(totalPrice));
+        totPrice.setText("Total Price : "+ String.valueOf(totalPrice));
+        custName.setText(userModel.getUserName());
+        address.setText(userModel.getUserAddress());
 
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +103,7 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
             protected void onPreExecute() {
                 super.onPreExecute();
 
-                loading = ProgressDialog.show(UploadReceiptConfirmationPayActivity.this,"Uploading Data...","Please Wait...",false,false);
+                loading = ProgressDialog.show(ReceiptConfirmationPayActivity.this,"Uploading Data...","Please Wait...",false,false);
             }
 
             @Override
@@ -97,18 +113,14 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         loading.dismiss();
-                        Toast.makeText(UploadReceiptConfirmationPayActivity.this,s, Toast.LENGTH_LONG).show();
+                        Toast.makeText(ReceiptConfirmationPayActivity.this,s, Toast.LENGTH_LONG).show();
                     }
                 }, 2000);
-                final Intent intent = new Intent(UploadReceiptConfirmationPayActivity.this, CustomerMain.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                final Intent intent = new Intent(ReceiptConfirmationPayActivity.this, DetailTransactionActivity.class);
+//                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("TRANS_ID",id);
+                startActivity(intent);
 
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        startActivity(intent);
-                    }
-                }, 2000);
             }
 
             @Override
@@ -119,17 +131,17 @@ public class UploadReceiptConfirmationPayActivity extends AppCompatActivity {
                 RequestHandler rh = new RequestHandler();
                 String totPrice = Integer.toString(totalPrice);
                 UUID uuid = UUID.randomUUID();
-                String id = uuid.toString().replace("-","").toUpperCase();
+                id = uuid.toString().replace("-","").toUpperCase();
 
                 HashMap<String,String> param = new HashMap<>();
                 param.put("UUID",id);
-                param.put("USER",mPreferences.getString("userName",""));
+                param.put("USER",userModel.getUserName());
                 param.put("TOTAL_PRICE",totPrice);
                 res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
 
                 for(String cartData : cartID){
                     params.put("ID",cartData);
-                    params.put("USER",mPreferences.getString("userName",""));
+                    params.put("USER",userModel.getUserName());
                     params.put("UUID",id);
 
                     res = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER, params);

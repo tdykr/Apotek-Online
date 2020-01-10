@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".UploadReceiptConfirmationPayActivity">
+    tools:context=".ReceiptConfirmationPayActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -37,6 +38,38 @@
             android:layout_gravity="center"
             tools:text="Total"/>
     </LinearLayout>
+       <TextView
+           android:id="@+id/custName"
+           android:layout_below="@id/list"
+           android:layout_width="250dp"
+           android:layout_height="30dp"
+           android:layout_marginLeft="10dp"
+           android:textSize="16sp"/>
+
+       <TextView
+           android:id="@+id/totalPrice"
+           android:layout_below="@id/custName"
+           android:layout_width="250dp"
+           android:layout_height="30dp"
+           android:layout_marginLeft="10dp"
+           android:textSize="16sp"/>
+
+       <TextView
+           android:id="@+id/address"
+           android:layout_below="@id/totalPrice"
+           android:layout_width="250dp"
+           android:layout_height="30dp"
+           android:layout_marginLeft="10dp"
+           android:textSize="16sp"/>
+
+       <TextView
+           android:id="@+id/txt1"
+           android:layout_below="@id/address"
+           android:layout_width="250dp"
+           android:layout_height="30dp"
+           android:text="Payment Method : Transfer"
+           android:layout_marginLeft="10dp"
+           android:textSize="16sp"/>
 
     <Button
         android:id="@+id/btnConfirm"
