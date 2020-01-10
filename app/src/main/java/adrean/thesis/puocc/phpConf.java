@@ -6,7 +6,7 @@ public class phpConf {
     //10.107.237.27 sbucks benhil
     //192.168.10.114 jatiluhur 2
     //192.168.43.93 hp icha
-    private final static String ip = "192.168.43.93";
+    private final static String ip = "192.168.43.53";
 
     public final static String URL_GET_ALL_MEDICINE_LIST = "http://"+ ip +"/apotek/getListMedicine.php";
     public final static String URL_GET_MEDICINE_DETAIL = "http://"+ ip +"/apotek/getMedicineDetail.php";

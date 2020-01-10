@@ -38,7 +38,7 @@ import static android.view.View.VISIBLE;
 
 public class DetailTransactionActivity extends AppCompatActivity {
 
-    private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr;
+    private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg;
     private Bitmap medPict;
     private ListView listViewCart;
     private ListAdapter adapter;
@@ -60,8 +60,10 @@ public class DetailTransactionActivity extends AppCompatActivity {
         targetImage = (ImageView) findViewById(R.id.imgBill);
         Intent in = getIntent();
         trxId = in.getStringExtra("TRANS_ID");
-        String billImg = in.getStringExtra("BILL_IMG");
-        trxId = trxId.replace("TRX-","");
+        billImg = in.getStringExtra("BILL_IMG");
+        if(trxId.contains("TRX")){
+            trxId = trxId.replace("TRX-","");
+        }
         listViewCart = (ListView) findViewById(R.id.detailList);
 
         mUserPreference = new UserPreference(this);
@@ -90,11 +92,12 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
         });
 
-        if(billImg == null){
+        if(billImg != null ){
             submitBillBtn.setVisibility(INVISIBLE);
             uploadBillBtn.setVisibility(INVISIBLE);
             Bitmap imgBillBp = encodedStringImage(billImg);
             targetImage.setImageBitmap(imgBillBp);
+            targetImage.setVisibility(VISIBLE);
         }else{
             submitBillBtn.setVisibility(VISIBLE);
             uploadBillBtn.setVisibility(VISIBLE);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest android:targetSandboxVersion="1" xmlns:android="http://schemas.android.com/apk/res/android"
-    package="adrean.thesis.puocc">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="adrean.thesis.puocc"
+    android:targetSandboxVersion="1">
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -16,9 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DetailTransactionAdminActivity"/>
+        <activity android:name=".ResultConfirmationTrxActivity"></activity>
+        <activity android:name=".DetailTransactionAdminActivity" />
         <activity android:name=".DetailTransactionActivity" />
-        <activity android:name=".UploadReceiptConfirmationPayActivity" />
+        <activity android:name=".ReceiptConfirmationPayActivity" />
         <activity android:name=".PaymentConfirmationApotekerActivity" />
         <activity android:name=".TransactionActivity" />
         <activity android:name=".OrderMedicineActivity" />
@@ -34,6 +36,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>

@@ -87,6 +87,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
                 trx.put("STATUS","Transaction Status : " + status);
                 trx.put("DATE","Transaction Date : " + createdDt);
                 trx.put("AMOUNT","Total Price : " + amount);
+                trx.put("BILL_IMG",billImg);
 
                 listData.add(trx);
             }
@@ -154,9 +155,10 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
         Intent intent = new Intent(this.getContext(), DetailTransactionActivity.class);
         HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
         String trxId = map.get("TRANS_ID");
+        String billImgIntent = map.get("BILL_IMG");
         intent.putExtra("TRANS_ID",trxId);
-        if(billImg != null) {
-            intent.putExtra("BILL_IMG", billImg);
+        if(billImgIntent != null) {
+            intent.putExtra("BILL_IMG", billImgIntent);
         }
         startActivity(intent);
     }
