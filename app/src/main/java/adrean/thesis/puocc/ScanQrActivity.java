@@ -14,7 +14,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class ScanQrActivity extends AppCompatActivity implements View.OnClickListener{
 
     private IntentIntegrator qrScan;
     private TextView medName,medPrice;

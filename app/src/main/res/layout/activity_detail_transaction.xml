@@ -13,12 +13,30 @@
 
         <ListView
             android:id="@+id/detailList"
-            android:background="@drawable/side"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_marginTop="25dp"
+            android:layout_width="wrap_content"
+            android:layout_height="215dp"
             android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/side" />
+
+        <TextView
+            android:id="@+id/trxId"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/detailList"/>
+
+        <TextView
+            android:id="@+id/trxDate"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/trxId"/>
 
         <Button
             android:id="@+id/uploadReceiptBtn"
@@ -26,8 +44,8 @@
             android:layout_height="45dp"
             android:background="@drawable/button_shape"
             android:layout_centerHorizontal="true"
-            android:layout_below="@id/detailList"
-            android:layout_marginTop="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
             android:textColor="#ffff"
             android:text="Upload Receipt"/>
 
@@ -55,7 +73,19 @@
             android:text="Submit"
             android:textColor="#ffff"
             android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"/>
+            android:layout_marginLeft="30dp"/>
+
+        <Button
+            android:id="@+id/homeBtn"
+            android:layout_width="115dp"
+            android:layout_height="45dp"
+            android:background="@drawable/button_shape"
+            android:layout_below="@id/imgBill"
+            android:text="Home"
+            android:textColor="#ffff"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="30dp"
+            android:layout_alignParentRight="true"/>
     </RelativeLayout>
 
 </RelativeLayout>

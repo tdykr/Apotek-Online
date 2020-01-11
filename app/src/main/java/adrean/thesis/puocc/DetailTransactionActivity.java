@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -38,11 +39,11 @@ import static android.view.View.VISIBLE;
 
 public class DetailTransactionActivity extends AppCompatActivity {
 
-    private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg;
+    private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg,trxDate;
     private Bitmap medPict;
     private ListView listViewCart;
     private ListAdapter adapter;
-    private Button uploadBillBtn,submitBillBtn;
+    private Button uploadBillBtn,submitBillBtn,homeBtn;
     private ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     private UserModel userModel;
     private UserPreference mUserPreference;
@@ -57,10 +58,21 @@ public class DetailTransactionActivity extends AppCompatActivity {
 
         uploadBillBtn = (Button) findViewById(R.id.uploadReceiptBtn);
         submitBillBtn = (Button) findViewById(R.id.submitBill);
+        homeBtn = (Button) findViewById(R.id.homeBtn);
         targetImage = (ImageView) findViewById(R.id.imgBill);
+        TextView trxIdTv = (TextView) findViewById(R.id.trxId);
+        TextView trxDateTv = (TextView) findViewById(R.id.trxDate);
+
         Intent in = getIntent();
         trxId = in.getStringExtra("TRANS_ID");
         billImg = in.getStringExtra("BILL_IMG");
+        trxDate = in.getStringExtra("DATE");
+
+        trxIdTv.setText(trxId);
+        if(trxDate != null && !trxDate.equals("null") &&  !trxDate.isEmpty()){
+            trxDateTv.setText(trxDate);
+        }
+
         if(trxId.contains("TRX")){
             trxId = trxId.replace("TRX-","");
         }
@@ -70,6 +82,15 @@ public class DetailTransactionActivity extends AppCompatActivity {
         userModel = mUserPreference.getUser();
 
         getJSON();
+
+        homeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(DetailTransactionActivity.this,CustomerMain.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
+        });
 
         uploadBillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,9 +113,10 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
         });
 
-        if(billImg != null ){
+        if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()){
             submitBillBtn.setVisibility(INVISIBLE);
             uploadBillBtn.setVisibility(INVISIBLE);
+            homeBtn.setVisibility(INVISIBLE);
             Bitmap imgBillBp = encodedStringImage(billImg);
             targetImage.setImageBitmap(imgBillBp);
             targetImage.setVisibility(VISIBLE);
