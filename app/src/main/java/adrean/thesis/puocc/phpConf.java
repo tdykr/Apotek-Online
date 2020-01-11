@@ -28,5 +28,6 @@ public class phpConf {
     public final static String URL_UPLOAD_BILL_TRANSACTION = "http://"+ ip +"/apotek/uploadBillTrxImg.php";
     public final static String URL_UPDATE_PASSWORD = "http://"+ ip +"/apotek/updatePassword.php";
     public final static String URL_GET_LIST_STATUS = "http://"+ ip +"/apotek/getListStatus.php";
+    public final static String URL_ADD_NEW_APOTEKER = "http://"+ ip +"/apotek/addApotekerUser.php";
 
 }

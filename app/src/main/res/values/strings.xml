@@ -47,5 +47,6 @@
     <string name="user_detail">User Detail</string>
     <string name="change_password">Change Password</string>
     <string name="confirm">Confirm</string>
+    <string name="profile">Profile</string>
 
 </resources>

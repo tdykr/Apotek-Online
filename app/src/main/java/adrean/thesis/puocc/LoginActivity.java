@@ -116,6 +116,9 @@ public class LoginActivity extends AppCompatActivity {
                     } else if (response.equals("1") && userRole.equals("user")) {
                         Intent customerAct = new Intent(LoginActivity.this, CustomerMain.class);
                         startActivity(customerAct);
+                    }else if(response.equals("1") && userRole.equals("owner")){
+                        Intent ownerAct = new Intent(LoginActivity.this, OwnerMain.class);
+                        startActivity(ownerAct);
                     }
                     Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 

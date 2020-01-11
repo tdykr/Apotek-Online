@@ -14,7 +14,7 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class ScanQrActivity extends AppCompatActivity implements View.OnClickListener{
+public class AddNewTransactionApotekerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private IntentIntegrator qrScan;
     private TextView medName,medPrice;
@@ -22,7 +22,7 @@ public class ScanQrActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_add_new_transaction_apoteker);
 
         Button btnScan = (Button) findViewById(R.id.BtnScan);
         medName = (TextView) findViewById(R.id.DrugsName);

@@ -17,7 +17,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ResultConfirmationTrxActivity"></activity>
+        <activity android:name=".AddApotekerActivity"></activity>
+        <activity android:name=".OwnerMain" />
+        <activity android:name=".ResultConfirmationTrxActivity" />
         <activity android:name=".DetailTransactionAdminActivity" />
         <activity android:name=".DetailTransactionActivity" />
         <activity android:name=".ReceiptConfirmationPayActivity" />
@@ -40,7 +42,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ScanQrActivity" />
+        <activity android:name=".AddNewTransactionApotekerActivity" />
     </application>
 
 </manifest>

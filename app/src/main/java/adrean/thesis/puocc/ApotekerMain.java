@@ -76,7 +76,7 @@ public class ApotekerMain extends AppCompatActivity {
         scanQrActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(ApotekerMain.this,ScanQrActivity.class);
+                Intent in = new Intent(ApotekerMain.this, AddNewTransactionApotekerActivity.class);
                 startActivity(in);
             }
         });

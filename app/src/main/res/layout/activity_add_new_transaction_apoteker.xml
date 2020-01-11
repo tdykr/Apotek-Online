@@ -4,7 +4,12 @@
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ScanQrActivity">
+    tools:context=".AddNewTransactionApotekerActivity">
+
+<!--    <ListView-->
+<!--        android:id="@+id/listScanItem"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="300dp"/>-->
 
     <LinearLayout
         android:layout_width="match_parent"
