@@ -7,7 +7,7 @@ public class phpConf {
     //192.168.10.114 jatiluhur 2
     //192.168.43.93 hp icha
     // 10.107.134.194 sbux benhil
-    private final static String ip = "192.168.43.93";
+    private final static String ip = "192.168.1.5";
 
     public final static String URL_GET_ALL_MEDICINE_LIST = "http://"+ ip +"/apotek/getListMedicine.php";
     public final static String URL_GET_MEDICINE_DETAIL = "http://"+ ip +"/apotek/getMedicineDetail.php";
@@ -28,5 +28,6 @@ public class phpConf {
     public final static String URL_UPLOAD_BILL_TRANSACTION = "http://"+ ip +"/apotek/uploadBillTrxImg.php";
     public final static String URL_UPDATE_PASSWORD = "http://"+ ip +"/apotek/updatePassword.php";
     public final static String URL_GET_LIST_STATUS = "http://"+ ip +"/apotek/getListStatus.php";
+    public final static String URL_ADD_NEW_APOTEKER = "http://"+ ip +"/apotek/addApotekerUser.php";
 
 }

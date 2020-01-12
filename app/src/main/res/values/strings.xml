@@ -53,5 +53,6 @@
     <string name="name">Name</string>
     <string name="transfer">Transfer</string>
     <string name="upload_receipt">Upload Receipt</string>
+    <string name="profile">Profile</string>
 
 </resources>

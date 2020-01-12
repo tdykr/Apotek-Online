@@ -28,6 +28,30 @@
             android:dividerHeight="0dp"/>
 
     </RelativeLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="215dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="25dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/side" />
+
+        <TextView
+            android:id="@+id/trxId"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/detailList"/>
+
+        <TextView
+            android:id="@+id/trxDate"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:textSize="14sp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="5dp"
+            android:layout_below="@id/trxId"/>
 
     <Button
         android:id="@+id/uploadReceiptBtn"

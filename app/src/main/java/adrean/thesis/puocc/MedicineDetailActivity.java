@@ -129,7 +129,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
         File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/Pictures/QRObat");
         dir.mkdirs();
-        File file = new File(dir, "QRImg-" + medName + ".jpg");
+        File file = new File(dir, "QRImg-" + medName.getText().toString() + ".jpg");
 
         outputStream = null;
         try {

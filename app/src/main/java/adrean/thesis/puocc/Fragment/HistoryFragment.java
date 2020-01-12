@@ -156,9 +156,11 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
         HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
         String trxId = map.get("TRANS_ID");
         String billImgIntent = map.get("BILL_IMG");
+        String trxDate = map.get("DATE");
         intent.putExtra("TRANS_ID",trxId);
-        if(billImgIntent != null) {
+        if(billImgIntent != null && !billImgIntent.equals("null") && !billImg.isEmpty()) {
             intent.putExtra("BILL_IMG", billImgIntent);
+            intent.putExtra("DATE",trxDate);
         }
         startActivity(intent);
     }

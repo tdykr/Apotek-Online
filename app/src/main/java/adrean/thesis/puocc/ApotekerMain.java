@@ -71,6 +71,15 @@ public class ApotekerMain extends AppCompatActivity {
                 startActivity(in);
             }
         });
+
+        ImageView scanQrActivity = (ImageView) findViewById(R.id.scan);
+        scanQrActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(ApotekerMain.this, AddNewTransactionApotekerActivity.class);
+                startActivity(in);
+            }
+        });
     }
 
     @Override
