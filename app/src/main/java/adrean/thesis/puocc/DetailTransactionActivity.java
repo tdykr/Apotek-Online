@@ -46,7 +46,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
     private Bitmap medPict;
     private ListView listViewCart;
     private ListAdapter adapter;
-    private Button uploadBillBtn,submitBillBtn,homeBtn;
+    private Button uploadBillBtn,submitBillBtn;
     private ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     private UserModel userModel;
     private UserPreference mUserPreference;
@@ -68,7 +68,6 @@ public class DetailTransactionActivity extends AppCompatActivity {
 
         uploadBillBtn = (Button) findViewById(R.id.uploadReceiptBtn);
         submitBillBtn = (Button) findViewById(R.id.submitBill);
-        homeBtn = (Button) findViewById(R.id.homeBtn);
         targetImage = (ImageView) findViewById(R.id.imgBill);
         TextView trxIdTv = (TextView) findViewById(R.id.trxId);
         TextView trxDateTv = (TextView) findViewById(R.id.trxDate);
@@ -93,14 +92,14 @@ public class DetailTransactionActivity extends AppCompatActivity {
 
         getJSON();
 
-        homeBtn.setOnClickListener(new View.OnClickListener() {
+        /*homeBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(DetailTransactionActivity.this,CustomerMain.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
-        });
+        });*/
 
         uploadBillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -126,7 +125,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
         if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()){
             submitBillBtn.setVisibility(INVISIBLE);
             uploadBillBtn.setVisibility(INVISIBLE);
-            homeBtn.setVisibility(INVISIBLE);
+            //homeBtn.setVisibility(INVISIBLE);
             Bitmap imgBillBp = encodedStringImage(billImg);
             targetImage.setImageBitmap(imgBillBp);
             targetImage.setVisibility(VISIBLE);

@@ -15,9 +15,9 @@
 
     <RelativeLayout
         android:id="@+id/rel1"
-        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="360dp"
+        android:layout_below="@id/toolbar">
 
         <ListView
             android:id="@+id/detailList"
@@ -25,59 +25,55 @@
             android:layout_height="300dp"
             android:clipToPadding="false"
             android:divider="@null"
-            android:dividerHeight="0dp"/>
-
-    </RelativeLayout>
-            android:layout_width="wrap_content"
-            android:layout_height="215dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/side" />
+            android:dividerHeight="0dp" />
 
         <TextView
             android:id="@+id/trxId"
+            tools:text="trxId"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textSize="14sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/detailList"/>
+            android:layout_below="@id/detailList"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="14sp" />
 
         <TextView
             android:id="@+id/trxDate"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
-            android:textSize="14sp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="5dp"
-            android:layout_below="@id/trxId"/>
+            android:layout_below="@id/trxId"
+            tools:text="trxDate"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:textSize="14sp" />
+    </RelativeLayout>
 
     <Button
         android:id="@+id/uploadReceiptBtn"
+        style="@style/Button.Neutral"
         android:layout_width="match_parent"
         android:layout_height="45dp"
-        style="@style/Button.Neutral"
-        android:layout_margin="16dp"
-        android:layout_centerHorizontal="true"
         android:layout_below="@id/rel1"
-        android:text="@string/upload_receipt"/>
+        android:layout_centerHorizontal="true"
+        android:layout_margin="16dp"
+        android:text="@string/upload_receipt" />
 
     <ImageView
         android:id="@+id/imgBill"
-        android:layout_below="@id/uploadReceiptBtn"
         android:layout_width="175dp"
         android:layout_height="175dp"
-        android:layout_marginBottom="16dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_below="@id/uploadReceiptBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp" />
 
     <Button
         android:id="@+id/submitBill"
+        style="@style/Button.Positive"
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:text="@string/submit"
-        style="@style/Button.Positive"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
-        android:layout_centerHorizontal="true"/>
+        android:text="@string/submit" />
 </RelativeLayout>
