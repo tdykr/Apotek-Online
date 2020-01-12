@@ -244,6 +244,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
+                updateQuantity();
                 Intent intent = new Intent(DetailTransactionActivity.this, CustomerMain.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -262,6 +263,37 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
         }
         uploadBillTrx gj = new uploadBillTrx();
+        gj.execute();
+    }
+
+    private void updateQuantity(){
+        class uploadQtTrx extends AsyncTask<Void,Void,String> {
+
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                JSON_STRING = s;
+                Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String,String> params = new HashMap<>();
+                params.put("TRX_ID",trxId);
+
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendPostRequest(phpConf.URL_UPDATE_QT_AFTER_STATUS_PAID,params);
+                return s;
+            }
+        }
+        uploadQtTrx gj = new uploadQtTrx();
         gj.execute();
     }
 
