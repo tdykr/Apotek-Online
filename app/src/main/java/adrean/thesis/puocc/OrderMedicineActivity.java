@@ -35,8 +35,9 @@ public class OrderMedicineActivity extends AppCompatActivity {
     long last_text_edit = 0;
     Handler handler = new Handler();
     Button btnAddCart;
-    SharedPreferences mPreferences;
     Toolbar toolbar;
+    UserModel userModel;
+    UserPreference mUserPreference;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,9 @@ public class OrderMedicineActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        mUserPreference = new UserPreference(this);
+        userModel = mUserPreference.getUser();
+
         ordAddress = (TextView) findViewById(R.id.address);
         confMedName = (TextView) findViewById(R.id.confMedName);
         ordAmount = (EditText) findViewById(R.id.confAmount);
@@ -56,8 +60,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
         ordTotal = (TextView) findViewById(R.id.totalPrice);
         btnAddCart = (Button) findViewById(R.id.btnAddCart);
 
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        ordAddress.setText(mPreferences.getString("userAddress", ""));
+        ordAddress.setText(userModel.getUserAddress());
 
         Intent in = getIntent();
         Map<String, String> data = (HashMap<String, String>) in.getSerializableExtra("data");
@@ -136,7 +139,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("QUANTITY", orderAmount);
                 params.put("MED_ID", medId);
-                params.put("USER", mPreferences.getString("userName", ""));
+                params.put("USER", userModel.getUserName());
 
                 RequestHandler rh = new RequestHandler();
                 String res = rh.sendPostRequest(phpConf.URL_ADD_TO_CART, params);
