@@ -81,7 +81,7 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
         listItem.setAdapter(adapter);
 
         Log.d("totalPrice", String.valueOf(totalPrice));
-        totPrice.setText("Total Price : "+ String.valueOf(totalPrice));
+        totPrice.setText(String.valueOf(totalPrice));
         custName.setText(userModel.getUserName());
         address.setText(userModel.getUserAddress());
 

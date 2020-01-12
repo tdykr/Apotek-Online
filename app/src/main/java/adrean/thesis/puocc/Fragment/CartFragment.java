@@ -24,6 +24,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -39,6 +40,8 @@ import java.util.Map;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
 import adrean.thesis.puocc.ReceiptConfirmationPayActivity;
+import adrean.thesis.puocc.UserModel;
+import adrean.thesis.puocc.UserPreference;
 import adrean.thesis.puocc.phpConf;
 
 public class CartFragment extends Fragment{
@@ -47,7 +50,7 @@ public class CartFragment extends Fragment{
 
     }
 
-    SharedPreferences mPreferences;
+    UserPreference mUserPreference;
     TextView id, medNameTv;
     String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,check;
     Bitmap medPict;
@@ -55,8 +58,11 @@ public class CartFragment extends Fragment{
     ListView listViewCart;
     CheckBox checkBox;
     ListAdapter adapter;
+    String userName;
     ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     View view1;
+    private int itemCount=0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,7 +70,9 @@ public class CartFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         view1 = inflater.inflate(R.layout.list_cart,container,false);
 
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this.getContext());
+        mUserPreference = new UserPreference(getActivity());
+        UserModel userModel = mUserPreference.getUser();
+        userName = userModel.getUserName();
         listViewCart = (ListView) view.findViewById(R.id.cartList);
         id = (TextView) view.findViewById(R.id.medCategory);
         btnSubmitCart = (Button) view.findViewById(R.id.btnSubmitCart);
@@ -84,11 +92,13 @@ public class CartFragment extends Fragment{
                     check1.setChecked(true);
                     data.put("isChecked","true");
                     listData.set(i,data);
+                    itemCount+=1;
                 }else if(check.equals("true")){
                     CheckBox check1 = view.findViewById(R.id.rowCheckBox);
                     check1.setChecked(false);
                     data.put("isChecked","false");
                     listData.set(i,data);
+                    itemCount-=1;
                 }
             }
         });
@@ -99,6 +109,7 @@ public class CartFragment extends Fragment{
                 List<String> currCartID = new ArrayList<>();
                 List<Map<String,Object>> tempData = new ArrayList<>();
 
+
                 for(HashMap<String,Object> mapData : listData){
                     if(mapData.get("isChecked").equals("true")){
                         tempData.add(mapData);
@@ -107,9 +118,14 @@ public class CartFragment extends Fragment{
                         currCartID.add(tempCurrCartID);
                     }
                 }
-                Intent in = new Intent(getContext(), ReceiptConfirmationPayActivity.class);
-                in.putExtra("data", (Serializable) tempData);
-                startActivity(in);
+                if (itemCount>0){
+                    Intent in = new Intent(getContext(), ReceiptConfirmationPayActivity.class);
+                    in.putExtra("data", (Serializable) tempData);
+                    startActivity(in);
+                }else{
+                    Toast.makeText(getActivity(), "Please choose item first!"+ itemCount, Toast.LENGTH_SHORT).show();
+                }
+
 //                addOrder(currCartID);
             }
         });
@@ -250,7 +266,7 @@ public class CartFragment extends Fragment{
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("USER",mPreferences.getString("userName",""));
+                params.put("USER",userName);
 
                 RequestHandler rh = new RequestHandler();
                 String s = rh.sendPostRequest(phpConf.URL_GET_CART,params);

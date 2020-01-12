@@ -84,9 +84,9 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
                 HashMap<String,Object> trx = new HashMap<>();
                 trx.put("NO",i+1 + ". ");
                 trx.put("TRANS_ID","TRX-" + transId);
-                trx.put("STATUS","Transaction Status : " + status);
-                trx.put("DATE","Transaction Date : " + createdDt);
-                trx.put("AMOUNT","Total Price : " + amount);
+                trx.put("STATUS", status);
+                trx.put("DATE",createdDt);
+                trx.put("PRICE",amount);
                 trx.put("BILL_IMG",billImg);
 
                 listData.add(trx);
@@ -98,8 +98,8 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
 
         adapter = new SimpleAdapter(
                 getContext(), listData, R.layout.list_transaction_history,
-                new String[]{"NO","TRANS_ID","STATUS","DATE","AMOUNT"},
-                new int[]{R.id.no,R.id.transactionId,R.id.trxStatus,R.id.trxDate,R.id.trxAmount});
+                new String[]{"NO","TRANS_ID","STATUS","DATE","PRICE"},
+                new int[]{R.id.no,R.id.transactionId,R.id.trxStatus,R.id.trxDate,R.id.trxPrice});
 
         listViewTrx.setAdapter(adapter);
     }

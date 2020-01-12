@@ -41,7 +41,7 @@
                 <TextView
                     android:id="@+id/medCategory"
                     android:drawableStart="@drawable/ic_category"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -50,7 +50,7 @@
                 <TextView
                     android:id="@+id/medName"
                     android:drawableStart="@drawable/ic_tag"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"
@@ -58,17 +58,17 @@
 
                 <TextView
                     android:drawableStart="@drawable/ic_pill"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/qt"
+                    android:id="@+id/medQuantity"
                     android:layout_margin="5dp"
                     tools:text="medQuantity"/>
 
                 <TextView
                     android:id="@+id/medPrice"
                     android:drawableStart="@drawable/ic_cash"
-                    android:drawablePadding="5dp"
+                    android:drawablePadding="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="5dp"

@@ -10,10 +10,13 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -49,11 +52,18 @@ public class DetailTransactionActivity extends AppCompatActivity {
     private Uri selectedImage;
     private Bitmap bitmap;
     private ImageView targetImage;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_transaction);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Payment Confirmation");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         uploadBillBtn = (Button) findViewById(R.id.uploadReceiptBtn);
         submitBillBtn = (Button) findViewById(R.id.submitBill);
@@ -158,7 +168,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
         }
 
         adapter = new SimpleAdapter(
-                getApplicationContext(), listData, R.layout.list_history_item_customer,
+                getApplicationContext(), listData, R.layout.list_medicine,
                 new String[]{"MED_NAME","CATEGORY","MED_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
                 new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medName,R.id.medPrice, R.id.medQuantity, R.id.img});
 
@@ -254,5 +264,15 @@ public class DetailTransactionActivity extends AppCompatActivity {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
         return Uri.parse(path);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

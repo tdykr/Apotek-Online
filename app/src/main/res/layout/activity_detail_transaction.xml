@@ -6,56 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".DetailTransactionActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <RelativeLayout
         android:id="@+id/rel1"
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="400dp">
+        android:layout_height="300dp">
 
         <ListView
             android:id="@+id/detailList"
-            android:background="@drawable/side"
             android:layout_width="match_parent"
             android:layout_height="300dp"
-            android:layout_marginTop="25dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"/>
-
-        <Button
-            android:id="@+id/uploadReceiptBtn"
-            android:layout_width="115dp"
-            android:layout_height="45dp"
-            android:background="@drawable/button_shape"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@id/detailList"
-            android:layout_marginTop="10dp"
-            android:textColor="#ffff"
-            android:text="Upload Receipt"/>
+            android:clipToPadding="false"
+            android:divider="@null"
+            android:dividerHeight="0dp"/>
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <Button
+        android:id="@+id/uploadReceiptBtn"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="5dp"
-        android:layout_below="@+id/rel1">
+        android:layout_height="45dp"
+        style="@style/Button.Neutral"
+        android:layout_margin="16dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/rel1"
+        android:text="@string/upload_receipt"/>
 
-        <ImageView
-            android:id="@+id/imgBill"
-            android:layout_width="175dp"
-            android:layout_height="175dp"
-            android:layout_marginTop="5dp"
-            android:layout_centerHorizontal="true"/>
+    <ImageView
+        android:id="@+id/imgBill"
+        android:layout_below="@id/uploadReceiptBtn"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"/>
 
-        <Button
-            android:id="@+id/submitBill"
-            android:layout_width="115dp"
-            android:layout_height="45dp"
-            android:background="@drawable/button_shape"
-            android:layout_below="@id/imgBill"
-            android:text="Submit"
-            android:textColor="#ffff"
-            android:layout_marginTop="10dp"
-            android:layout_centerHorizontal="true"/>
-    </RelativeLayout>
-
+    <Button
+        android:id="@+id/submitBill"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_alignParentBottom="true"
+        android:text="@string/submit"
+        style="@style/Button.Positive"
+        android:layout_marginBottom="16dp"
+        android:layout_centerHorizontal="true"/>
 </RelativeLayout>

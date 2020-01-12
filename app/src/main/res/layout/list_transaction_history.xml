@@ -27,7 +27,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_no"
-                android:drawablePadding="5dp"
+                android:drawablePadding="10dp"
                 tools:text="No"/>
 
             <TextView
@@ -35,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_id"
-                android:drawablePadding="5dp"
+                android:drawablePadding="10dp"
                 tools:text="Id" />
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_status"
-                android:drawablePadding="5dp"
+                android:drawablePadding="10dp"
                 tools:text="Status"/>
 
             <TextView
@@ -51,16 +51,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableStart="@drawable/ic_calendar"
-                android:drawablePadding="5dp"
+                android:drawablePadding="10dp"
                 tools:text="Date"/>
 
             <TextView
-                android:id="@+id/trxAmount"
+                android:id="@+id/trxPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:drawableStart="@drawable/ic_pill"
-                android:drawablePadding="5dp"
-                tools:text="Amount"/>
+                android:drawableStart="@drawable/ic_cash"
+                android:drawablePadding="10dp"
+                tools:text="Price"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

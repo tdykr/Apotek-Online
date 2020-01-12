@@ -42,10 +42,16 @@
     <string name="amount">Amount</string>
     <string name="total">Total (Rp)</string>
     <string name="order_item">Order Item</string>
-    <string name="name">Name</string>
     <string name="sign_out">Sign Out</string>
     <string name="user_detail">User Detail</string>
     <string name="change_password">Change Password</string>
     <string name="confirm">Confirm</string>
+    <string name="payment_method_transfer">Payment Method : Transfer</string>
+    <string name="order">Order</string>
+    <string name="user_information">User Information</string>
+    <string name="payment_method">Payment Method</string>
+    <string name="name">Name</string>
+    <string name="transfer">Transfer</string>
+    <string name="upload_receipt">Upload Receipt</string>
 
 </resources>

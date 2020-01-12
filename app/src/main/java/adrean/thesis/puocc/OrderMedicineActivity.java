@@ -35,7 +35,8 @@ public class OrderMedicineActivity extends AppCompatActivity {
     long last_text_edit = 0;
     Handler handler = new Handler();
     Button btnAddCart;
-    SharedPreferences mPreferences;
+    UserPreference mUserPreference;
+    String userName;
     Toolbar toolbar;
 
     @Override
@@ -56,8 +57,13 @@ public class OrderMedicineActivity extends AppCompatActivity {
         ordTotal = (TextView) findViewById(R.id.totalPrice);
         btnAddCart = (Button) findViewById(R.id.btnAddCart);
 
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        ordAddress.setText(mPreferences.getString("userAddress", ""));
+        mUserPreference = new UserPreference(this);
+        UserModel userModel = mUserPreference.getUser();
+        String userAddress = userModel.getUserAddress();
+        userName = userModel.getUserName();
+
+
+        ordAddress.setText(userAddress);
 
         Intent in = getIntent();
         Map<String, String> data = (HashMap<String, String>) in.getSerializableExtra("data");
@@ -97,7 +103,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 orderAmount = ordAmount.getText().toString();
-                if(Integer.parseInt(orderAmount) <=0){
+                if(orderAmount.equals("") || orderAmount==null || Integer.parseInt(orderAmount) <=0){
                     Toast.makeText(OrderMedicineActivity.this, "Item should be greater than 0", Toast.LENGTH_SHORT).show();
                 }else if (Integer.parseInt(orderAmount) <=Integer.parseInt(qtDb)) {
                     addCart();
@@ -136,7 +142,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
                 HashMap<String, String> params = new HashMap<>();
                 params.put("QUANTITY", orderAmount);
                 params.put("MED_ID", medId);
-                params.put("USER", mPreferences.getString("userName", ""));
+                params.put("USER",userName);
 
                 RequestHandler rh = new RequestHandler();
                 String res = rh.sendPostRequest(phpConf.URL_ADD_TO_CART, params);
