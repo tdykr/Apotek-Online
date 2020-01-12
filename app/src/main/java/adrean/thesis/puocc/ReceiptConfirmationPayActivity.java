@@ -137,6 +137,7 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
                 param.put("UUID",id);
                 param.put("USER",userModel.getUserName());
                 param.put("TOTAL_PRICE",totPrice);
+                param.put("TYPE","ONLINE");
                 res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
 
                 for(String cartData : cartID){
