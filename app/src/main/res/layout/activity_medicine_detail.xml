@@ -172,7 +172,7 @@
                     android:gravity="center"
                     android:inputType="number"
                     android:singleLine="false"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textStyle="bold"
                     tools:ignore="Autofill,LabelFor" />
 
