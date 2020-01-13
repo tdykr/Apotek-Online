@@ -16,11 +16,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+        android:hardwareAccelerated="false"
         android:usesCleartextTraffic="true">
         <activity android:name=".AddApotekerActivity"></activity>
         <activity android:name=".OwnerMain" />
-        <activity android:name=".ResultConfirmationTrxActivity" />
-        <activity android:name=".DetailTransactionAdminActivity" />
         <activity android:name=".DetailTransactionActivity" />
         <activity android:name=".ReceiptConfirmationPayActivity" />
         <activity android:name=".PaymentConfirmationApotekerActivity" />

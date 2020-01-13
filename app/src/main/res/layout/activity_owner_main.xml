@@ -20,35 +20,90 @@
             tools:ignore="ContentDescription" />
     </android.support.v7.widget.Toolbar>
 
-    <TextView
-        android:id="@+id/addApoteker"
-        android:layout_width="250dp"
-        android:layout_height="30dp"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        android:text="Add Apoteker"/>
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:padding="16dp"
+        android:layout_centerInParent="true">
 
-    <TextView
-        android:id="@+id/listTransaction"
-        android:layout_below="@id/addApoteker"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textAlignment="center"
-        android:layout_height="30dp"
-        android:textSize="20sp"
-        android:text="List of Transaction"/>
+        <ImageView
+            android:id="@+id/img_add_apoteker"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/ic_add_user"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="50dp"
+            tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/summary"
-        android:layout_below="@id/listTransaction"
-        android:layout_width="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:textAlignment="center"
-        android:layout_height="30dp"
-        android:textSize="20sp"
-        android:text="Summary Report"/>
+        <TextView
+            android:id="@+id/addApoteker"
+            android:text="@string/add_apoteker"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/img_add_apoteker"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGreen"
+            android:textAlignment="center"/>
+
+        <TextView
+
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+
+        <ImageView
+            android:id="@+id/listTransaction"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/ic_transaction"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="50dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/listTransaction"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="35dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGreen"
+            android:layout_marginTop="10dp"
+            android:text="@string/transaction_list"
+            android:textAlignment="center"/>
+
+        <ImageView
+            android:id="@+id/summary"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/ic_report"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"/>
+
+        <TextView
+            android:id="@+id/txtSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="30dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGreen"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/summary_report"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+
+
+
 </RelativeLayout>

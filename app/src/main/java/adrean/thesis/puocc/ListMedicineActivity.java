@@ -91,7 +91,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
         ListAdapter adapter = new SimpleAdapter(
                 ListMedicineActivity.this, list, R.layout.list_medicine,
                 new String[]{"CATEGORY", "MEDICINE_NAME", "PRICE", "QUANTITY", "MEDICINE_PICT"},
-                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.qt, R.id.img});
+                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.medQuantity, R.id.img});
 
         listMed.setAdapter(adapter);
     }

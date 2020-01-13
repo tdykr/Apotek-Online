@@ -29,7 +29,5 @@ public class phpConf {
     public final static String URL_UPDATE_PASSWORD = "http://"+ ip +"/apotek/updatePassword.php";
     public final static String URL_GET_LIST_STATUS = "http://"+ ip +"/apotek/getListStatus.php";
     public final static String URL_ADD_NEW_APOTEKER = "http://"+ ip +"/apotek/addApotekerUser.php";
-    public final static String URL_UPDATE_QT_AFTER_STATUS_PAID = "http://"+ ip +"/apotek/updateQuantityAfterStatusPaid.php";
-    public final static String URL_GET_CHART_DATA = "http://"+ ip +"/apotek/chart.php";
 
 }

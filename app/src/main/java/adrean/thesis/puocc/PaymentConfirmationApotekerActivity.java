@@ -3,8 +3,11 @@ package adrean.thesis.puocc;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -14,11 +17,19 @@ import java.util.HashMap;
 public class PaymentConfirmationApotekerActivity extends AppCompatActivity {
 
     private String JSON_STRING,trxId;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_paid_confirmation_apoteker);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Transaction Detail");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
 
         Intent in = getIntent();
         trxId = in.getStringExtra("TRX-ID");
@@ -66,5 +77,15 @@ public class PaymentConfirmationApotekerActivity extends AppCompatActivity {
         }
         updateTransactionPaid gj = new updateTransactionPaid();
         gj.execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
