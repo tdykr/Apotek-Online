@@ -8,6 +8,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class OwnerMain extends AppCompatActivity {
@@ -27,8 +28,8 @@ public class OwnerMain extends AppCompatActivity {
         mUserPreference = new UserPreference(this);
         userModel = mUserPreference.getUser();
 
-        TextView trxList = (TextView) findViewById(R.id.listTransaction);
-        TextView addApoteker = (TextView) findViewById(R.id.addApoteker);
+        ImageView trxList = findViewById(R.id.listTransaction);
+        ImageView addApoteker =  findViewById(R.id.img_add_apoteker);
 
         addApoteker.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,9 +50,7 @@ public class OwnerMain extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        if (id == android.R.id.home) {
-            finish();
-        }else if (id == R.id.menu_logout){
+        if (id == R.id.menu_logout){
             Intent intent = new Intent(OwnerMain.this,LoginActivity.class);
             mUserPreference.logoutUser();
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

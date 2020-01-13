@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Medicine List");
+        toolbar.setTitle("Register");
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);

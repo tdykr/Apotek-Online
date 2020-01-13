@@ -6,11 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".AddApotekerActivity">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <RelativeLayout
         android:id="@+id/rel1"
+        android:layout_below="@id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="300dp"
-        android:layout_margin="10dp">
+        android:padding="16dp">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/userName"
@@ -66,19 +74,16 @@
             android:paddingStart="20dp"
             android:paddingEnd="10dp"
             android:textSize="15sp" />
-
     </RelativeLayout>
 
     <Button
         android:id="@+id/submitBtn"
-        android:layout_width="125dp"
+        android:layout_width="match_parent"
         android:layout_height="45dp"
-        android:background="@drawable/button_shape"
+        style="@style/Button.Positive"
+        android:layout_margin="16dp"
         android:text="@string/submit"
-        android:layout_below="@id/rel1"
         android:layout_centerHorizontal="true"
-        android:textColor="#ffff"/>
-
-
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>
