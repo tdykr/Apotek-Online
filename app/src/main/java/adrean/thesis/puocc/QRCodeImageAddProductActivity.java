@@ -38,7 +38,7 @@ import java.util.HashMap;
 public class QRCodeImageAddProductActivity extends AppCompatActivity {
 
     private Bitmap bp;
-    private String medName,medPrice,medDesc,medCategory;
+    private String medName,medPrice,medDesc,medCategory,id;
     private ImageView qrImg;
     private OutputStream outputStream;
     private TextView mdNameTxt,mdPriceTxt,mdDescriptionTxt,mdCategoryTxt;
@@ -75,6 +75,7 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         bp = in.getParcelableExtra("bitmap");
         medName = in.getStringExtra("mdName");
         medPrice = in.getStringExtra("mdPrice");
+        id = in.getStringExtra("id");
         medDesc = in.getStringExtra("mdDesc");
         medCategory = in.getStringExtra("mdCat");
 
@@ -100,9 +101,9 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) qrImg.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
 
-        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/Pictures/QRObat");
+        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "Pictures/QRObat");
         dir.mkdirs();
-        File file = new File(dir, "QRImg-" + medName + ".jpg");
+        File file = new File(dir, "QRImg-" + medName + id + ".jpg");
 
         outputStream = null;
         try {
@@ -132,15 +133,5 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        QRCodeImageAddProductActivity.super.onBackPressed();
-                    }
-                }).create().show();
     }
 }

@@ -49,13 +49,14 @@ import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import static android.Manifest.permission.CAMERA;
 
 public class AddNewProductActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
-    private String mdCategory, mdName, mdPrice, mdNotes, imgStr, mdBitmapStr, JSON_STRING;
+    private String mdCategory, mdName, mdPrice, mdNotes, imgStr, mdBitmapStr, JSON_STRING, id;
     private ImageView medPict;
     private static final int PIC_ID = 123;
     private Bitmap medBitmap;
@@ -101,8 +102,6 @@ public class AddNewProductActivity extends AppCompatActivity {
                 mdName = medicineName.getText().toString();
                 mdPrice = medicinePrice.getText().toString();
                 mdNotes = medicineNotes.getText().toString();
-                String text = "{\"category\":\"" + mdCategory + "\",\"name\":\"" + mdName + "\"}";
-                MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
                 if (mdName.equals("")) {
                     medicineName.setError("Please Input Medicine Name");
@@ -120,6 +119,12 @@ public class AddNewProductActivity extends AppCompatActivity {
                     Toast.makeText(AddNewProductActivity.this, "Please Set Image of the Medicine", Toast.LENGTH_SHORT).show();
                 } else {
                     try {
+                        UUID uuid = UUID.randomUUID();
+                        id = uuid.toString().replace("-","").toUpperCase();
+
+                        String text = "{ \"id\":\"" + id + "\",\"category\":\"" + mdCategory + "\",\"name\":\"" + mdName + "\",\"price\":\"" + mdPrice + "\"}";
+                        MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+
                         BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
                         BarcodeEncoder barcodeEncoder = new BarcodeEncoder();
                         Bitmap bitmap = barcodeEncoder.createBitmap(bitMatrix);
@@ -130,6 +135,7 @@ public class AddNewProductActivity extends AppCompatActivity {
                         addMedicine();
 
                         in.putExtra("mdPict", medBitmap);
+                        in.putExtra("id",id);
                         in.putExtra("bitmap", bitmap);
                         in.putExtra("mdName", mdName);
                         in.putExtra("mdPrice", mdPrice);
@@ -183,6 +189,7 @@ public class AddNewProductActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String, String> params = new HashMap<>();
+                params.put("ID",id);
                 params.put("CATEGORY", mdCategory);
                 params.put("MEDNAME", mdName);
                 params.put("PRICE", mdPrice);

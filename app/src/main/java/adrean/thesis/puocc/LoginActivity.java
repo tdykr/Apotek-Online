@@ -150,6 +150,7 @@ public class LoginActivity extends AppCompatActivity {
         userModel.setUserPassword(userPassword);
         userModel.setUserName(userName);
         userModel.setUserEmail(userEmail);
+        userModel.setUserPhone(userPhone);
         userModel.setUserAddress(userAddress);
         userModel.setUserRole(userRole);
         userModel.setUserResponse(response);

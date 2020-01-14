@@ -278,7 +278,6 @@ public class DetailTransactionActivity extends AppCompatActivity {
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
-                loading.dismiss();
                 JSON_STRING = s;
                 Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
             }
