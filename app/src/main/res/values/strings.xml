@@ -58,5 +58,6 @@
     <string name="list_transaction">List Transaction</string>
     <string name="transaction_list">Transaction List</string>
     <string name="summary_report">Summary Report</string>
+    <string name="generate">Generate</string>
 
 </resources>

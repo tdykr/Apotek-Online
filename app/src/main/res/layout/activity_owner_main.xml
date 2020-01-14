@@ -83,7 +83,7 @@
             android:textAlignment="center"/>
 
         <ImageView
-            android:id="@+id/summary"
+            android:id="@+id/summary_report"
             android:layout_width="75dp"
             android:layout_height="75dp"
             android:layout_marginLeft="50dp"
