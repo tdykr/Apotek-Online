@@ -46,7 +46,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
     private Bitmap medPict;
     private ListView listViewCart;
     private ListAdapter adapter;
-    private Button uploadBillBtn,submitBillBtn;
+    private Button uploadBillBtn,submitBillBtn,confirmTrxBtn;
     private ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     private UserModel userModel;
     private UserPreference mUserPreference;
@@ -61,13 +61,18 @@ public class DetailTransactionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_detail_transaction);
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Payment Confirmation");
+        toolbar.setTitle("Transaction Detail");
+
+        mUserPreference = new UserPreference(DetailTransactionActivity.this);
+        userModel = mUserPreference.getUser();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         uploadBillBtn = (Button) findViewById(R.id.uploadReceiptBtn);
         submitBillBtn = (Button) findViewById(R.id.submitBill);
+        confirmTrxBtn = (Button) findViewById(R.id.confirmTrx);
+        confirmTrxBtn.setVisibility(INVISIBLE);
         targetImage = (ImageView) findViewById(R.id.imgBill);
         TextView trxIdTv = (TextView) findViewById(R.id.trxId);
         TextView trxDateTv = (TextView) findViewById(R.id.trxDate);
@@ -78,6 +83,13 @@ public class DetailTransactionActivity extends AppCompatActivity {
         trxDate = in.getStringExtra("DATE");
 
         trxIdTv.setText(trxId);
+
+        if(userModel.getUserRole() == "admin"){
+            confirmTrxBtn.setVisibility(VISIBLE);
+            submitBillBtn.setVisibility(INVISIBLE);
+            uploadBillBtn.setVisibility(INVISIBLE);
+        }
+
         if(trxDate != null && !trxDate.equals("null") &&  !trxDate.isEmpty()){
             trxDateTv.setText(trxDate);
         }
@@ -107,6 +119,13 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 Intent in = new Intent(Intent.ACTION_PICK,
                         MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                 startActivityForResult(in,0);
+            }
+        });
+
+        confirmTrxBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateTransactionPaid();
             }
         });
 
@@ -147,6 +166,39 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void updateTransactionPaid(){
+        class updateTransactionPaid extends AsyncTask<Void,Void,String> {
+
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(DetailTransactionActivity.this,"Fetching Data","Please Wait...",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                JSON_STRING = s;
+                Intent in = new Intent(DetailTransactionActivity.this,ApotekerMain.class);
+                startActivity(in);
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String,String> params = new HashMap<>();
+                params.put("ID",trxId);
+
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER_STATUS_CONFIRMED,params);
+                return s;
+            }
+        }
+        updateTransactionPaid gj = new updateTransactionPaid();
+        gj.execute();
     }
 
     private void getListMedicine(){
