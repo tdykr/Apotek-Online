@@ -29,6 +29,7 @@ public class OwnerMain extends AppCompatActivity {
         userModel = mUserPreference.getUser();
 
         ImageView trxList = findViewById(R.id.listTransaction);
+        ImageView imgSummaryReport = findViewById(R.id.summary_report);
         ImageView addApoteker =  findViewById(R.id.img_add_apoteker);
 
         addApoteker.setOnClickListener(new View.OnClickListener() {
@@ -36,6 +37,14 @@ public class OwnerMain extends AppCompatActivity {
             public void onClick(View view) {
                 Intent in = new Intent(OwnerMain.this,AddApotekerActivity.class);
                 startActivity(in);
+            }
+        });
+
+        imgSummaryReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intentSummary = new Intent(OwnerMain.this,SummaryReportActivity.class);
+                startActivity(intentSummary);
             }
         });
     }

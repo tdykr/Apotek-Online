@@ -74,6 +74,7 @@ public class TransactionActivity extends AppCompatActivity {
     private void getTrxStatus() {
         JSONObject jsonObject = null;
         List<String> data = new ArrayList<>();
+        data.add("--Select Status--");
         try {
             jsonObject = new JSONObject(JSON_STRING);
             JSONArray result = jsonObject.getJSONArray("result");
@@ -90,7 +91,7 @@ public class TransactionActivity extends AppCompatActivity {
         }
 
         adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, data);
-        adapter.add("--Select Status--");
+
         sp.setAdapter(adapter);
     }
 
