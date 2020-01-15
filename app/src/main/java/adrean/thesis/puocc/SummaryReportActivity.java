@@ -1,22 +1,33 @@
 package adrean.thesis.puocc;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class SummaryReportActivity extends AppCompatActivity {
 
     ArrayList<String> reportList = new ArrayList<>();
     ArrayList<String> yearList = new ArrayList<>();
     ArrayList<String> chartList = new ArrayList<>();
+    String year;
 
     Toolbar toolbar;
     @Override
@@ -67,5 +78,76 @@ public class SummaryReportActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void SalesReport() {
+
+        class SalesReport extends AsyncTask<Void, Void, String> {
+
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(SummaryReportActivity.this, "Loading Data...", "Please Wait...", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+
+                loading.dismiss();
+                try {
+                    Log.d("Json Login", s);
+                    JSONObject jsonObject = new JSONObject(s);
+                    JSONArray data = jsonObject.getJSONArray("result");
+
+                    JSONObject jo = data.getJSONObject(0);
+
+                    Log.d("tagJsonObject", jo.toString());
+                    String userId = jo.getString("ID");
+                    String userName = jo.getString("USERNAME");
+                    String userEmail = jo.getString("EMAIL");
+                    String userAddress = jo.getString("ADDRESS");
+                    String userPhone = jo.getString("PHONE");
+                    String userRole = jo.getString("ROLE");
+                    String response = jo.getString("response");
+                    String message = jo.getString("message");
+
+                    if (response.equals("1")) {
+                       /* saveUser(userId, userPass, userName, userEmail, userAddress, userPhone,
+                                userRole, response, message);
+                    }*/}
+                    if (response.equals("1") && userRole.equals("admin")) {
+                        Intent apotekerAct = new Intent(SummaryReportActivity.this, ApotekerMain.class);//
+                        startActivity(apotekerAct);
+
+                    } else if (response.equals("1") && userRole.equals("user")) {
+                        Intent customerAct = new Intent(SummaryReportActivity.this, CustomerMain.class);
+                        startActivity(customerAct);
+                    }else if(response.equals("1") && userRole.equals("owner")){
+                        Intent ownerAct = new Intent(SummaryReportActivity.this, OwnerMain.class);
+                        startActivity(ownerAct);
+                    }
+                    Toast.makeText(SummaryReportActivity.this, message, Toast.LENGTH_SHORT).show();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("YEAR", year);
+
+                RequestHandler rh = new RequestHandler();
+                String res = rh.sendPostRequest(phpConf.URL_GET_CHART_DATA, params);
+                return res;
+            }
+        }
+
+        SalesReport add = new SalesReport();
+        add.execute();
     }
 }
