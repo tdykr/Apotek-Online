@@ -17,7 +17,7 @@ import org.json.JSONObject;
 public class AddNewTransactionApotekerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private IntentIntegrator qrScan;
-    private TextView medName,medPrice;
+    private TextView medName,medPrice,medId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,6 +27,7 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
         Button btnScan = (Button) findViewById(R.id.BtnScan);
         medName = (TextView) findViewById(R.id.DrugsName);
         medPrice = (TextView) findViewById(R.id.DrugsPrice);
+        medId = (TextView) findViewById(R.id.id);
 
         qrScan = new IntentIntegrator(this);
         btnScan.setOnClickListener(this);
@@ -45,6 +46,7 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
 
                     medName.setText(obj.getString("name"));
                     medPrice.setText(obj.getString("price"));
+                    medId.setText(obj.getString("id"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();

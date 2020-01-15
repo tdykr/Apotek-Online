@@ -63,8 +63,15 @@ public class TransactionActivity extends AppCompatActivity {
 
                     HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
                     trxId = map.get("ID");
-                    Intent intent = new Intent(getApplicationContext(), PaymentConfirmationApotekerActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), DetailTransactionActivity.class);
                     intent.putExtra("TRX-ID",trxId);
+                    String billImgIntent = map.get("BILL_IMG");
+                    String trxDate = map.get("DATE");
+                    intent.putExtra("TRANS_ID",trxId);
+                    intent.putExtra("DATE",trxDate);
+                    if(billImgIntent != null && !billImgIntent.equals("null") && !billImgIntent.isEmpty()) {
+                        intent.putExtra("BILL_IMG", billImgIntent);
+                    }
                     startActivity(intent);
 //                    updateTransactionPaid(trxId);
                 }
@@ -139,12 +146,14 @@ public class TransactionActivity extends AppCompatActivity {
                 String createdBy = jo.getString("CREATED_BY");
                 String createdDate = jo.getString("CREATED_DT");
                 String status = jo.getString("STATUS");
+                String billImg = jo.getString("BILL_IMG");
 
                 HashMap<String,Object> listTrx = new HashMap<>();
                 listTrx.put("ID","TRX-"+id);
                 listTrx.put("CREATED_BY",createdBy);
                 listTrx.put("CREATED_DT",createdDate);
                 listTrx.put("STATUS",status);
+                listTrx.put("BILL_IMG",billImg);
 
                 Log.d("tag", String.valueOf(listTrx));
 
@@ -190,28 +199,6 @@ public class TransactionActivity extends AppCompatActivity {
         }
         GetJSON gj = new GetJSON();
         gj.execute();
-    }
-
-    public Bitmap encodedStringImage(String imgString){
-        byte[] decodedString = Base64.decode(imgString, Base64.DEFAULT);
-        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
-
-        return decodedBitmap;
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getStringImage(Bitmap bmp){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
     }
 
     @Override

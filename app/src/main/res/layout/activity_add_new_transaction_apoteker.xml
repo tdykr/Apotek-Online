@@ -32,6 +32,18 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:text="ID" />
+
+        <TextView
+            android:id="@+id/id"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Product ID"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:text="Price" />
 
         <TextView
@@ -40,8 +52,6 @@
             android:layout_height="wrap_content"
             android:hint="Product Price"
             android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-
     </LinearLayout>
 
     <Button
