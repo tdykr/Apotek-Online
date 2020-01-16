@@ -1,10 +1,15 @@
 package adrean.thesis.puocc;
 
+import android.Manifest;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -27,11 +32,27 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import adrean.thesis.puocc.FileUtils;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.BaseFont;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.itextpdf.text.pdf.draw.LineSeparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -128,8 +149,15 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
             }
         });
 
-
-
+        imgDownload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isStoragePermissionGranted()){
+                    Log.d("tag", "create pdf");
+                    createPdf(FileUtils.getAppPath(SummaryReportActivity.this) + "icha.pdf");
+                }else isStoragePermissionGranted();
+            }
+        });
 
         NoOfEmp.add(new Entry(945f, 0));
         NoOfEmp.add(new Entry(1040f, 1));
@@ -142,7 +170,6 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         NoOfEmp.add(new Entry(1578f, 8));
         NoOfEmp.add(new Entry(1695f, 9));
 
-
         year.add("2008");
         year.add("2009");
         year.add("2010");
@@ -154,10 +181,6 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         year.add("2016");
         year.add("2017");
 
-
-
-
-
         NoOfEmp2.add(new BarEntry(945f, 0));
         NoOfEmp2.add(new BarEntry(1040f, 1));
         NoOfEmp2.add(new BarEntry(1133f, 2));
@@ -168,8 +191,6 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         NoOfEmp2.add(new BarEntry(1645f, 7));
         NoOfEmp2.add(new BarEntry(1578f, 8));
         NoOfEmp2.add(new BarEntry(1695f, 9));
-
-
 
         year.add("2008");
         year.add("2009");
@@ -335,6 +356,130 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
         chart.setData(data);
     }
+
+    private void printPdf() throws FileNotFoundException, DocumentException {
+        //create
+        Document document = new Document();
+        PdfWriter.getInstance(document, new FileOutputStream(new File(SummaryReportActivity.this.getFilesDir(), "myFile.xml")));
+        document.open();
+
+        // Document Settings
+        document.setPageSize(PageSize.A4);
+        document.addCreationDate();
+        document.addAuthor("icha");
+        document.addCreator("tedy");
+    }
+
+    public void createPdf(String dest) {
+
+        if (new File(dest).exists()) {
+            new File(dest).delete();
+        }
+
+        try {
+            /**
+             * Creating Document
+             */
+            Document document = new Document();
+
+            // Location to save
+            PdfWriter.getInstance(document, new FileOutputStream(dest));
+
+            // Open to write
+            document.open();
+
+            // Document Settings
+            document.setPageSize(PageSize.A4);
+            document.addCreationDate();
+            document.addAuthor("icha");
+            document.addCreator("tedy");
+
+            /***
+             * Variables for further use....
+             */
+            BaseColor mColorAccent = new BaseColor(0, 153, 204, 255);
+            float mHeadingFontSize = 20.0f;
+            float mValueFontSize = 26.0f;
+
+            /**
+             * How to USE FONT....
+             */
+            BaseFont urName = BaseFont.createFont("res/font/brandon_medium.otf", "UTF-8", BaseFont.EMBEDDED);
+
+            // LINE SEPARATOR
+            LineSeparator lineSeparator = new LineSeparator();
+            lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
+
+            // Title Order Details...
+            // Adding Title....
+            Font mOrderDetailsTitleFont = new Font(urName, 36.0f, Font.NORMAL, BaseColor.BLACK);
+            Chunk mOrderDetailsTitleChunk = new Chunk("Order Details", mOrderDetailsTitleFont);
+            Paragraph mOrderDetailsTitleParagraph = new Paragraph(mOrderDetailsTitleChunk);
+            mOrderDetailsTitleParagraph.setAlignment(Element.ALIGN_CENTER);
+            document.add(mOrderDetailsTitleParagraph);
+
+            // Fields of Order Details...
+            // Adding Chunks for Title and value
+            Font mOrderIdFont = new Font(urName, mHeadingFontSize, Font.NORMAL, mColorAccent);
+            Chunk mOrderIdChunk = new Chunk("Order No:", mOrderIdFont);
+            Paragraph mOrderIdParagraph = new Paragraph(mOrderIdChunk);
+            document.add(mOrderIdParagraph);
+
+            Font mOrderIdValueFont = new Font(urName, mValueFontSize, Font.NORMAL, BaseColor.BLACK);
+            Chunk mOrderIdValueChunk = new Chunk("#123123", mOrderIdValueFont);
+            Paragraph mOrderIdValueParagraph = new Paragraph(mOrderIdValueChunk);
+            document.add(mOrderIdValueParagraph);
+
+            // Adding Line Breakable Space....
+            document.add(new Paragraph(""));
+            // Adding Horizontal Line...
+            document.add(new Chunk(lineSeparator));
+            // Adding Line Breakable Space....
+            document.add(new Paragraph(""));
+
+            // Fields of Order Details...
+            Font mOrderDateFont = new Font(urName, mHeadingFontSize, Font.NORMAL, mColorAccent);
+            Chunk mOrderDateChunk = new Chunk("Order Date:", mOrderDateFont);
+            Paragraph mOrderDateParagraph = new Paragraph(mOrderDateChunk);
+            document.add(mOrderDateParagraph);
+
+            Font mOrderDateValueFont = new Font(urName, mValueFontSize, Font.NORMAL, BaseColor.BLACK);
+            Chunk mOrderDateValueChunk = new Chunk("06/07/2017", mOrderDateValueFont);
+            Paragraph mOrderDateValueParagraph = new Paragraph(mOrderDateValueChunk);
+            document.add(mOrderDateValueParagraph);
+
+            document.add(new Paragraph(""));
+            document.add(new Chunk(lineSeparator));
+            document.add(new Paragraph(""));
+
+            // Fields of Order Details...
+            Font mOrderAcNameFont = new Font(urName, mHeadingFontSize, Font.NORMAL, mColorAccent);
+            Chunk mOrderAcNameChunk = new Chunk("Account Name:", mOrderAcNameFont);
+            Paragraph mOrderAcNameParagraph = new Paragraph(mOrderAcNameChunk);
+            document.add(mOrderAcNameParagraph);
+
+            Font mOrderAcNameValueFont = new Font(urName, mValueFontSize, Font.NORMAL, BaseColor.BLACK);
+            Chunk mOrderAcNameValueChunk = new Chunk("Pratik Butani", mOrderAcNameValueFont);
+            Paragraph mOrderAcNameValueParagraph = new Paragraph(mOrderAcNameValueChunk);
+            document.add(mOrderAcNameValueParagraph);
+
+            document.add(new Paragraph(""));
+            document.add(new Chunk(lineSeparator));
+            document.add(new Paragraph(""));
+
+            document.close();
+
+            Toast.makeText(SummaryReportActivity.this, "Created... :)", Toast.LENGTH_SHORT).show();
+
+            FileUtils.openFile(SummaryReportActivity.this, new File(dest));
+
+        } catch (IOException | DocumentException ie) {
+            Log.d("createPdf: Error " , ie.getLocalizedMessage());
+        } catch (ActivityNotFoundException ae) {
+            Toast.makeText(SummaryReportActivity.this, "No application found to open this file.", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     @Override
     public void onDialogDateSet(String tag, int year, int month, int dayOfMonth) {
         Calendar calendar = Calendar.getInstance();
@@ -345,6 +490,21 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
             tvStartDate.setText(dateFormat.format(calendar.getTime()));
         } else if (tag.equals(END_DATE_TAG)) {
             tvEndDate.setText(dateFormat.format(calendar.getTime()));
+        }
+    }
+
+    public  boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else {
+            return true;
         }
     }
 }
