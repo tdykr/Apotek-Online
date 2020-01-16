@@ -1,15 +1,14 @@
 package adrean.thesis.puocc;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 public class OwnerMain extends AppCompatActivity {
 
@@ -36,6 +35,14 @@ public class OwnerMain extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent in = new Intent(OwnerMain.this,AddApotekerActivity.class);
+                startActivity(in);
+            }
+        });
+
+        trxList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(OwnerMain.this,TransactionActivity.class);
                 startActivity(in);
             }
         });

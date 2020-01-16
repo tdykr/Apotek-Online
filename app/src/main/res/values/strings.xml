@@ -53,6 +53,7 @@
     <string name="name">Name</string>
     <string name="transfer">Transfer</string>
     <string name="upload_receipt">Upload Receipt</string>
+    <string name="upload">Upload</string>
     <string name="profile">Profile</string>
     <string name="add_apoteker">Add Apoteker</string>
     <string name="list_transaction">List Transaction</string>

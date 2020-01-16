@@ -3,16 +3,11 @@ package adrean.thesis.puocc;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -27,7 +22,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,6 +63,8 @@ public class TransactionActivity extends AppCompatActivity {
                     String trxDate = map.get("DATE");
                     intent.putExtra("TRANS_ID",trxId);
                     intent.putExtra("DATE",trxDate);
+                    intent.putExtra("STATUS",map.get("STATUS"));
+                    intent.putExtra("TOTAL_PRICE",map.get("TOTAL_PRICE"));
                     if(billImgIntent != null && !billImgIntent.equals("null") && !billImgIntent.isEmpty()) {
                         intent.putExtra("BILL_IMG", billImgIntent);
                     }
@@ -145,6 +141,7 @@ public class TransactionActivity extends AppCompatActivity {
                 String id = jo.getString("ID");
                 String createdBy = jo.getString("CREATED_BY");
                 String createdDate = jo.getString("CREATED_DT");
+                String totPrice = jo.getString("TOTAL_PRICE");
                 String status = jo.getString("STATUS");
                 String billImg = jo.getString("BILL_IMG");
 
@@ -154,6 +151,7 @@ public class TransactionActivity extends AppCompatActivity {
                 listTrx.put("CREATED_DT",createdDate);
                 listTrx.put("STATUS",status);
                 listTrx.put("BILL_IMG",billImg);
+                listTrx.put("TOTAL_PRICE",totPrice);
 
                 Log.d("tag", String.valueOf(listTrx));
 
@@ -166,8 +164,8 @@ public class TransactionActivity extends AppCompatActivity {
 
         ListAdapter adapter = new SimpleAdapter(
                 TransactionActivity.this, list, R.layout.list_transaction_admin,
-                new String[]{"ID","CREATED_BY","CREATED_DT","STATUS"},
-                new int[]{R.id.id, R.id.createdBy, R.id.createdDate, R.id.status});
+                new String[]{"ID","CREATED_BY","CREATED_DT","STATUS","TOTAL_PRICE"},
+                new int[]{R.id.id, R.id.createdBy, R.id.createdDate, R.id.status,R.id.trxPrice});
 
         listMed.setAdapter(adapter);
     }

@@ -32,7 +32,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import adrean.thesis.puocc.FileUtils;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -70,7 +69,6 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
     private ArrayList<String> reportList = new ArrayList<>();
     private ArrayList<String> yearList = new ArrayList<>();
     private ArrayList<String> chartList = new ArrayList<>();
-
 
     private Spinner spinnerReport;
     private Spinner spinnerChart;
