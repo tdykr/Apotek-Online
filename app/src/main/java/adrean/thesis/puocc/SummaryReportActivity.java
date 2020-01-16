@@ -1,45 +1,75 @@
 package adrean.thesis.puocc;
 
 import android.app.ProgressDialog;
-import android.os.AsyncTask;
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
-public class SummaryReportActivity extends AppCompatActivity {
+import adrean.thesis.puocc.Fragment.DatePickerFragment;
 
-    ArrayList<String> reportList = new ArrayList<>();
-    ArrayList<String> yearList = new ArrayList<>();
-    ArrayList<String> chartList = new ArrayList<>();
-    String year;
+public class SummaryReportActivity extends AppCompatActivity implements DatePickerFragment.DialogDateListener {
 
-    Spinner spinnerYear;
-    ArrayAdapter<String> yearAdapter;
-    String JSON_STRING;
-    Toolbar toolbar;
+    final String START_DATE_TAG = "StartDate";
+    final String END_DATE_TAG = "EndDate";
+
+    private ArrayList<String> reportList = new ArrayList<>();
+    private ArrayList<String> yearList = new ArrayList<>();
+    private ArrayList<String> chartList = new ArrayList<>();
+
+
+    private Spinner spinnerReport;
+    private Spinner spinnerChart;
+    private ImageButton btnStartDate;
+    private ImageButton btnEndDate;
+    private TextView tvStartDate;
+    private TextView tvEndDate;
+    private ImageView imgDownload;
+    private Button btnGenerate;
+    private String JSON_STRING;
+    private Toolbar toolbar;
+
+    BarChart chart;
+    PieChart pieChart;
+    ArrayList<BarEntry> NoOfEmp2 = new ArrayList<BarEntry>();
+    ArrayList<Entry> NoOfEmp = new ArrayList<Entry>();
+    ArrayList<String> year = new ArrayList<String>();
+    PieDataSet dataSet = new PieDataSet(NoOfEmp, "Number Of Employees");
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,33 +81,109 @@ public class SummaryReportActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        Spinner spinnerReport = findViewById(R.id.sp_report_selection);
-        spinnerYear = findViewById(R.id.sp_year);
-        final Spinner spinnerChart = findViewById(R.id.sp_chart_type);
-        Button btnGenerate = findViewById(R.id.btn_generate);
-        Button btnDownload = findViewById(R.id.btn_download);
+        spinnerReport = findViewById(R.id.sp_report_selection);
+        spinnerChart = findViewById(R.id.sp_chart_type);
+        btnGenerate = findViewById(R.id.btn_generate);
+        imgDownload = findViewById(R.id.img_download);
+        btnStartDate = findViewById(R.id.btn_start_date);
+        btnEndDate = findViewById(R.id.btn_end_date);
+        tvStartDate = findViewById(R.id.txt_start_date);
+        tvEndDate = findViewById(R.id.txt_end_date);
+        pieChart = findViewById(R.id.piechart);
+        chart = findViewById(R.id.barchart);
 
-        reportList.add("Report");
-        yearList.add("Year");
-        chartList.add("Chart");
+        reportList.add("-- Select Report --");
+        yearList.add("-- Select Year --");
+        chartList.add("-- Select Chart --");
 
         ArrayAdapter<String> reportAdapter = new ArrayAdapter<>(SummaryReportActivity.this,
                 android.R.layout.simple_spinner_item, reportList);
-//        yearAdapter = new ArrayAdapter<>(SummaryReportActivity.this,
-//                android.R.layout.simple_spinner_item, yearList);
+
         ArrayAdapter<String> chartAdapter = new ArrayAdapter<>(SummaryReportActivity.this,
                 android.R.layout.simple_spinner_item, chartList);
 
         spinnerReport.setAdapter(reportAdapter);
-//        spinnerYear.setAdapter(yearAdapter);
         spinnerChart.setAdapter(chartAdapter);
         getListYear();
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spinnerChart.getSelectedItemPosition() ;
+                spinnerChart.getSelectedItemPosition();
             }
         });
+
+        btnStartDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getSupportFragmentManager(), START_DATE_TAG);
+            }
+        });
+
+        btnEndDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getSupportFragmentManager(), END_DATE_TAG);
+            }
+        });
+
+
+
+
+        NoOfEmp.add(new Entry(945f, 0));
+        NoOfEmp.add(new Entry(1040f, 1));
+        NoOfEmp.add(new Entry(1133f, 2));
+        NoOfEmp.add(new Entry(1240f, 3));
+        NoOfEmp.add(new Entry(1369f, 4));
+        NoOfEmp.add(new Entry(1487f, 5));
+        NoOfEmp.add(new Entry(1501f, 6));
+        NoOfEmp.add(new Entry(1645f, 7));
+        NoOfEmp.add(new Entry(1578f, 8));
+        NoOfEmp.add(new Entry(1695f, 9));
+
+
+        year.add("2008");
+        year.add("2009");
+        year.add("2010");
+        year.add("2011");
+        year.add("2012");
+        year.add("2013");
+        year.add("2014");
+        year.add("2015");
+        year.add("2016");
+        year.add("2017");
+
+
+
+
+
+        NoOfEmp2.add(new BarEntry(945f, 0));
+        NoOfEmp2.add(new BarEntry(1040f, 1));
+        NoOfEmp2.add(new BarEntry(1133f, 2));
+        NoOfEmp2.add(new BarEntry(1240f, 3));
+        NoOfEmp2.add(new BarEntry(1369f, 4));
+        NoOfEmp2.add(new BarEntry(1487f, 5));
+        NoOfEmp2.add(new BarEntry(1501f, 6));
+        NoOfEmp2.add(new BarEntry(1645f, 7));
+        NoOfEmp2.add(new BarEntry(1578f, 8));
+        NoOfEmp2.add(new BarEntry(1695f, 9));
+
+
+
+        year.add("2008");
+        year.add("2009");
+        year.add("2010");
+        year.add("2011");
+        year.add("2012");
+        year.add("2013");
+        year.add("2014");
+        year.add("2015");
+        year.add("2016");
+        year.add("2017");
+
+        createBarChart();
+        createPieChart();
     }
 
     @Override
@@ -139,9 +245,9 @@ public class SummaryReportActivity extends AppCompatActivity {
             e.printStackTrace();
         }
 
-        yearAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, data);
+       /* yearAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, data);
 
-        spinnerYear.setAdapter(yearAdapter);
+        spinnerYear.setAdapter(yearAdapter);*/
     }
 
     private void SalesReport() {
@@ -181,7 +287,8 @@ public class SummaryReportActivity extends AppCompatActivity {
                     if (response.equals("1")) {
                        /* saveUser(userId, userPass, userName, userEmail, userAddress, userPhone,
                                 userRole, response, message);
-                    }*/}
+                    }*/
+                    }
                     if (response.equals("1") && userRole.equals("admin")) {
                         Intent apotekerAct = new Intent(SummaryReportActivity.this, ApotekerMain.class);//
                         startActivity(apotekerAct);
@@ -189,7 +296,7 @@ public class SummaryReportActivity extends AppCompatActivity {
                     } else if (response.equals("1") && userRole.equals("user")) {
                         Intent customerAct = new Intent(SummaryReportActivity.this, CustomerMain.class);
                         startActivity(customerAct);
-                    }else if(response.equals("1") && userRole.equals("owner")){
+                    } else if (response.equals("1") && userRole.equals("owner")) {
                         Intent ownerAct = new Intent(SummaryReportActivity.this, OwnerMain.class);
                         startActivity(ownerAct);
                     }
@@ -203,7 +310,7 @@ public class SummaryReportActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String, String> params = new HashMap<>();
-                params.put("YEAR", year);
+                //params.put("YEAR", year);
 
                 RequestHandler rh = new RequestHandler();
                 String res = rh.sendPostRequest(phpConf.URL_GET_CHART_DATA, params);
@@ -213,5 +320,31 @@ public class SummaryReportActivity extends AppCompatActivity {
 
         SalesReport add = new SalesReport();
         add.execute();
+    }
+
+    private void createPieChart(){
+        PieData data = new PieData(year, dataSet);
+        pieChart.setData(data);
+        dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieChart.animateXY(5000, 5000);
+    }
+    private void createBarChart(){
+        BarDataSet bardataset = new BarDataSet(NoOfEmp2, "No Of Employee");
+        chart.animateY(5000);
+        BarData data = new BarData(year, bardataset);
+        bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
+        chart.setData(data);
+    }
+    @Override
+    public void onDialogDateSet(String tag, int year, int month, int dayOfMonth) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, dayOfMonth);
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+        if (tag.equals(START_DATE_TAG)) {
+            tvStartDate.setText(dateFormat.format(calendar.getTime()));
+        } else if (tag.equals(END_DATE_TAG)) {
+            tvEndDate.setText(dateFormat.format(calendar.getTime()));
+        }
     }
 }
