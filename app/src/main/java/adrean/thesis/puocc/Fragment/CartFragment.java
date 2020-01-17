@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -61,6 +62,7 @@ public class CartFragment extends Fragment{
     String userName;
     ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     View view1;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
     private int itemCount=0;
 
 
@@ -147,6 +149,7 @@ public class CartFragment extends Fragment{
                 medName = jo.getString("MED_NAME");
                 medCategory = jo.getString("CATEGORY");
                 medPrice = jo.getString("PRICE");
+
                 medQt = jo.getString("QUANTITY");
                 medDesc = jo.getString("DESCRIPTION");
                 medPict = encodedStringImage(jo.getString("MEDICINE_PICT"));

@@ -26,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,6 +34,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
 
     private ListView listMed;
     private String JSON_STRING;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
     Toolbar toolbar;
 
     @Override
@@ -66,6 +68,8 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                 String category = jo.getString("CATEGORY");
                 String medName = jo.getString("MEDICINE_NAME");
                 String medPrice = jo.getString("PRICE");
+                double dbMedPrice = Double.parseDouble(medPrice);
+                medPrice=getString(R.string.rupiah,df.format(dbMedPrice));
                 String medQuantity = jo.getString("QUANTITY");
                 Bitmap medImg = encodedStringImage(jo.getString("MEDICINE_PICT"));
 
@@ -75,7 +79,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                 medicine.put("ID", id);
                 medicine.put("CATEGORY", category);
                 medicine.put("MEDICINE_NAME", medName);
-                medicine.put("PRICE", "Rp." + medPrice);
+                medicine.put("PRICE", medPrice);
                 medicine.put("QUANTITY", medQuantity + " Pcs");
                 medicine.put("MEDICINE_PICT", imgUri);
 

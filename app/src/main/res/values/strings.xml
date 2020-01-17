@@ -40,7 +40,7 @@
     <string name="have_different_address_nclick_here">Have different address ? Click here</string>
     <string name="place_order">Place Order</string>
     <string name="amount">Amount</string>
-    <string name="total">Total (Rp)</string>
+    <string name="total">Total</string>
     <string name="order_item">Order Item</string>
     <string name="sign_out">Sign Out</string>
     <string name="user_detail">User Detail</string>
@@ -62,5 +62,16 @@
     <string name="download">Download</string>
     <string name="start_date">Start Date</string>
     <string name="end_date">End Date</string>
+    <string name="gross_income">Gross Income</string>
+    <string name="total_transaction">Total Transaction</string>
+    <string name="total_prescription_transaction">Total Prescription Transaction</string>
+    <string name="total_finished_medicine_transaction">Total Finished Medicine Transaction</string>
+    <string name="total_quantity_of_sold_medicine">Total Quantity of Sold Medicine</string>
+    <string name="most_bought_medicine">Most Bought Medicine</string>
+    <string name="most_bought_medicine_category">Most Bought Medicine Category</string>
+    <string name="least_bought_medicine">Least Bought Medicine</string>
+    <string name="least_bought_medicine_category">Least Bought Medicine Category</string>
+    <string name="gross_income_report">Gross Income Report</string>
+    <string name="rupiah">Rp %1$s</string>
 
 </resources>

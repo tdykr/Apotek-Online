@@ -3,7 +3,6 @@ package adrean.thesis.puocc;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -19,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +32,6 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import adrean.thesis.puocc.FileUtils;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -53,11 +52,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Locale;
 
 import adrean.thesis.puocc.Fragment.DatePickerFragment;
@@ -68,8 +67,10 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
     final String END_DATE_TAG = "EndDate";
 
     private ArrayList<String> reportList = new ArrayList<>();
-    private ArrayList<String> yearList = new ArrayList<>();
+
     private ArrayList<String> chartList = new ArrayList<>();
+
+
 
 
     private Spinner spinnerReport;
@@ -82,13 +83,19 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
     private Button btnGenerate;
     private String JSON_STRING;
     private Toolbar toolbar;
+    private LinearLayout llGross, llSales;
 
-    BarChart chart;
+    private TextView tvTotalTransaction, tvIncome, tvTotalBought, tvLeastBought, tvLeastBoughtCat;
+
+    private String startDate, endDate;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
+
+    BarChart barChart;
     PieChart pieChart;
-    ArrayList<BarEntry> NoOfEmp2 = new ArrayList<BarEntry>();
-    ArrayList<Entry> NoOfEmp = new ArrayList<Entry>();
-    ArrayList<String> year = new ArrayList<String>();
-    PieDataSet dataSet = new PieDataSet(NoOfEmp, "Number Of Employees");
+
+    ArrayList<BarEntry> listTotalBar = new ArrayList<BarEntry>();
+    ArrayList<Entry> listTotalPie = new ArrayList<Entry>();
+    ArrayList<String> listTransaction = new ArrayList<String>();
 
 
     @Override
@@ -97,11 +104,13 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         setContentView(R.layout.activity_summary_report);
 
         toolbar = findViewById(R.id.toolbar);
-        toolbar.setTitle("Summary Report");
+        toolbar.setTitle("Sales Report");
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        llGross = findViewById(R.id.ll_gross);
+        llSales = findViewById(R.id.ll_sales);
         spinnerReport = findViewById(R.id.sp_report_selection);
         spinnerChart = findViewById(R.id.sp_chart_type);
         btnGenerate = findViewById(R.id.btn_generate);
@@ -111,11 +120,22 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         tvStartDate = findViewById(R.id.txt_start_date);
         tvEndDate = findViewById(R.id.txt_end_date);
         pieChart = findViewById(R.id.piechart);
-        chart = findViewById(R.id.barchart);
+        barChart = findViewById(R.id.barchart);
+        tvTotalTransaction = findViewById(R.id.txt_total_finished_transaction);
+        tvIncome = findViewById(R.id.txt_gross_income);
+        tvTotalBought = findViewById(R.id.txt_total_quantity_sold_medicine);
+        tvLeastBought = findViewById(R.id.txt_least_bought_medicine);
+        tvLeastBoughtCat = findViewById(R.id.txt_least_bought_medicine_cateogry);
+
+        llSales.setVisibility(View.GONE);
+        llGross.setVisibility(View.GONE);
 
         reportList.add("-- Select Report --");
-        yearList.add("-- Select Year --");
+        reportList.add("Sales Report");
+        reportList.add("Gross Income Report");
         chartList.add("-- Select Chart --");
+        chartList.add("Bar Chart");
+        chartList.add("Pie Chart");
 
         ArrayAdapter<String> reportAdapter = new ArrayAdapter<>(SummaryReportActivity.this,
                 android.R.layout.simple_spinner_item, reportList);
@@ -125,11 +145,29 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
 
         spinnerReport.setAdapter(reportAdapter);
         spinnerChart.setAdapter(chartAdapter);
-        getListYear();
+        //getListYear();
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                spinnerChart.getSelectedItemPosition();
+                //check spinner, start date, end date
+                if (spinnerReport.getSelectedItemPosition()==1){
+                    if (checkDate() || spinnerChart.getSelectedItemPosition()!=0) {
+                        sales();
+                        if(spinnerChart.getSelectedItemPosition()==1){
+                            barChart.setVisibility(View.VISIBLE);
+                            pieChart.setVisibility(View.GONE);
+                        }else{
+                            pieChart.setVisibility(View.VISIBLE);
+                            barChart.setVisibility(View.GONE);
+                        }
+                    }else if (spinnerChart.getSelectedItemPosition()==0){
+                        Toast.makeText(SummaryReportActivity.this, "Please choose chart type!", Toast.LENGTH_SHORT).show();
+                    }
+                }else if(spinnerReport.getSelectedItemPosition()==2){
+                    if (checkDate()) gross();
+                }else{
+                    Toast.makeText(SummaryReportActivity.this, "Please choose report to be generated!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -159,52 +197,6 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
             }
         });
 
-        NoOfEmp.add(new Entry(945f, 0));
-        NoOfEmp.add(new Entry(1040f, 1));
-        NoOfEmp.add(new Entry(1133f, 2));
-        NoOfEmp.add(new Entry(1240f, 3));
-        NoOfEmp.add(new Entry(1369f, 4));
-        NoOfEmp.add(new Entry(1487f, 5));
-        NoOfEmp.add(new Entry(1501f, 6));
-        NoOfEmp.add(new Entry(1645f, 7));
-        NoOfEmp.add(new Entry(1578f, 8));
-        NoOfEmp.add(new Entry(1695f, 9));
-
-        year.add("2008");
-        year.add("2009");
-        year.add("2010");
-        year.add("2011");
-        year.add("2012");
-        year.add("2013");
-        year.add("2014");
-        year.add("2015");
-        year.add("2016");
-        year.add("2017");
-
-        NoOfEmp2.add(new BarEntry(945f, 0));
-        NoOfEmp2.add(new BarEntry(1040f, 1));
-        NoOfEmp2.add(new BarEntry(1133f, 2));
-        NoOfEmp2.add(new BarEntry(1240f, 3));
-        NoOfEmp2.add(new BarEntry(1369f, 4));
-        NoOfEmp2.add(new BarEntry(1487f, 5));
-        NoOfEmp2.add(new BarEntry(1501f, 6));
-        NoOfEmp2.add(new BarEntry(1645f, 7));
-        NoOfEmp2.add(new BarEntry(1578f, 8));
-        NoOfEmp2.add(new BarEntry(1695f, 9));
-
-        year.add("2008");
-        year.add("2009");
-        year.add("2010");
-        year.add("2011");
-        year.add("2012");
-        year.add("2013");
-        year.add("2014");
-        year.add("2015");
-        year.add("2016");
-        year.add("2017");
-
-        createBarChart();
-        createPieChart();
     }
 
     @Override
@@ -217,63 +209,68 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         return super.onOptionsItemSelected(item);
     }
 
-    private void getListYear() {
-        class GetJSON extends AsyncTask<Void, Void, String> {
+    private boolean checkDate(){
+        if (startDate==null || startDate.isEmpty()){
+            Toast.makeText(SummaryReportActivity.this, "Please input the start date!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else if (endDate==null || endDate.isEmpty()){
+            Toast.makeText(SummaryReportActivity.this, "Please input the end date!", Toast.LENGTH_SHORT).show();
+            return false;
+        }else return true;
+    }
 
+    private void sales() {
+        class Sales extends AsyncTask<Void, Void, String> {
             ProgressDialog loading;
-
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(SummaryReportActivity.this, "Fetching Data", "Please Wait...", false, false);
+                loading = ProgressDialog.show(SummaryReportActivity.this, "Loading Data...",
+                        "Please Wait...", false, false);
             }
 
             @Override
             protected void onPostExecute(String s) {
                 super.onPostExecute(s);
                 loading.dismiss();
-                JSON_STRING = s;
-                getYear();
-            }
+                try {
+                    listTransaction.clear();
+                    listTotalPie.clear();
+                    listTotalBar.clear();
+                    Log.d("Json Sales", s);
+                    JSONObject jsonPost = new JSONObject(s);
+                    JSONArray cast = jsonPost.getJSONArray("result");
+                    for (int i = 0; i < cast.length(); i++) {
+                        JSONObject c = cast.getJSONObject(i);
 
+                        listTotalPie.add(new Entry(Float.parseFloat(c.getString("TOTAL")), i));
+                        listTransaction.add(c.getString("TRX_TYPE"));
+                        listTotalBar.add(new BarEntry(Float.parseFloat(c.getString("TOTAL")), i));
+                    }
+
+                    llSales.setVisibility(View.VISIBLE);
+                    llGross.setVisibility(View.GONE);
+                    createBarChart();
+                    createPieChart();
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
             @Override
-            protected String doInBackground(Void... params) {
+            protected String doInBackground(Void... v) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(phpConf.URL_YEAR_LIST);
-                return s;
+                String res = rh.sendGetRequest(phpConf.URL_GET_CHART_DATA);
+                return res;
             }
         }
-        GetJSON gj = new GetJSON();
-        gj.execute();
+        Sales add = new Sales();
+        add.execute();
     }
 
-    private void getYear() {
-        JSONObject jsonObject = null;
-        List<String> data = new ArrayList<>();
-        data.add("--Select Year--");
-        try {
-            jsonObject = new JSONObject(JSON_STRING);
-            JSONArray result = jsonObject.getJSONArray("result");
+    private void gross() {
 
-            for (int i = 0; i < result.length(); i++) {
-                JSONObject jo = result.getJSONObject(i);
-                String category = jo.getString("YEAR");
-
-                data.add(category);
-            }
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
-       /* yearAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, data);
-
-        spinnerYear.setAdapter(yearAdapter);*/
-    }
-
-    private void SalesReport() {
-
-        class SalesReport extends AsyncTask<Void, Void, String> {
+        class Gross extends AsyncTask<Void, Void, String> {
 
             ProgressDialog loading;
 
@@ -289,39 +286,30 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
 
                 loading.dismiss();
                 try {
-                    Log.d("Json Login", s);
+                    Log.d("Json Gross", s);
                     JSONObject jsonObject = new JSONObject(s);
                     JSONArray data = jsonObject.getJSONArray("result");
 
                     JSONObject jo = data.getJSONObject(0);
 
                     Log.d("tagJsonObject", jo.toString());
-                    String userId = jo.getString("ID");
-                    String userName = jo.getString("USERNAME");
-                    String userEmail = jo.getString("EMAIL");
-                    String userAddress = jo.getString("ADDRESS");
-                    String userPhone = jo.getString("PHONE");
-                    String userRole = jo.getString("ROLE");
-                    String response = jo.getString("response");
-                    String message = jo.getString("message");
+                    String transactionTotal = jo.getString("TOTAL_TRANSACTION");
+                    String income = jo.getString("INCOME");
+                    String totalBought = jo.getString("TOTAL_BOUGHT");
+                    String leastBought = jo.getString("LEAST_BOUGHT");
+                    String leastBoughtCat = jo.getString("LEAST_BOUGHT_CAT");
 
-                    if (response.equals("1")) {
-                       /* saveUser(userId, userPass, userName, userEmail, userAddress, userPhone,
-                                userRole, response, message);
-                    }*/
-                    }
-                    if (response.equals("1") && userRole.equals("admin")) {
-                        Intent apotekerAct = new Intent(SummaryReportActivity.this, ApotekerMain.class);//
-                        startActivity(apotekerAct);
+                    double dbIncome = Double.parseDouble(income);
+                    income=getString(R.string.rupiah,df.format(dbIncome));
 
-                    } else if (response.equals("1") && userRole.equals("user")) {
-                        Intent customerAct = new Intent(SummaryReportActivity.this, CustomerMain.class);
-                        startActivity(customerAct);
-                    } else if (response.equals("1") && userRole.equals("owner")) {
-                        Intent ownerAct = new Intent(SummaryReportActivity.this, OwnerMain.class);
-                        startActivity(ownerAct);
-                    }
-                    Toast.makeText(SummaryReportActivity.this, message, Toast.LENGTH_SHORT).show();
+                    tvTotalTransaction.setText(transactionTotal);
+                    tvIncome.setText(income);
+                    tvTotalBought.setText(totalBought);
+                    tvLeastBought.setText(leastBought);
+                    tvLeastBoughtCat.setText(leastBoughtCat);
+
+                    llSales.setVisibility(View.GONE);
+                    llGross.setVisibility(View.VISIBLE);
 
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -331,30 +319,32 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String, String> params = new HashMap<>();
-                //params.put("YEAR", year);
+                /*params.put("STARTDATE", startDate);
+                params.put("ENDTDATE", endDate);*/
 
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(phpConf.URL_GET_CHART_DATA, params);
+                String res = rh.sendGetRequest(phpConf.URL_SUMMARY);
                 return res;
             }
         }
 
-        SalesReport add = new SalesReport();
+        Gross add = new Gross();
         add.execute();
     }
 
     private void createPieChart(){
-        PieData data = new PieData(year, dataSet);
+        PieDataSet dataSet = new PieDataSet(listTotalPie, "Sales Comparison");
+        PieData data = new PieData(listTransaction, dataSet);
         pieChart.setData(data);
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        pieChart.animateXY(5000, 5000);
+        pieChart.animateXY(3000, 3000);
     }
     private void createBarChart(){
-        BarDataSet bardataset = new BarDataSet(NoOfEmp2, "No Of Employee");
-        chart.animateY(5000);
-        BarData data = new BarData(year, bardataset);
+        BarDataSet bardataset = new BarDataSet(listTotalBar, "Sales Comparison");
+        barChart.animateY(3000);
+        BarData data = new BarData(listTransaction, bardataset);
         bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
-        chart.setData(data);
+        barChart.setData(data);
     }
 
     private void printPdf() throws FileNotFoundException, DocumentException {
@@ -469,7 +459,7 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
 
             document.close();
 
-            Toast.makeText(SummaryReportActivity.this, "Created... :)", Toast.LENGTH_SHORT).show();
+            Toast.makeText(SummaryReportActivity.this, "PDF is created... :)", Toast.LENGTH_SHORT).show();
 
             FileUtils.openFile(SummaryReportActivity.this, new File(dest));
 
@@ -488,8 +478,10 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
 
         if (tag.equals(START_DATE_TAG)) {
             tvStartDate.setText(dateFormat.format(calendar.getTime()));
+            startDate=dateFormat.format(calendar.getTime());
         } else if (tag.equals(END_DATE_TAG)) {
             tvEndDate.setText(dateFormat.format(calendar.getTime()));
+            endDate=dateFormat.format(calendar.getTime());
         }
     }
 

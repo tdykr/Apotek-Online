@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -27,6 +28,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +37,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
     String categoryId,JSON_STRING;
     ListView listMed;
     Toolbar toolbar;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +73,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
                 String category = jo.getString("CATEGORY");
                 String medName = jo.getString("MEDICINE_NAME");
                 String medPrice = jo.getString("PRICE");
+
                 String medQuantity = jo.getString("QUANTITY");
                 Bitmap medImg = encodedStringImage(jo.getString("MEDICINE_PICT"));
 

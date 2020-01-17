@@ -27,6 +27,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -46,6 +47,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
     ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     private UserModel userModel;
     private UserPreference mUserPreference;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
 
     public HistoryFragment(){
 
@@ -79,6 +81,8 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
                 String status = jo.getString("STATUS");
                 String createdDt = jo.getString("DATE");
                 String amount = jo.getString("TOTAL_PRICE");
+                double dbAmount = Double.parseDouble(amount);
+                amount =getString(R.string.rupiah,df.format(dbAmount));
                 billImg = jo.getString("TF_IMG");
 
                 HashMap<String,Object> trx = new HashMap<>();

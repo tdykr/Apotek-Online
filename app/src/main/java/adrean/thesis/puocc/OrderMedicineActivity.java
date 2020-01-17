@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.content.SharedPreferences;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -38,6 +39,8 @@ public class OrderMedicineActivity extends AppCompatActivity {
     UserPreference mUserPreference;
     String userName;
     Toolbar toolbar;
+    double dbTotal;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,9 @@ public class OrderMedicineActivity extends AppCompatActivity {
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent in = getIntent();
+        Map<String, String> data = (HashMap<String, String>) in.getSerializableExtra("data");
 
         ordAddress = (TextView) findViewById(R.id.address);
         confMedName = (TextView) findViewById(R.id.confMedName);
@@ -65,14 +71,16 @@ public class OrderMedicineActivity extends AppCompatActivity {
 
         ordAddress.setText(userAddress);
 
-        Intent in = getIntent();
-        Map<String, String> data = (HashMap<String, String>) in.getSerializableExtra("data");
+
 
         qtDb = data.get("QUANTITY");
         medId = data.get("ID");
 
         Log.d("MedicineIdCheck", "onCreate: " + medId);
         confMedName.setText(data.get("MEDICINE_NAME"));
+
+       /* double dbMedPrice = Double.parseDouble(data.get("PRICE"));
+        String medPrice=getString(R.string.rupiah,df.format(dbMedPrice));*/
         ordPrice.setText(data.get("PRICE"));
         ordTotal.setText("0");
         final double price= Double.parseDouble(data.get("PRICE"));
@@ -90,8 +98,9 @@ public class OrderMedicineActivity extends AppCompatActivity {
             public void onTextChanged(CharSequence s, int start,
                                       int before, int count) {
                 if (s.length() != 0){
-                    double total = price * Double.parseDouble(s.toString().trim());
-                    ordTotal.setText(Double.toString(total));
+                    dbTotal = price * Double.parseDouble(s.toString().trim());
+                    String medPrice=getString(R.string.rupiah,df.format(dbTotal));
+                    ordTotal.setText(medPrice);
                 }else{
                     ordTotal.setText("0");
                 }
@@ -109,7 +118,6 @@ public class OrderMedicineActivity extends AppCompatActivity {
                     addCart();
                 } else{
                     Toast.makeText(OrderMedicineActivity.this, "Item Out of Stock! Available only " + qtDb + " item(s).", Toast.LENGTH_SHORT).show();
-
                 }
             }
         });

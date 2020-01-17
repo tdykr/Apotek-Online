@@ -19,6 +19,7 @@ import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,6 +36,7 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
     UserModel userModel;
     ListAdapter adapter;
     String id;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +83,9 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
         listItem.setAdapter(adapter);
 
         Log.d("totalPrice", String.valueOf(totalPrice));
-        totPrice.setText(String.valueOf(totalPrice));
+        String formattedTotalPrice=getString(R.string.rupiah,df.format(totalPrice));
+
+        totPrice.setText(formattedTotalPrice);
         custName.setText(userModel.getUserName());
         address.setText(userModel.getUserAddress());
 

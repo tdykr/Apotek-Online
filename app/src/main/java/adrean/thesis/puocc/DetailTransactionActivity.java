@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -54,6 +55,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
     private Bitmap bitmap;
     private ImageView targetImage;
     Toolbar toolbar;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -215,6 +217,9 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 medName = jo.getString("MED_NAME");
                 medCategory = jo.getString("CATEGORY");
                 medPrice = jo.getString("PRICE");
+                double dbMedPrice = Double.parseDouble(medPrice);
+                medPrice=getString(R.string.rupiah,df.format(dbMedPrice));
+
                 medQt = jo.getString("QUANTITY");
                 medDesc = jo.getString("DESCRIPTION");
                 medPict = encodedStringImage(jo.getString("MEDICINE_PICT"));
@@ -225,7 +230,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 medicine.put("CART_ID",cartId);
                 medicine.put("MED_NAME",medName);
                 medicine.put("CATEGORY",medCategory);
-                medicine.put("PRICE","Rp. " + medPrice);
+                medicine.put("PRICE",  medPrice);
                 medicine.put("DESCRIPTION",medDesc);
                 medicine.put("QUANTITY",medQt);
                 medicine.put("MEDICINE_PICT",imgUri);
