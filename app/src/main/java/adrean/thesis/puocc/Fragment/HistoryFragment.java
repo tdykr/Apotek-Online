@@ -3,17 +3,14 @@ package adrean.thesis.puocc.Fragment;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +29,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import adrean.thesis.puocc.DetailTransactionActivity;
-import adrean.thesis.puocc.MedicineDetailActivity;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
 import adrean.thesis.puocc.UserModel;
@@ -163,6 +159,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
         String trxDate = map.get("DATE");
         intent.putExtra("TRANS_ID",trxId);
         intent.putExtra("DATE",trxDate);
+        intent.putExtra("TOTAL_PRICE",map.get("PRICE"));
         if(billImgIntent != null && !billImgIntent.equals("null") && !billImg.isEmpty()) {
             intent.putExtra("BILL_IMG", billImgIntent);
         }

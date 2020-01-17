@@ -3,11 +3,10 @@ package adrean.thesis.puocc;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
@@ -68,17 +67,17 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
             String price = mapData.get("PRICE");
             String med = mapData.get("MED_NAME") + "\n";
             String cartId = mapData.get("CART_ID");
+            String quantity = mapData.get("QUANTITY");
 
             listCartId.add(cartId);
-            Log.d("price", price);
-            totalPrice += Integer.parseInt(price);
+            totalPrice += Integer.parseInt(price)*Integer.parseInt(quantity);
             totalMedicine += med;
         }
 
         adapter = new SimpleAdapter(
                 this, data, R.layout.list_detail_trx_conf,
-                new String[]{"MED_NAME",},
-                new int[]{R.id.medName});
+                new String[]{"MED_NAME","CATEGORY","PRICE"},
+                new int[]{R.id.medName,R.id.medCategory,R.id.medQuantity});
 
         listItem.setAdapter(adapter);
 

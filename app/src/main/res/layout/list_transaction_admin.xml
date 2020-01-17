@@ -41,6 +41,13 @@
                 android:drawablePadding="10dp"
                 tools:text="Create By" />
 
+            <TextView
+                android:id="@+id/trxPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableStart="@drawable/ic_cash"
+                android:drawablePadding="10dp"
+                tools:text="Price"/>
 
             <TextView
                 android:id="@+id/status"

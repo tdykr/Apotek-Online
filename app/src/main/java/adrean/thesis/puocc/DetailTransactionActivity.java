@@ -3,16 +3,14 @@ package adrean.thesis.puocc;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.preference.PreferenceManager;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -36,14 +34,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import adrean.thesis.puocc.Fragment.HomeFragment;
-
 import static android.view.View.INVISIBLE;
 import static android.view.View.VISIBLE;
 
 public class DetailTransactionActivity extends AppCompatActivity {
 
-    private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg,trxDate;
+    private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg,trxDate,status,totalPrice;
     private Bitmap medPict;
     private ListView listViewCart;
     private ListAdapter adapter;
@@ -78,19 +74,19 @@ public class DetailTransactionActivity extends AppCompatActivity {
         targetImage = (ImageView) findViewById(R.id.imgBill);
         TextView trxIdTv = (TextView) findViewById(R.id.trxId);
         TextView trxDateTv = (TextView) findViewById(R.id.trxDate);
+        TextView trxStatus = (TextView) findViewById(R.id.trxStatus);
+        TextView trxTot = (TextView) findViewById(R.id.trxPrice);
 
         Intent in = getIntent();
         trxId = in.getStringExtra("TRANS_ID");
         billImg = in.getStringExtra("BILL_IMG");
         trxDate = in.getStringExtra("DATE");
+        status = in.getStringExtra("STATUS");
+        totalPrice = in.getStringExtra("TOTAL_PRICE");
 
         trxIdTv.setText(trxId);
-
-        if(userModel.getUserRole() == "admin"){
-            confirmTrxBtn.setVisibility(VISIBLE);
-            submitBillBtn.setVisibility(INVISIBLE);
-            uploadBillBtn.setVisibility(INVISIBLE);
-        }
+        trxTot.setText(totalPrice);
+        trxStatus.setText(status);
 
         if(trxDate != null && !trxDate.equals("null") &&  !trxDate.isEmpty()){
             trxDateTv.setText(trxDate);
@@ -105,15 +101,6 @@ public class DetailTransactionActivity extends AppCompatActivity {
         userModel = mUserPreference.getUser();
 
         getJSON();
-
-        /*homeBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(DetailTransactionActivity.this,CustomerMain.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        });*/
 
         uploadBillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -143,17 +130,44 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
         });
 
-        if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()){
+        if(userModel.getUserRole().equals("admin")){
+
             submitBillBtn.setVisibility(INVISIBLE);
             uploadBillBtn.setVisibility(INVISIBLE);
-            //homeBtn.setVisibility(INVISIBLE);
-            Bitmap imgBillBp = encodedStringImage(billImg);
-            targetImage.setImageBitmap(imgBillBp);
+            if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()) {
+                Bitmap imgBillBp = encodedStringImage(billImg);
+                targetImage.setImageBitmap(imgBillBp);
+            }
             targetImage.setVisibility(VISIBLE);
-        }else{
-            submitBillBtn.setVisibility(VISIBLE);
-            uploadBillBtn.setVisibility(VISIBLE);
+
+            if(status.equals("PAID")){
+                confirmTrxBtn.setVisibility(VISIBLE);
+            }else{
+                confirmTrxBtn.setVisibility(INVISIBLE);
+            }
+        }else if(userModel.getUserRole().equals("user")){
+            if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()){
+                submitBillBtn.setVisibility(INVISIBLE);
+                uploadBillBtn.setVisibility(INVISIBLE);
+                Bitmap imgBillBp = encodedStringImage(billImg);
+                targetImage.setImageBitmap(imgBillBp);
+                targetImage.setVisibility(VISIBLE);
+            }else{
+                submitBillBtn.setVisibility(VISIBLE);
+                uploadBillBtn.setVisibility(VISIBLE);
+            }
+        }else if(userModel.getUserRole().equals("owner")){
+            if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()) {
+                Bitmap imgBillBp = encodedStringImage(billImg);
+                targetImage.setImageBitmap(imgBillBp);
+            }
+            submitBillBtn.setVisibility(INVISIBLE);
+            uploadBillBtn.setVisibility(INVISIBLE);
+            targetImage.setVisibility(INVISIBLE);
+            confirmTrxBtn.setVisibility(INVISIBLE);
         }
+
+
     }
 
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
@@ -274,11 +288,10 @@ public class DetailTransactionActivity extends AppCompatActivity {
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("USER",userModel.getUserName());
                 params.put("TRX_ID",trxId);
 
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendPostRequest(phpConf.URL_GET_LIST_HISTORY_SHOPPING_BY_TRXID,params);
+                String s = rh.sendPostRequest(phpConf.URL_GET_DETAIL_TRX_APOTEKER,params);
                 return s;
             }
         }

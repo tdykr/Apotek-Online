@@ -14,11 +14,15 @@ import com.google.zxing.integration.android.IntentResult;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 public class AddNewTransactionApotekerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private IntentIntegrator qrScan;
     private TextView medName,medPrice,medId;
-
+    private List<HashMap<String,String>> listScanMedicine = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

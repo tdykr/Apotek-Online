@@ -91,14 +91,6 @@
                 android:text="@string/transfer"
                 android:textSize="16sp"/>
         </LinearLayout>
-
-
-
-
-
-
-
-
     </LinearLayout>
 
     <TextView
