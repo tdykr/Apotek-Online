@@ -40,7 +40,7 @@ public class TransactionActivity extends AppCompatActivity {
     private ListView listMed;
     private String JSON_STRING, trxId;
     private Spinner sp;
-    ListAdapter listAdapter;
+    CustomAdapter listAdapter;
 
     Toolbar toolbar;
 
@@ -55,11 +55,12 @@ public class TransactionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-
         listMed = (ListView) findViewById(R.id.medList);
         sp = (Spinner) findViewById(R.id.trxCategory);
         Button btnFilter = findViewById(R.id.btnFilter);
+
+        listAdapter = new CustomAdapter(this,list, 1);
+        listMed.setAdapter(listAdapter);
 
         getJSON();
         getListStatus();
@@ -67,23 +68,23 @@ public class TransactionActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l) {
 
-                    HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
-                    trxId = map.get("ID");
-                    Intent intent = new Intent(getApplicationContext(), DetailTransactionActivity.class);
-                    intent.putExtra("TRX-ID",trxId);
-                    String billImgIntent = map.get("BILL_IMG");
-                    String trxDate = map.get("DATE");
-                    intent.putExtra("TRANS_ID",trxId);
-                    intent.putExtra("DATE",trxDate);
-                    intent.putExtra("STATUS",map.get("STATUS"));
-                    intent.putExtra("TOTAL_PRICE",map.get("TOTAL_PRICE"));
-                    if(billImgIntent != null && !billImgIntent.equals("null") && !billImgIntent.isEmpty()) {
-                        intent.putExtra("BILL_IMG", billImgIntent);
-                    }
-                    startActivity(intent);
-//                    updateTransactionPaid(trxId);
+                HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
+                trxId = map.get("ID");
+                Intent intent = new Intent(getApplicationContext(), DetailTransactionActivity.class);
+                intent.putExtra("TRX-ID",trxId);
+                String billImgIntent = map.get("BILL_IMG");
+                String trxDate = map.get("DATE");
+                intent.putExtra("TRANS_ID",trxId);
+                intent.putExtra("DATE",trxDate);
+                intent.putExtra("STATUS",map.get("STATUS"));
+                intent.putExtra("TOTAL_PRICE",map.get("TOTAL_PRICE"));
+                if(billImgIntent != null && !billImgIntent.equals("null") && !billImgIntent.isEmpty()) {
+                    intent.putExtra("BILL_IMG", billImgIntent);
                 }
-            });
+                startActivity(intent);
+//                    updateTransactionPaid(trxId);
+            }
+        });
 
         btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -162,7 +163,6 @@ public class TransactionActivity extends AppCompatActivity {
         JSONObject jsonObject = null;
         Context context = getApplicationContext();
         try {
-
             jsonObject = new JSONObject(JSON_STRING);
             JSONArray result = jsonObject.getJSONArray("result");
 
@@ -199,24 +199,22 @@ public class TransactionActivity extends AppCompatActivity {
                     listConfirmed.add(listTrx);
                 }
             }
+            listAdapter.notifyDataSetChanged();
+
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
-        listAdapter = new SimpleAdapter(
-                TransactionActivity.this, list, R.layout.list_transaction_admin,
-                new String[]{"ID","CREATED_BY","CREATED_DT","STATUS","TOTAL_PRICE"},
-                new int[]{R.id.id, R.id.createdBy, R.id.createdDate, R.id.status,R.id.trxPrice});
-
-
-        listMed.setAdapter(adapter);
     }
 
     private void changeList(ArrayList<HashMap<String, String>> newList){
+        Log.d("tag", String.valueOf(newList));
+/*        listAdapter.updateReceiptsList(newList);*/
         list.clear();
         list.addAll(newList);
-        ((SimpleAdapter) listAdapter).notifyDataSetChanged();
+        Log.d("tag", "d");
+        listAdapter.notifyDataSetChanged();
     }
+
     private void getJSON(){
         class GetJSON extends AsyncTask<Void,Void,String> {
 
