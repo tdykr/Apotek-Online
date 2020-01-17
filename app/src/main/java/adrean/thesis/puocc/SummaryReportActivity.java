@@ -259,8 +259,12 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
             }
             @Override
             protected String doInBackground(Void... v) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("STARTDATE", startDate);
+                params.put("ENDDATE", endDate);
+
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendGetRequest(phpConf.URL_GET_CHART_DATA);
+                String res = rh.sendPostRequest(phpConf.URL_GET_CHART_DATA,params);
                 return res;
             }
         }
@@ -319,11 +323,11 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String, String> params = new HashMap<>();
-                /*params.put("STARTDATE", startDate);
-                params.put("ENDTDATE", endDate);*/
+                params.put("STARTDATE", startDate);
+                params.put("ENDDATE", endDate);
 
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendGetRequest(phpConf.URL_SUMMARY);
+                String res = rh.sendPostRequest(phpConf.URL_SUMMARY,params);
                 return res;
             }
         }
