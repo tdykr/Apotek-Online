@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ReceiptConfirmationPayActivity"
-    android:background="@color/gray4">
+    android:background="@color/gray3">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -99,8 +99,7 @@
         android:text="@string/order"
         android:background="@color/colorWhite"
         android:layout_marginTop="10dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
+        android:padding="16dp"
         android:textSize="18sp"
         android:textStyle="bold"/>
 
@@ -111,7 +110,7 @@
         android:layout_width="match_parent"
         android:clipToPadding="false"
         android:divider="@null"
-        android:background="@color/colorWhite"
+        android:background="@color/gray4"
         android:dividerHeight="0dp"/>
 
     <LinearLayout

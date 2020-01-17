@@ -232,7 +232,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 medCategory = jo.getString("CATEGORY");
                 medPrice = jo.getString("PRICE");
                 double dbMedPrice = Double.parseDouble(medPrice);
-                medPrice=getString(R.string.rupiah,df.format(dbMedPrice));
+                String formattedMedPrice=getString(R.string.rupiah,df.format(dbMedPrice));
 
                 medQt = jo.getString("QUANTITY");
                 medDesc = jo.getString("DESCRIPTION");
@@ -245,6 +245,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 medicine.put("MED_NAME",medName);
                 medicine.put("CATEGORY",medCategory);
                 medicine.put("PRICE",  medPrice);
+                medicine.put("FORMATTED_PRICE",  formattedMedPrice);
                 medicine.put("DESCRIPTION",medDesc);
                 medicine.put("QUANTITY",medQt);
                 medicine.put("MEDICINE_PICT",imgUri);
@@ -261,7 +262,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
 
         adapter = new SimpleAdapter(
                 getApplicationContext(), listData, R.layout.list_medicine,
-                new String[]{"MED_NAME","CATEGORY","MED_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
+                new String[]{"MED_NAME","CATEGORY","MED_NAME","FORMATTED_PRICE","QUANTITY","MEDICINE_PICT"},
                 new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medName,R.id.medPrice, R.id.medQuantity, R.id.img});
 
         listViewCart.setAdapter(adapter);

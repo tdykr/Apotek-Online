@@ -65,7 +65,7 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
 
         for(Map<String, String> mapData : data){
             String price = mapData.get("PRICE");
-            String med = mapData.get("MED_NAME") + "\n";
+            String med = mapData.get("MED_NAME") ;
             String cartId = mapData.get("CART_ID");
             String quantity = mapData.get("QUANTITY");
 
@@ -74,10 +74,10 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
             totalMedicine += med;
         }
 
-        adapter = new SimpleAdapter(
-                this, data, R.layout.list_detail_trx_conf,
-                new String[]{"MED_NAME","CATEGORY","PRICE"},
-                new int[]{R.id.medName,R.id.medCategory,R.id.medQuantity});
+        ListAdapter adapter = new SimpleAdapter(
+                this, data, R.layout.list_medicine,
+                new String[]{"CATEGORY","MED_NAME","FORMATTED_MED_PRICE","QUANTITY","MEDICINE_PICT"},
+                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.medQuantity, R.id.img});
 
         listItem.setAdapter(adapter);
 

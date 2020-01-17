@@ -149,6 +149,8 @@ public class CartFragment extends Fragment{
                 medName = jo.getString("MED_NAME");
                 medCategory = jo.getString("CATEGORY");
                 medPrice = jo.getString("PRICE");
+                double dbMedPrice = Double.parseDouble(medPrice);
+                String formattedMedPrice=getString(R.string.rupiah,df.format(dbMedPrice));
 
                 medQt = jo.getString("QUANTITY");
                 medDesc = jo.getString("DESCRIPTION");
@@ -161,6 +163,7 @@ public class CartFragment extends Fragment{
                 medicine.put("MED_NAME",medName);
                 medicine.put("CATEGORY",medCategory);
                 medicine.put("PRICE",medPrice);
+                medicine.put("FORMATTED_MED_PRICE",formattedMedPrice);
                 medicine.put("DESCRIPTION",medDesc);
                 medicine.put("QUANTITY",medQt);
                 medicine.put("MEDICINE_PICT",imgUri);
@@ -177,7 +180,7 @@ public class CartFragment extends Fragment{
 
          adapter = new SimpleAdapter(
                 getContext(), listData, R.layout.list_cart,
-                new String[]{"MED_NAME","CATEGORY","MED_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
+                new String[]{"MED_NAME","CATEGORY","MED_NAME","FORMATTED_MED_PRICE","QUANTITY","MEDICINE_PICT"},
                 new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medName,R.id.medPrice, R.id.medQuantity, R.id.img});
 
         listViewCart.setAdapter(adapter);

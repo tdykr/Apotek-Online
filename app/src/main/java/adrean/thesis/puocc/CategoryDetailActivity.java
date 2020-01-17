@@ -74,6 +74,9 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
                 String medName = jo.getString("MEDICINE_NAME");
                 String medPrice = jo.getString("PRICE");
 
+                double dbMedPrice = Double.parseDouble(medPrice);
+                String formattedMedPrice=getString(R.string.rupiah,df.format(dbMedPrice));
+
                 String medQuantity = jo.getString("QUANTITY");
                 Bitmap medImg = encodedStringImage(jo.getString("MEDICINE_PICT"));
 
@@ -84,6 +87,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
                 medicine.put("CATEGORY", category);
                 medicine.put("MEDICINE_NAME",medName);
                 medicine.put("PRICE",medPrice);
+                medicine.put("FORMATTED_MED_PRICE",formattedMedPrice);
                 medicine.put("QUANTITY",medQuantity);
                 medicine.put("MEDICINE_PICT",imgUri);
 
@@ -98,7 +102,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
 
         ListAdapter adapter = new SimpleAdapter(
                 CategoryDetailActivity.this, list, R.layout.list_medicine,
-                new String[]{"CATEGORY","MEDICINE_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
+                new String[]{"CATEGORY","MEDICINE_NAME","FORMATTED_MED_PRICE","QUANTITY","MEDICINE_PICT"},
                 new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.medQuantity, R.id.img});
 
         listMed.setAdapter(adapter);

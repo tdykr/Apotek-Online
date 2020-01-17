@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -29,9 +30,17 @@ import java.util.List;
 public class TransactionActivity extends AppCompatActivity {
 
     private ArrayAdapter<String> adapter;
+    ArrayList<HashMap<String,String>> list = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> listAll = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> listPending = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> listPaid = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> listInCart = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> listConfirmed = new ArrayList<>();
+    private ArrayList<HashMap<String,String>> listDone = new ArrayList<>();
     private ListView listMed;
     private String JSON_STRING, trxId;
     private Spinner sp;
+    ListAdapter listAdapter;
 
     Toolbar toolbar;
 
@@ -46,8 +55,11 @@ public class TransactionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+
+
         listMed = (ListView) findViewById(R.id.medList);
         sp = (Spinner) findViewById(R.id.trxCategory);
+        Button btnFilter = findViewById(R.id.btnFilter);
 
         getJSON();
         getListStatus();
@@ -72,6 +84,24 @@ public class TransactionActivity extends AppCompatActivity {
 //                    updateTransactionPaid(trxId);
                 }
             });
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("tag", (String) sp.getSelectedItem());
+                if(sp.getSelectedItem().equals("INCART")){
+                    changeList(listInCart);
+                }else if(sp.getSelectedItem().equals("PENDING")){
+                    changeList(listPending);
+                }else if(sp.getSelectedItem().equals("PAID")){
+                    changeList(listPaid);
+                }else if(sp.getSelectedItem().equals("DONE")){
+                    changeList(listDone);
+                }else if(sp.getSelectedItem().equals("CONFIRMED")){
+                    changeList(listConfirmed);
+                }
+            }
+        });
     }
 
     private void getTrxStatus() {
@@ -131,8 +161,8 @@ public class TransactionActivity extends AppCompatActivity {
     private void getListMedicine(){
         JSONObject jsonObject = null;
         Context context = getApplicationContext();
-        ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
         try {
+
             jsonObject = new JSONObject(JSON_STRING);
             JSONArray result = jsonObject.getJSONArray("result");
 
@@ -145,7 +175,7 @@ public class TransactionActivity extends AppCompatActivity {
                 String status = jo.getString("STATUS");
                 String billImg = jo.getString("BILL_IMG");
 
-                HashMap<String,Object> listTrx = new HashMap<>();
+                HashMap<String,String> listTrx = new HashMap<>();
                 listTrx.put("ID","TRX-"+id);
                 listTrx.put("CREATED_BY",createdBy);
                 listTrx.put("CREATED_DT",createdDate);
@@ -156,20 +186,37 @@ public class TransactionActivity extends AppCompatActivity {
                 Log.d("tag", String.valueOf(listTrx));
 
                 list.add(listTrx);
+                listAll.add(listTrx);
+                if(status.equals("INCART")){
+                    listInCart.add(listTrx);
+                }else if(status.equals("PENDING")){
+                    listPending.add(listTrx);
+                }else if(status.equals("PAID")){
+                    listPaid.add(listTrx);
+                }else if(status.equals("DONE")){
+                    listDone.add(listTrx);
+                }else if(status.equals("CONFIRMED")){
+                    listConfirmed.add(listTrx);
+                }
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ListAdapter adapter = new SimpleAdapter(
+        listAdapter = new SimpleAdapter(
                 TransactionActivity.this, list, R.layout.list_transaction_admin,
                 new String[]{"ID","CREATED_BY","CREATED_DT","STATUS","TOTAL_PRICE"},
                 new int[]{R.id.id, R.id.createdBy, R.id.createdDate, R.id.status,R.id.trxPrice});
 
+
         listMed.setAdapter(adapter);
     }
 
+    private void changeList(ArrayList<HashMap<String, String>> newList){
+        list.clear();
+        list.addAll(newList);
+        ((SimpleAdapter) listAdapter).notifyDataSetChanged();
+    }
     private void getJSON(){
         class GetJSON extends AsyncTask<Void,Void,String> {
 

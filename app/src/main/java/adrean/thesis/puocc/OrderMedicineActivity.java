@@ -79,11 +79,13 @@ public class OrderMedicineActivity extends AppCompatActivity {
         Log.d("MedicineIdCheck", "onCreate: " + medId);
         confMedName.setText(data.get("MEDICINE_NAME"));
 
-       /* double dbMedPrice = Double.parseDouble(data.get("PRICE"));
-        String medPrice=getString(R.string.rupiah,df.format(dbMedPrice));*/
-        ordPrice.setText(data.get("PRICE"));
-        ordTotal.setText("0");
-        final double price= Double.parseDouble(data.get("PRICE"));
+
+        price = Integer.parseInt(data.get("PRICE"));
+        String medPrice=getString(R.string.rupiah,df.format(price));
+
+        ordPrice.setText(medPrice);
+        ordTotal.setText("Rp 0");
+
         ordAmount.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
