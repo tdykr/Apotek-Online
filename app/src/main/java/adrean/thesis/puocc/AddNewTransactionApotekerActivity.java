@@ -41,6 +41,7 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
         setContentView(R.layout.activity_add_new_transaction_apoteker);
 
         Button btnScan = (Button) findViewById(R.id.BtnScan);
+        Button submitQrBtn = (Button) findViewById(R.id.submitQr);
         listQrMed = (ListView) findViewById(R.id.listScanItem);
         TextView trxPrescription = (TextView) findViewById(R.id.trxPrescription);
 
@@ -49,6 +50,13 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
             public void onClick(View view) {
                 Intent in = new Intent(AddNewTransactionApotekerActivity.this,AddPrescriptionActivity.class);
                 startActivity(in);
+            }
+        });
+
+        submitQrBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
             }
         });
 

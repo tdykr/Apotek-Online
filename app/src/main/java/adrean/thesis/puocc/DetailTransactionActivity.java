@@ -154,9 +154,9 @@ public class DetailTransactionActivity extends AppCompatActivity {
             targetImage.setVisibility(View.VISIBLE);
 
             if(!status.equals("PENDING")){
-                confirmTrxBtn.setVisibility(View.GONE);
-            }else{
                 confirmTrxBtn.setVisibility(View.VISIBLE);
+            }else{
+                confirmTrxBtn.setVisibility(View.GONE);
             }
         }else if(userModel.getUserRole().equals("user")) {
             if (billImg != null && !billImg.equals("null") && !billImg.isEmpty()) {
