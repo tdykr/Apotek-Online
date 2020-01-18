@@ -57,16 +57,16 @@ public class AddApotekerActivity extends AppCompatActivity {
         userAddress = uAddress.getText().toString();
 
         if(userName.isEmpty()){
-            uName.setError("Email Field Can't be Empty!");
+            uName.setError("Username Field Can't be Empty!");
             uName.requestFocus();
         }else if(userEmail.isEmpty()){
             uEmail.setError("Email Field Can't be Empty!");
             uEmail.requestFocus();
         }else if(userPhone.isEmpty()){
-            uPhone.setError("Email Field Can't be Empty!");
+            uPhone.setError("Phone Field Can't be Empty!");
             uPhone.requestFocus();
         }else if(userAddress.isEmpty()){
-            uAddress.setError("Email Field Can't be Empty!");
+            uAddress.setError("Address Field Can't be Empty!");
             uAddress.requestFocus();
         }else{
             validation = true;

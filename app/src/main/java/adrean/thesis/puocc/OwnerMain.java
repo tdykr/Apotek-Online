@@ -30,6 +30,15 @@ public class OwnerMain extends AppCompatActivity {
         ImageView trxList = findViewById(R.id.listTransaction);
         ImageView imgSummaryReport = findViewById(R.id.summary_report);
         ImageView addApoteker =  findViewById(R.id.img_add_apoteker);
+        ImageView addCategory = findViewById(R.id.addCategory);
+
+        addCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(OwnerMain.this,AddCategoryActivity.class);
+                startActivity(in);
+            }
+        });
 
         addApoteker.setOnClickListener(new View.OnClickListener() {
             @Override

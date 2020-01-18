@@ -1,37 +1,26 @@
 package adrean.thesis.puocc;
 
-import android.Manifest;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
-import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.BarcodeFormat;
@@ -44,9 +33,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -123,7 +110,7 @@ public class AddNewProductActivity extends AppCompatActivity {
                         UUID uuid = UUID.randomUUID();
                         id = uuid.toString().replace("-","").toUpperCase();
 
-                        String text = "{ \"id\":\"" + id + "\",\"category\":\"" + mdCategory + "\",\"name\":\"" + mdName + "\",\"price\":\"" + mdPrice + "\"}";
+                        String text = "{ \"id\":\"" + id + "\",\"category\":\"" + mdCategory + "\",\"pict\":\"" + medBitmap + "\",\"name\":\"" + mdName + "\",\"price\":\"" + mdPrice + "\"}";
                         MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
 
                         BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, 200, 200);
