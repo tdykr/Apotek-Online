@@ -84,14 +84,19 @@ public class DetailTransactionActivity extends AppCompatActivity {
         trxDate = in.getStringExtra("DATE");
         status = in.getStringExtra("STATUS");
         totalPrice = in.getStringExtra("TOTAL_PRICE");
+        String type = in.getStringExtra("TYPE");
+
+        if(type.equals("OFFLINE")){
+            uploadBillBtn.setVisibility(View.GONE);
+            submitBillBtn.setVisibility(View.GONE);
+            confirmTrxBtn.setVisibility(View.GONE);
+            endTrxBtn.setVisibility(View.GONE);
+        }
 
         trxIdTv.setText(trxId);
         trxTot.setText(totalPrice);
         trxStatus.setText(status);
-
-        if(trxDate != null && !trxDate.equals("null") &&  !trxDate.isEmpty()){
-            trxDateTv.setText(trxDate);
-        }
+        trxDateTv.setText(trxDate);
 
         if(trxId.contains("TRX")){
             trxId = trxId.replace("TRX-","");
@@ -148,10 +153,10 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
             targetImage.setVisibility(View.VISIBLE);
 
-            if(status.equals("PAID")){
-                confirmTrxBtn.setVisibility(View.VISIBLE);
-            }else{
+            if(!status.equals("PENDING")){
                 confirmTrxBtn.setVisibility(View.GONE);
+            }else{
+                confirmTrxBtn.setVisibility(View.VISIBLE);
             }
         }else if(userModel.getUserRole().equals("user")) {
             if (billImg != null && !billImg.equals("null") && !billImg.isEmpty()) {
@@ -210,6 +215,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
+                Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
                 Intent in = new Intent(DetailTransactionActivity.this,ApotekerMain.class);
                 startActivity(in);
             }
@@ -243,6 +249,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
+                Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
                 Intent in = new Intent(DetailTransactionActivity.this,ApotekerMain.class);
                 startActivity(in);
             }
@@ -359,6 +366,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
+                Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
                 updateQuantity();
                 Intent intent = new Intent(DetailTransactionActivity.this, CustomerMain.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);

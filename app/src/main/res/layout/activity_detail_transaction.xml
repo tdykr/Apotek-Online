@@ -16,13 +16,13 @@
     <RelativeLayout
         android:id="@+id/rel1"
         android:layout_width="match_parent"
-        android:layout_height="325dp"
+        android:layout_height="340dp"
         android:layout_below="@id/toolbar">
 
         <ListView
             android:id="@+id/detailList"
             android:layout_width="match_parent"
-            android:layout_height="280dp"
+            android:layout_height="220dp"
             android:clipToPadding="false"
             android:divider="@null"
             android:dividerHeight="0dp" />
@@ -30,10 +30,11 @@
         <TextView
             android:id="@+id/trxId"
             tools:text="trxId"
+            android:drawableStart="@drawable/ic_id"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/detailList"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:textSize="14sp" />
@@ -41,11 +42,11 @@
         <TextView
             android:id="@+id/trxStatus"
             tools:text="trxStatus"
+            android:drawableStart="@drawable/ic_status"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/detailList"
-            android:layout_toRightOf="@id/trxId"
-            android:layout_marginTop="8dp"
+            android:layout_below="@id/trxId"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:textSize="14sp" />
@@ -53,9 +54,11 @@
         <TextView
             android:id="@+id/trxDate"
             android:layout_width="wrap_content"
+            android:drawableStart="@drawable/ic_date_range"
             android:layout_height="wrap_content"
-            android:layout_below="@id/trxId"
+            android:layout_below="@id/trxStatus"
             tools:text="trxDate"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:textSize="14sp" />
@@ -64,9 +67,10 @@
             android:id="@+id/trxPrice"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_toRightOf="@id/trxDate"
-            android:layout_below="@id/trxId"
+            android:drawableStart="@drawable/ic_cash"
+            android:layout_below="@id/trxDate"
             tools:text="trxPrice"
+            android:layout_marginTop="5dp"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:textSize="14sp" />
@@ -76,16 +80,16 @@
         android:id="@+id/uploadReceiptBtn"
         style="@style/Button.Neutral"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_below="@id/rel1"
         android:layout_centerHorizontal="true"
-        android:layout_margin="10dp"
+        android:layout_margin="5dp"
         android:text="@string/upload_receipt" />
 
     <ImageView
         android:id="@+id/imgBill"
-        android:layout_width="130dp"
-        android:layout_height="130dp"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_below="@id/uploadReceiptBtn"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp" />
@@ -94,7 +98,7 @@
         android:id="@+id/submitBill"
         style="@style/Button.Positive"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
@@ -106,7 +110,7 @@
         android:id="@+id/confirmTrx"
         style="@style/Button.Positive"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
@@ -118,11 +122,11 @@
         android:id="@+id/endTrx"
         style="@style/Button.Positive"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="40dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="10dp"
         android:text="@string/Done" />
 </RelativeLayout>

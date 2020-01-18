@@ -70,10 +70,11 @@ public class TransactionActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), DetailTransactionActivity.class);
                 intent.putExtra("TRX-ID",trxId);
                 String billImgIntent = map.get("BILL_IMG");
-                String trxDate = map.get("DATE");
+                String trxDate = map.get("CREATED_DT");
                 intent.putExtra("TRANS_ID",trxId);
                 intent.putExtra("DATE",trxDate);
                 intent.putExtra("STATUS",map.get("STATUS"));
+                intent.putExtra("TYPE",map.get("TYPE"));
                 intent.putExtra("TOTAL_PRICE",map.get("TOTAL_PRICE"));
                 if(billImgIntent != null && !billImgIntent.equals("null") && !billImgIntent.isEmpty()) {
                     intent.putExtra("BILL_IMG", billImgIntent);
@@ -165,9 +166,10 @@ public class TransactionActivity extends AppCompatActivity {
                 JSONObject jo = result.getJSONObject(i);
                 String id = jo.getString("ID");
                 String createdBy = jo.getString("CREATED_BY");
-                String createdDate = jo.getString("CREATED_DT");
+                String createdDate = jo.getString("DATE");
                 String totPrice = jo.getString("TOTAL_PRICE");
                 String status = jo.getString("STATUS");
+                String type = jo.getString("TRX_TYPE");
                 String billImg = jo.getString("BILL_IMG");
 
                 HashMap<String,String> listTrx = new HashMap<>();
@@ -175,6 +177,7 @@ public class TransactionActivity extends AppCompatActivity {
                 listTrx.put("CREATED_BY",createdBy);
                 listTrx.put("CREATED_DT",createdDate);
                 listTrx.put("STATUS",status);
+                listTrx.put("TYPE",type);
                 listTrx.put("BILL_IMG",billImg);
                 listTrx.put("TOTAL_PRICE",totPrice);
 

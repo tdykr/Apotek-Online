@@ -2,20 +2,14 @@ package adrean.thesis.puocc;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import java.text.DecimalFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 
@@ -61,6 +55,7 @@ public class CustomAdapter extends BaseAdapter {
         TextView tvCreatedDt;
         TextView tvStatus;
         TextView tvTotalPrice;
+        TextView tvType;
     }
 
     @SuppressLint("SetTextI18n")
@@ -80,12 +75,14 @@ public class CustomAdapter extends BaseAdapter {
                     holder.tvCreatedDt = vi.findViewById(R.id.createdDate);
                     holder.tvStatus = vi.findViewById(R.id.status);
                     holder.tvTotalPrice = vi.findViewById(R.id.trxPrice);
+                    holder.tvType = vi.findViewById(R.id.type);
 
                     holder.tvId.setText(data.get(position).get("ID"));
                     holder.tvCreatedBy.setText(data.get(position).get("CREATED_BY"));
                     holder.tvCreatedDt.setText(data.get(position).get("CREATED_DT"));
                     holder.tvStatus.setText(data.get(position).get("STATUS"));
                     holder.tvTotalPrice.setText(data.get(position).get("TOTAL_PRICE"));
+                    holder.tvType.setText(data.get(position).get("TYPE"));
 
                     vi.setTag(holder);
                 }
