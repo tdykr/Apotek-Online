@@ -153,7 +153,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
             targetImage.setVisibility(View.VISIBLE);
 
-            if(!status.equals("PENDING")){
+            if(status.equals("PAID")){
                 confirmTrxBtn.setVisibility(View.VISIBLE);
             }else{
                 confirmTrxBtn.setVisibility(View.GONE);
