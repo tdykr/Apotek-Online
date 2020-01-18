@@ -75,6 +75,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
                 JSONObject jo = result.getJSONObject(i);
                 String transId = jo.getString("ID");
                 String status = jo.getString("STATUS");
+                String type = jo.getString("TRX_TYPE");
                 String createdDt = jo.getString("DATE");
                 String amount = jo.getString("TOTAL_PRICE");
                 double dbAmount = Double.parseDouble(amount);
@@ -87,6 +88,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
                 trx.put("STATUS", status);
                 trx.put("DATE",createdDt);
                 trx.put("PRICE",amount);
+                trx.put("TYPE",type);
                 trx.put("BILL_IMG",billImg);
 
                 listData.add(trx);
@@ -159,7 +161,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
         String trxDate = map.get("DATE");
         intent.putExtra("TRANS_ID",trxId);
         intent.putExtra("DATE",trxDate);
-        intent.putExtra("STATUS",map.get("TYPE"));
+        intent.putExtra("TYPE",map.get("TYPE"));
         intent.putExtra("TOTAL_PRICE",map.get("PRICE"));
         intent.putExtra("STATUS",map.get("STATUS"));
         if(billImgIntent != null && !billImgIntent.equals("null") && !billImg.isEmpty()) {
