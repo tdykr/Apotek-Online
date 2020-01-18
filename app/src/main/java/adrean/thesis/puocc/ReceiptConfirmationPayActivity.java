@@ -19,7 +19,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,13 +36,17 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
     UserPreference mUserPreferences;
     UserModel userModel;
     ListAdapter adapter;
-    String id;
+    String id,date;
     private DecimalFormat df = new DecimalFormat("#,###.##");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_receipt_confirmation_pay);
+
+        String pattern = "dd-MM-yyyy";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        date = simpleDateFormat.format(new Date());
 
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Order Confirmation");
@@ -122,6 +128,10 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
                 final Intent intent = new Intent(ReceiptConfirmationPayActivity.this, DetailTransactionActivity.class);
 //                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.putExtra("TRANS_ID",id);
+                intent.putExtra("DATE",date);
+                intent.putExtra("STATUS","PENDING");
+                intent.putExtra("TYPE","ONLINE");
+                intent.putExtra("TOTAL_PRICE",Integer.toString(totalPrice));
                 startActivity(intent);
 
             }
