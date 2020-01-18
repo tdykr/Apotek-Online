@@ -55,19 +55,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:drawableStart="@drawable/ic_timeline"
-                android:drawablePadding="10dp"
-                tools:text="Status" />
-
-            <TextView
-                android:id="@+id/type"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_weight="1"
                 android:drawableStart="@drawable/ic_status"
                 android:drawablePadding="10dp"
-                tools:text="Type" />
+                tools:text="Status" />
 
             <TextView
                 android:id="@+id/createdDate"
