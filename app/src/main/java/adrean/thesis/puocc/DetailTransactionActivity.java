@@ -34,16 +34,13 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static android.view.View.INVISIBLE;
-import static android.view.View.VISIBLE;
-
 public class DetailTransactionActivity extends AppCompatActivity {
 
     private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg,trxDate,status,totalPrice;
     private Bitmap medPict;
     private ListView listViewCart;
     private ListAdapter adapter;
-    private Button uploadBillBtn,submitBillBtn,confirmTrxBtn;
+    private Button uploadBillBtn,submitBillBtn,confirmTrxBtn,endTrxBtn;
     private ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     private UserModel userModel;
     private UserPreference mUserPreference;
@@ -70,7 +67,11 @@ public class DetailTransactionActivity extends AppCompatActivity {
         uploadBillBtn = (Button) findViewById(R.id.uploadReceiptBtn);
         submitBillBtn = (Button) findViewById(R.id.submitBill);
         confirmTrxBtn = (Button) findViewById(R.id.confirmTrx);
-        confirmTrxBtn.setVisibility(INVISIBLE);
+        endTrxBtn = (Button) findViewById(R.id.endTrx);
+
+        confirmTrxBtn.setVisibility(View.GONE);
+        endTrxBtn.setVisibility(View.GONE);
+
         targetImage = (ImageView) findViewById(R.id.imgBill);
         TextView trxIdTv = (TextView) findViewById(R.id.trxId);
         TextView trxDateTv = (TextView) findViewById(R.id.trxDate);
@@ -118,6 +119,13 @@ public class DetailTransactionActivity extends AppCompatActivity {
             }
         });
 
+        endTrxBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                updateEndTransaction();
+            }
+        });
+
         submitBillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -132,39 +140,42 @@ public class DetailTransactionActivity extends AppCompatActivity {
 
         if(userModel.getUserRole().equals("admin")){
 
-            submitBillBtn.setVisibility(INVISIBLE);
-            uploadBillBtn.setVisibility(INVISIBLE);
+            submitBillBtn.setVisibility(View.GONE);
+            uploadBillBtn.setVisibility(View.GONE);
             if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()) {
                 Bitmap imgBillBp = encodedStringImage(billImg);
                 targetImage.setImageBitmap(imgBillBp);
             }
-            targetImage.setVisibility(VISIBLE);
+            targetImage.setVisibility(View.VISIBLE);
 
             if(status.equals("PAID")){
-                confirmTrxBtn.setVisibility(VISIBLE);
+                confirmTrxBtn.setVisibility(View.VISIBLE);
             }else{
-                confirmTrxBtn.setVisibility(INVISIBLE);
+                confirmTrxBtn.setVisibility(View.GONE);
             }
-        }else if(userModel.getUserRole().equals("user")){
-            if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()){
-                submitBillBtn.setVisibility(INVISIBLE);
-                uploadBillBtn.setVisibility(INVISIBLE);
+        }else if(userModel.getUserRole().equals("user")) {
+            if (billImg != null && !billImg.equals("null") && !billImg.isEmpty()) {
+                submitBillBtn.setVisibility(View.GONE);
+                uploadBillBtn.setVisibility(View.GONE);
                 Bitmap imgBillBp = encodedStringImage(billImg);
                 targetImage.setImageBitmap(imgBillBp);
-                targetImage.setVisibility(VISIBLE);
+                targetImage.setVisibility(View.VISIBLE);
+                if(status.equals("CONFIRMED")){
+                    endTrxBtn.setVisibility(View.VISIBLE);
+                }
             }else{
-                submitBillBtn.setVisibility(VISIBLE);
-                uploadBillBtn.setVisibility(VISIBLE);
+                submitBillBtn.setVisibility(View.VISIBLE);
+                uploadBillBtn.setVisibility(View.VISIBLE);
             }
         }else if(userModel.getUserRole().equals("owner")){
             if(billImg != null && !billImg.equals("null") &&  !billImg.isEmpty()) {
                 Bitmap imgBillBp = encodedStringImage(billImg);
                 targetImage.setImageBitmap(imgBillBp);
             }
-            submitBillBtn.setVisibility(INVISIBLE);
-            uploadBillBtn.setVisibility(INVISIBLE);
-            targetImage.setVisibility(INVISIBLE);
-            confirmTrxBtn.setVisibility(INVISIBLE);
+            submitBillBtn.setVisibility(View.GONE);
+            uploadBillBtn.setVisibility(View.GONE);
+            targetImage.setVisibility(View.GONE);
+            confirmTrxBtn.setVisibility(View.GONE);
         }
 
 
@@ -182,6 +193,39 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    private void updateEndTransaction(){
+        class updateEndTransaction extends AsyncTask<Void,Void,String> {
+
+            ProgressDialog loading;
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(DetailTransactionActivity.this,"Fetching Data","Please Wait...",false,false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                JSON_STRING = s;
+                Intent in = new Intent(DetailTransactionActivity.this,ApotekerMain.class);
+                startActivity(in);
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String,String> params = new HashMap<>();
+                params.put("ID",trxId);
+
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendPostRequest(phpConf.URL_END_TRX_STATUS,params);
+                return s;
+            }
+        }
+        updateEndTransaction gj = new updateEndTransaction();
+        gj.execute();
     }
 
     private void updateTransactionPaid(){

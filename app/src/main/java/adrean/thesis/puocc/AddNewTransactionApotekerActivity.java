@@ -32,7 +32,6 @@ import java.util.Map;
 public class AddNewTransactionApotekerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private IntentIntegrator qrScan;
-    private TextView medName,medPrice,medId;
     ListAdapter adapter;
     private List<Map<String,Object>> listScanMedicine = new ArrayList<>();
     ListView listQrMed;
@@ -42,10 +41,16 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
         setContentView(R.layout.activity_add_new_transaction_apoteker);
 
         Button btnScan = (Button) findViewById(R.id.BtnScan);
-        medName = (TextView) findViewById(R.id.DrugsName);
-        medPrice = (TextView) findViewById(R.id.DrugsPrice);
-        medId = (TextView) findViewById(R.id.id);
         listQrMed = (ListView) findViewById(R.id.listScanItem);
+        TextView trxPrescription = (TextView) findViewById(R.id.trxPrescription);
+
+        trxPrescription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent in = new Intent(AddNewTransactionApotekerActivity.this,AddPrescriptionActivity.class);
+                startActivity(in);
+            }
+        });
 
         qrScan = new IntentIntegrator(this);
         btnScan.setOnClickListener(this);
@@ -74,9 +79,6 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
 
 
                     listScanMedicine.add(medicineMap);
-                    medName.setText(mdName);
-                    medPrice.setText(mdPrice);
-                    medId.setText(mdId);
                 } catch (JSONException e) {
                     e.printStackTrace();
                     Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();

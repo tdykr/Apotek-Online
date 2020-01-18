@@ -14,9 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 import org.json.JSONArray;
@@ -34,7 +32,6 @@ public class TransactionActivity extends AppCompatActivity {
     private ArrayList<HashMap<String,String>> listAll = new ArrayList<>();
     private ArrayList<HashMap<String,String>> listPending = new ArrayList<>();
     private ArrayList<HashMap<String,String>> listPaid = new ArrayList<>();
-    private ArrayList<HashMap<String,String>> listInCart = new ArrayList<>();
     private ArrayList<HashMap<String,String>> listConfirmed = new ArrayList<>();
     private ArrayList<HashMap<String,String>> listDone = new ArrayList<>();
     private ListView listMed;
@@ -90,9 +87,7 @@ public class TransactionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("tag", (String) sp.getSelectedItem());
-                if(sp.getSelectedItem().equals("INCART")){
-                    changeList(listInCart);
-                }else if(sp.getSelectedItem().equals("PENDING")){
+                if(sp.getSelectedItem().equals("PENDING")){
                     changeList(listPending);
                 }else if(sp.getSelectedItem().equals("PAID")){
                     changeList(listPaid);
@@ -187,9 +182,7 @@ public class TransactionActivity extends AppCompatActivity {
 
                 list.add(listTrx);
                 listAll.add(listTrx);
-                if(status.equals("INCART")){
-                    listInCart.add(listTrx);
-                }else if(status.equals("PENDING")){
+                if(status.equals("PENDING")){
                     listPending.add(listTrx);
                 }else if(status.equals("PAID")){
                     listPaid.add(listTrx);

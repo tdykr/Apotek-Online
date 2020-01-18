@@ -35,5 +35,7 @@ public class phpConf {
     public final static String URL_SUMMARY= "http://"+ ip +"/apotek/summary.php";
     public final static String URL_GET_DETAIL_TRX_APOTEKER = "http://"+ ip +"/apotek/getDetailTransactionApoteker.php";
     public final static String URL_ADD_CATEGORY = "http://"+ ip +"/apotek/addCategory.php";
+    public final static String URL_ADD_PRESCRIPTION= "http://"+ ip +"/apotek/addTrxPrescription.php";
+    public final static String URL_END_TRX_STATUS = "http://"+ ip +"/apotek/endTransactionStatus.php";
 
 }

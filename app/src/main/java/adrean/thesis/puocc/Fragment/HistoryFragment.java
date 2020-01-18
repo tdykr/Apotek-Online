@@ -160,6 +160,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
         intent.putExtra("TRANS_ID",trxId);
         intent.putExtra("DATE",trxDate);
         intent.putExtra("TOTAL_PRICE",map.get("PRICE"));
+        intent.putExtra("STATUS",map.get("STATUS"));
         if(billImgIntent != null && !billImgIntent.equals("null") && !billImg.isEmpty()) {
             intent.putExtra("BILL_IMG", billImgIntent);
         }

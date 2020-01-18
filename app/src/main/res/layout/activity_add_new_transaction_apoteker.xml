@@ -9,55 +9,25 @@
     <ListView
         android:id="@+id/listScanItem"
         android:layout_width="wrap_content"
-        android:layout_height="250dp"/>
+        android:layout_height="350dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/side"/>
 
-    <LinearLayout
+    <TextView
+        android:id="@+id/trxPrescription"
+        android:layout_margin="5dp"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Name" />
-
-        <TextView
-            android:id="@+id/DrugsName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Product Name"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="ID" />
-
-        <TextView
-            android:id="@+id/id"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Product ID"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Price" />
-
-        <TextView
-            android:id="@+id/DrugsPrice"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Product Price"
-            android:textAppearance="@style/Base.TextAppearance.AppCompat.Large" />
-    </LinearLayout>
+        android:layout_height="40dp"
+        android:textSize="20sp"
+        android:text="@string/prescriptionTrx"
+        android:layout_below="@id/listScanItem"/>
 
     <Button
         android:id="@+id/BtnScan"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        style="@style/Button.Positive"
         android:layout_alignParentBottom="true"
         android:text="Scan QR Code" />
 
