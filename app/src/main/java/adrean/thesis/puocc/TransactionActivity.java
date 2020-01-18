@@ -154,7 +154,7 @@ public class TransactionActivity extends AppCompatActivity {
         gj.execute();
     }
 
-    private void getListMedicine(){
+    private void getListTrx(){
         JSONObject jsonObject = null;
         Context context = getApplicationContext();
         try {
@@ -167,6 +167,7 @@ public class TransactionActivity extends AppCompatActivity {
                 String createdBy = jo.getString("CREATED_BY");
                 String createdDate = jo.getString("CREATED_DT");
                 String totPrice = jo.getString("TOTAL_PRICE");
+                String type = jo.getString("TRX_TYPE");
                 String status = jo.getString("STATUS");
                 String billImg = jo.getString("BILL_IMG");
 
@@ -175,6 +176,7 @@ public class TransactionActivity extends AppCompatActivity {
                 listTrx.put("CREATED_BY",createdBy);
                 listTrx.put("CREATED_DT",createdDate);
                 listTrx.put("STATUS",status);
+                listTrx.put("TYPE",type);
                 listTrx.put("BILL_IMG",billImg);
                 listTrx.put("TOTAL_PRICE",totPrice);
 
@@ -223,7 +225,7 @@ public class TransactionActivity extends AppCompatActivity {
                 super.onPostExecute(s);
                 loading.dismiss();
                 JSON_STRING = s;
-                getListMedicine();
+                getListTrx();
             }
 
             @Override
