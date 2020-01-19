@@ -3,7 +3,6 @@ package adrean.thesis.puocc.Fragment;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.opengl.Visibility;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -19,8 +18,6 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-import adrean.thesis.puocc.ApotekerMain;
-import adrean.thesis.puocc.DetailTransactionActivity;
 import adrean.thesis.puocc.LoginActivity;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
@@ -52,6 +49,7 @@ public class ProfileFragment extends Fragment {
         TextView uName = (TextView) view.findViewById(R.id.userNameTv);
         TextView uEmail = (TextView) view.findViewById(R.id.userEmailTv);
         TextView uPhone = (TextView) view.findViewById(R.id.userPhoneTv);
+        TextView uAddress = (TextView) view.findViewById(R.id.userAddressTv);
 
         mUserPreference = new UserPreference(getContext());
         userModel = mUserPreference.getUser();
@@ -109,16 +107,16 @@ public class ProfileFragment extends Fragment {
         Intent in = getActivity().getIntent();
         userData = (HashMap<String, String>) in.getSerializableExtra("userData");
 
-
-        userId = mUserPreference.getUser().getUserId();
-        userName = mUserPreference.getUser().getUserName();
-        userEmail = mUserPreference.getUser().getUserEmail();
-        userAddress = mUserPreference.getUser().getUserAddress();
-        userPhone = mUserPreference.getUser().getUserPhone();
+        userId = userModel.getUserId();
+        userName = userModel.getUserName();
+        userEmail = userModel.getUserEmail();
+        userAddress = userModel.getUserAddress();
+        userPhone = userModel.getUserPhone();
 
         uName.setText(userName);
         uEmail.setText(userEmail);
         uPhone.setText(userPhone);
+        uAddress.setText(userAddress);
 
         return view;
     }

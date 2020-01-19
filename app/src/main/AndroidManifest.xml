@@ -18,7 +18,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".AddPrescriptionActivity"></activity>
+        <activity android:name=".ConfirmationQrTransactionActivity"></activity>
+        <activity android:name=".AddPrescriptionActivity" />
         <activity android:name=".AddCategoryActivity" />
         <activity android:name=".SummaryReportActivity" />
         <activity android:name=".AddApotekerActivity" />

@@ -27,53 +27,101 @@
             android:divider="@null"
             android:dividerHeight="0dp" />
 
-        <TextView
-            android:id="@+id/trxId"
-            tools:text="trxId"
-            android:drawableStart="@drawable/ic_id"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/detailList"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="14sp" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/detailList">
 
-        <TextView
-            android:id="@+id/trxStatus"
-            tools:text="trxStatus"
-            android:drawableStart="@drawable/ic_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/trxId"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="14sp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/trxDate"
-            android:layout_width="wrap_content"
-            android:drawableStart="@drawable/ic_date_range"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/trxStatus"
-            tools:text="trxDate"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/trxId"
+                    tools:text="trxId"
+                    android:drawableStart="@drawable/ic_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/trxPrice"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:drawableStart="@drawable/ic_cash"
-            android:layout_below="@id/trxDate"
-            tools:text="trxPrice"
-            android:layout_marginTop="5dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:textSize="14sp" />
+                <TextView
+                    android:id="@+id/trxStatus"
+                    tools:text="trxStatus"
+                    android:drawableStart="@drawable/ic_timeline"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trxId"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/trxDate"
+                    android:layout_width="wrap_content"
+                    android:drawableStart="@drawable/ic_date_range"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/trxStatus"
+                    tools:text="trxDate"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/trxPrice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_cash"
+                    android:layout_below="@id/trxDate"
+                    tools:text="trxPrice"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/trxUser"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_user"
+                    android:layout_below="@id/trxPrice"
+                    tools:text="trxPrice"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/trxAddress"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_place"
+                    android:layout_below="@id/trxUser"
+                    tools:text="trxPrice"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:id="@+id/trxType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableStart="@drawable/ic_status"
+                    android:layout_below="@id/trxAddress"
+                    tools:text="trxPrice"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="16dp"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+        </ScrollView>
+
     </RelativeLayout>
 
     <Button
@@ -88,11 +136,11 @@
 
     <ImageView
         android:id="@+id/imgBill"
-        android:layout_width="125dp"
-        android:layout_height="125dp"
+        android:layout_width="175dp"
+        android:layout_height="175dp"
         android:layout_below="@id/uploadReceiptBtn"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp" />
+        android:layout_marginBottom="5dp" />
 
     <Button
         android:id="@+id/submitBill"

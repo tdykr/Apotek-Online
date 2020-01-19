@@ -26,14 +26,13 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class AddNewTransactionApotekerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private IntentIntegrator qrScan;
     ListAdapter adapter;
-    private List<Map<String,Object>> listScanMedicine = new ArrayList<>();
+    private ArrayList<Map<String,Object>> listScanMedicine = new ArrayList<>();
     ListView listQrMed;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +55,9 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
         submitQrBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent in = new Intent(AddNewTransactionApotekerActivity.this,ConfirmationQrTransactionActivity.class);
+                in.putExtra("data",listScanMedicine);
+                startActivity(in);
             }
         });
 

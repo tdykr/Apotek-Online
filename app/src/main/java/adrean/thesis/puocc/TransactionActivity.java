@@ -75,6 +75,8 @@ public class TransactionActivity extends AppCompatActivity {
                 intent.putExtra("DATE",trxDate);
                 intent.putExtra("STATUS",map.get("STATUS"));
                 intent.putExtra("TYPE",map.get("TYPE"));
+                intent.putExtra("CREATED_BY",map.get("CREATED_BY"));
+                intent.putExtra("ADDRESS",map.get("ADDRESS"));
                 intent.putExtra("TOTAL_PRICE",map.get("TOTAL_PRICE"));
                 if(billImgIntent != null && !billImgIntent.equals("null") && !billImgIntent.isEmpty()) {
                     intent.putExtra("BILL_IMG", billImgIntent);
@@ -170,6 +172,7 @@ public class TransactionActivity extends AppCompatActivity {
                 String totPrice = jo.getString("TOTAL_PRICE");
                 String status = jo.getString("STATUS");
                 String type = jo.getString("TRX_TYPE");
+                String address = jo.getString("ADDRESS");
                 String billImg = jo.getString("BILL_IMG");
 
                 HashMap<String,String> listTrx = new HashMap<>();
@@ -177,6 +180,7 @@ public class TransactionActivity extends AppCompatActivity {
                 listTrx.put("CREATED_BY",createdBy);
                 listTrx.put("CREATED_DT",createdDate);
                 listTrx.put("STATUS",status);
+                listTrx.put("ADDRESS",address);
                 listTrx.put("TYPE",type);
                 listTrx.put("BILL_IMG",billImg);
                 listTrx.put("TOTAL_PRICE",totPrice);

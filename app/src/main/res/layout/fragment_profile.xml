@@ -36,6 +36,22 @@
                 android:textSize="15sp" />
 
             <TextView
+                android:id="@+id/txt_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:text="@string/email"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/userEmailTv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorDarkGreen"
+                android:textSize="15sp" />
+
+            <TextView
                 android:id="@+id/txt_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -45,7 +61,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/userEmailTv"
+                android:id="@+id/userAddressTv"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorDarkGreen"
@@ -79,7 +95,7 @@
                 android:id="@+id/changePass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="16dp"
+                android:padding="10dp"
                 android:text="@string/change_password"
                 android:textColor="@color/colorDarkGreen"
                 android:textSize="15sp"
@@ -95,7 +111,7 @@
                     android:id="@+id/txtPassword"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
+                    android:layout_marginBottom="15dp"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@color/colorPrimaryDark">
 
@@ -117,7 +133,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/txtPassword"
-                    android:layout_marginBottom="40dp"
+                    android:layout_marginBottom="20dp"
                     app:passwordToggleEnabled="true"
                     app:passwordToggleTint="@color/colorPrimaryDark">
 

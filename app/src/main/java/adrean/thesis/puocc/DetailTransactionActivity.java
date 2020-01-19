@@ -77,6 +77,9 @@ public class DetailTransactionActivity extends AppCompatActivity {
         TextView trxDateTv = (TextView) findViewById(R.id.trxDate);
         TextView trxStatus = (TextView) findViewById(R.id.trxStatus);
         TextView trxTot = (TextView) findViewById(R.id.trxPrice);
+        TextView trxUser = (TextView) findViewById(R.id.trxUser);
+        TextView trxAddress = (TextView) findViewById(R.id.trxAddress);
+        TextView trxType = (TextView) findViewById(R.id.trxType);
 
         Intent in = getIntent();
         trxId = in.getStringExtra("TRANS_ID");
@@ -85,6 +88,8 @@ public class DetailTransactionActivity extends AppCompatActivity {
         status = in.getStringExtra("STATUS");
         totalPrice = in.getStringExtra("TOTAL_PRICE");
         String type = in.getStringExtra("TYPE");
+        String address = in.getStringExtra("ADDRESS");
+        String user = in.getStringExtra("CREATED_BY");
 
         if(type.equals("OFFLINE")){
             uploadBillBtn.setVisibility(View.GONE);
@@ -97,6 +102,14 @@ public class DetailTransactionActivity extends AppCompatActivity {
         trxTot.setText(totalPrice);
         trxStatus.setText(status);
         trxDateTv.setText(trxDate);
+        trxType.setText(type);
+        trxUser.setText(user);
+
+        if(address != null && !address.equals("null") &&  !address.isEmpty()){
+            trxAddress.setText(address);
+        }else{
+            trxAddress.setText("-");
+        }
 
         if(trxId.contains("TRX")){
             trxId = trxId.replace("TRX-","");
@@ -159,6 +172,9 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 confirmTrxBtn.setVisibility(View.GONE);
             }
         }else if(userModel.getUserRole().equals("user")) {
+            trxUser.setVisibility(View.GONE);
+            trxAddress.setVisibility(View.GONE);
+            trxType.setVisibility(View.GONE);
             if (billImg != null && !billImg.equals("null") && !billImg.isEmpty()) {
                 submitBillBtn.setVisibility(View.GONE);
                 uploadBillBtn.setVisibility(View.GONE);
@@ -216,7 +232,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 loading.dismiss();
                 JSON_STRING = s;
                 Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
-                Intent in = new Intent(DetailTransactionActivity.this,ApotekerMain.class);
+                Intent in = new Intent(DetailTransactionActivity.this,CustomerMain.class);
                 startActivity(in);
             }
 
@@ -250,8 +266,13 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 loading.dismiss();
                 JSON_STRING = s;
                 Toast.makeText(DetailTransactionActivity.this, s, Toast.LENGTH_SHORT).show();
-                Intent in = new Intent(DetailTransactionActivity.this,ApotekerMain.class);
-                startActivity(in);
+                if(userModel.getUserRole().equals("user")){
+                    Intent in = new Intent(DetailTransactionActivity.this,CustomerMain.class);
+                    startActivity(in);
+                }else if(userModel.getUserRole().equals("admin")){
+                    Intent in = new Intent(DetailTransactionActivity.this,ApotekerMain.class);
+                    startActivity(in);
+                }
             }
 
             @Override
