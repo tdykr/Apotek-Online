@@ -54,7 +54,6 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TextView txt = (TextView) findViewById(R.id.text);
         TextView totPrice= (TextView) findViewById(R.id.totalPrice);
         TextView custName = (TextView) findViewById(R.id.custName);
         TextView address = (TextView) findViewById(R.id.address);
@@ -151,6 +150,7 @@ public class ReceiptConfirmationPayActivity extends AppCompatActivity {
                 param.put("USER",userModel.getUserName());
                 param.put("TOTAL_PRICE",totPrice);
                 param.put("TYPE","ONLINE");
+                param.put("STATUS","PENDING");
                 res = rh.sendPostRequest(phpConf.URL_ADD_TRANSACTION, param);
 
                 for(String cartData : cartID){
