@@ -1,28 +1,44 @@
 package adrean.thesis.puocc;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.LruCache;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.itextpdf.text.Document;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -56,6 +72,7 @@ public class TransactionActivity extends AppCompatActivity {
 
         sp = (Spinner) findViewById(R.id.trxCategory);
         Button btnFilter = findViewById(R.id.btnFilter);
+        ImageView imgPrint = findViewById(R.id.img_download);
 
         itemAdapter = new ItemAdapter(TransactionActivity.this, list);
         itemAdapter.notifyDataSetChanged();
@@ -79,6 +96,43 @@ public class TransactionActivity extends AppCompatActivity {
                     changeList(listDone);
                 } else if (sp.getSelectedItem().equals("CONFIRMED")) {
                     changeList(listConfirmed);
+                }
+            }
+        });
+
+        imgPrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap recycler_view_bm = getScreenshotFromRecyclerView(rvTransaction);
+
+                try {
+                    String title=null;
+                    if ( sp.getSelectedItemPosition()==0){
+                        title="Transaction List";
+                    }else title = "Transaction List - "+ sp.getSelectedItem();
+
+                    String dest = FileUtils.getAppPath(TransactionActivity.this) + title+".pdf";
+
+                    //File pdfFile= new File(TransactionActivity.this.getFilesDir(), "myfile.pdf");
+                    FileOutputStream fOut = new FileOutputStream(dest);
+
+                    PdfDocument document = new PdfDocument();
+                    PdfDocument.PageInfo pageInfo = new
+                            PdfDocument.PageInfo.Builder(recycler_view_bm.getWidth(), recycler_view_bm.getHeight(), 1).create();
+                    PdfDocument.Page page = document.startPage(pageInfo);
+                    recycler_view_bm.prepareToDraw();
+                    Canvas c;
+                    c = page.getCanvas();
+                    c.drawBitmap(recycler_view_bm,0,0,null);
+                    document.finishPage(page);
+                    document.writeTo(fOut);
+                    document.close();
+                    Toast.makeText(TransactionActivity.this,"PDF generated successfully", Toast.LENGTH_SHORT).show();
+                    FileUtils.openFile(TransactionActivity.this, new File(dest));
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         });
@@ -232,5 +286,50 @@ public class TransactionActivity extends AppCompatActivity {
             finish();
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    public Bitmap getScreenshotFromRecyclerView(RecyclerView view) {
+        RecyclerView.Adapter adapter = view.getAdapter();
+        Bitmap bigBitmap = null;
+        if (adapter != null) {
+            int size = adapter.getItemCount();
+            int height = 0;
+            Paint paint = new Paint();
+            int iHeight = 0;
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+            // Use 1/8th of the available memory for this memory cache.
+            final int cacheSize = maxMemory / 8;
+            LruCache<String, Bitmap> bitmaCache = new LruCache<>(cacheSize);
+            for (int i = 0; i < size; i++) {
+                RecyclerView.ViewHolder holder = adapter.createViewHolder(view, adapter.getItemViewType(i));
+                adapter.onBindViewHolder(holder, i);
+                holder.itemView.measure(View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                holder.itemView.layout(0, 0, holder.itemView.getMeasuredWidth(), holder.itemView.getMeasuredHeight());
+                holder.itemView.setDrawingCacheEnabled(true);
+                holder.itemView.buildDrawingCache();
+                Bitmap drawingCache = holder.itemView.getDrawingCache();
+                if (drawingCache != null) {
+
+                    bitmaCache.put(String.valueOf(i), drawingCache);
+                }
+
+                height += holder.itemView.getMeasuredHeight();
+            }
+
+            bigBitmap = Bitmap.createBitmap(view.getMeasuredWidth(), height, Bitmap.Config.ARGB_8888);
+            Canvas bigCanvas = new Canvas(bigBitmap);
+            bigCanvas.drawColor(Color.WHITE);
+
+            for (int i = 0; i < size; i++) {
+                Bitmap bitmap = bitmaCache.get(String.valueOf(i));
+                bigCanvas.drawBitmap(bitmap, 0f, iHeight, paint);
+                iHeight += bitmap.getHeight();
+                bitmap.recycle();
+            }
+
+        }
+        return bigBitmap;
     }
 }
