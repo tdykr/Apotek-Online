@@ -3,7 +3,13 @@ package adrean.thesis.puocc;
 import android.Manifest;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.pdf.PdfDocument;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,13 +18,17 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,12 +42,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Element;
 import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.BaseFont;
@@ -48,10 +60,12 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,6 +75,8 @@ import java.util.Locale;
 
 import adrean.thesis.puocc.Fragment.DatePickerFragment;
 
+import static com.itextpdf.text.Annotation.FILE;
+
 public class SummaryReportActivity extends AppCompatActivity implements DatePickerFragment.DialogDateListener {
 
     final String START_DATE_TAG = "StartDate";
@@ -69,9 +85,6 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
     private ArrayList<String> reportList = new ArrayList<>();
 
     private ArrayList<String> chartList = new ArrayList<>();
-
-
-
 
     private Spinner spinnerReport;
     private Spinner spinnerChart;
@@ -133,6 +146,8 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         reportList.add("-- Select Report --");
         reportList.add("Sales Report");
         reportList.add("Gross Income Report");
+        reportList.add("Medicine Sales Report");
+        reportList.add("Pharmacist Report");
         chartList.add("-- Select Chart --");
         chartList.add("Bar Chart");
         chartList.add("Pie Chart");
@@ -145,27 +160,48 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
 
         spinnerReport.setAdapter(reportAdapter);
         spinnerChart.setAdapter(chartAdapter);
+
+        spinnerReport.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position==2 || position==0){
+                    spinnerChart.setVisibility(View.GONE);
+                }else {
+                    spinnerChart.setVisibility(View.VISIBLE);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
         //getListYear();
         btnGenerate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //check spinner, start date, end date
-                if (spinnerReport.getSelectedItemPosition()==1){
-                    if (checkDate() || spinnerChart.getSelectedItemPosition()!=0) {
+                if (spinnerReport.getSelectedItemPosition() == 1) {
+                    if (checkDate() && setChartVisibility()) {
                         sales();
-                        if(spinnerChart.getSelectedItemPosition()==1){
-                            barChart.setVisibility(View.VISIBLE);
-                            pieChart.setVisibility(View.GONE);
-                        }else{
-                            pieChart.setVisibility(View.VISIBLE);
-                            barChart.setVisibility(View.GONE);
-                        }
-                    }else if (spinnerChart.getSelectedItemPosition()==0){
-                        Toast.makeText(SummaryReportActivity.this, "Please choose chart type!", Toast.LENGTH_SHORT).show();
+                        imgDownload.setVisibility(View.VISIBLE);
                     }
-                }else if(spinnerReport.getSelectedItemPosition()==2){
-                    if (checkDate()) gross();
-                }else{
+                } else if (spinnerReport.getSelectedItemPosition() == 2) {
+                    if (checkDate()) {
+                        gross();
+                        imgDownload.setVisibility(View.VISIBLE);
+                    }
+                } else if (spinnerReport.getSelectedItemPosition() == 3) {
+                    if (checkDate() && setChartVisibility()) {
+                        medSales();
+                        imgDownload.setVisibility(View.VISIBLE);
+                    }
+                } else if (spinnerReport.getSelectedItemPosition() == 4) {
+                    if (checkDate() && setChartVisibility()) {
+                        pharmacist();
+                        imgDownload.setVisibility(View.VISIBLE);
+                    }
+                } else {
                     Toast.makeText(SummaryReportActivity.this, "Please choose report to be generated!", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -190,10 +226,13 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         imgDownload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isStoragePermissionGranted()){
+                if (isStoragePermissionGranted()) {
                     Log.d("tag", "create pdf");
-                    createPdf(FileUtils.getAppPath(SummaryReportActivity.this) + "icha.pdf");
-                }else isStoragePermissionGranted();
+                    //createPdfOld(FileUtils.getAppPath(SummaryReportActivity.this) + "icha.pdf");
+                    String title = spinnerReport.getSelectedItem() + " "+ spinnerChart.getSelectedItem() + System.currentTimeMillis();
+                    convertView(FileUtils.getAppPath(SummaryReportActivity.this) + title +".pdf");
+
+                } else isStoragePermissionGranted();
             }
         });
 
@@ -209,19 +248,35 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         return super.onOptionsItemSelected(item);
     }
 
-    private boolean checkDate(){
-        if (startDate==null || startDate.isEmpty()){
+    private boolean setChartVisibility() {
+        if (spinnerChart.getSelectedItemPosition() == 1) {
+            barChart.setVisibility(View.VISIBLE);
+            pieChart.setVisibility(View.GONE);
+            return true;
+        } else if (spinnerChart.getSelectedItemPosition() == 2) {
+            pieChart.setVisibility(View.VISIBLE);
+            barChart.setVisibility(View.GONE);
+            return true;
+        } else {
+            Toast.makeText(SummaryReportActivity.this, "Please choose chart type!", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+    }
+
+    private boolean checkDate() {
+        if (startDate == null || startDate.isEmpty()) {
             Toast.makeText(SummaryReportActivity.this, "Please input the start date!", Toast.LENGTH_SHORT).show();
             return false;
-        }else if (endDate==null || endDate.isEmpty()){
+        } else if (endDate == null || endDate.isEmpty()) {
             Toast.makeText(SummaryReportActivity.this, "Please input the end date!", Toast.LENGTH_SHORT).show();
             return false;
-        }else return true;
+        } else return true;
     }
 
     private void sales() {
         class Sales extends AsyncTask<Void, Void, String> {
             ProgressDialog loading;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
@@ -250,13 +305,14 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
 
                     llSales.setVisibility(View.VISIBLE);
                     llGross.setVisibility(View.GONE);
-                    createBarChart();
-                    createPieChart();
+                    createBarChart("Sales Comparison");
+                    createPieChart("Sales Comparison");
 
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
+
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String, String> params = new HashMap<>();
@@ -264,11 +320,121 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
                 params.put("ENDDATE", endDate);
 
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(phpConf.URL_GET_CHART_DATA,params);
+                String res = rh.sendPostRequest(phpConf.URL_GET_CHART_DATA, params);
                 return res;
             }
         }
         Sales add = new Sales();
+        add.execute();
+    }
+
+    private void medSales() {
+        class MedSales extends AsyncTask<Void, Void, String> {
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(SummaryReportActivity.this, "Loading Data...",
+                        "Please Wait...", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                try {
+                    listTransaction.clear();
+                    listTotalPie.clear();
+                    listTotalBar.clear();
+                    Log.d("Json MedSales", s);
+                    JSONObject jsonPost = new JSONObject(s);
+                    JSONArray cast = jsonPost.getJSONArray("result");
+                    for (int i = 0; i < cast.length(); i++) {
+                        JSONObject c = cast.getJSONObject(i);
+
+                        listTotalPie.add(new Entry(Float.parseFloat(c.getString("TOTAL")), i));
+                        listTransaction.add(c.getString("MEDICINE_NAME"));
+                        listTotalBar.add(new BarEntry(Float.parseFloat(c.getString("TOTAL")), i));
+                    }
+
+                    llSales.setVisibility(View.VISIBLE);
+                    llGross.setVisibility(View.GONE);
+                    createBarChart("Medical Sales Report");
+                    createPieChart("Medical Sales Report");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("STARTDATE", startDate);
+                params.put("ENDDATE", endDate);
+
+                RequestHandler rh = new RequestHandler();
+                String res = rh.sendPostRequest(phpConf.URL_SELLING_REPORT_MEDICINE, params);
+                return res;
+            }
+        }
+        MedSales add = new MedSales();
+        add.execute();
+    }
+
+    private void pharmacist() {
+        class Pharmacist extends AsyncTask<Void, Void, String> {
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(SummaryReportActivity.this, "Loading Data...",
+                        "Please Wait...", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                try {
+                    listTransaction.clear();
+                    listTotalPie.clear();
+                    listTotalBar.clear();
+                    Log.d("Json Pharmacist", s);
+                    JSONObject jsonPost = new JSONObject(s);
+                    JSONArray cast = jsonPost.getJSONArray("result");
+                    for (int i = 0; i < cast.length(); i++) {
+                        JSONObject c = cast.getJSONObject(i);
+
+                        listTotalPie.add(new Entry(Float.parseFloat(c.getString("TOTAL")), i));
+                        listTransaction.add(c.getString("MEDICINE_NAME"));
+                        listTotalBar.add(new BarEntry(Float.parseFloat(c.getString("TOTAL")), i));
+                    }
+
+                    llSales.setVisibility(View.VISIBLE);
+                    llGross.setVisibility(View.GONE);
+                    createBarChart("Pharmacist Sales Report");
+                    createPieChart("Pharmacist Sales Report");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            protected String doInBackground(Void... v) {
+                HashMap<String, String> params = new HashMap<>();
+                params.put("STARTDATE", startDate);
+                params.put("ENDDATE", endDate);
+
+                RequestHandler rh = new RequestHandler();
+                String res = rh.sendPostRequest(phpConf.URL_SELLING_REPORT_MEDICINE, params);
+                return res;
+            }
+        }
+        Pharmacist add = new Pharmacist();
         add.execute();
     }
 
@@ -304,7 +470,7 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
                     String leastBoughtCat = jo.getString("LEAST_BOUGHT_CAT");
 
                     double dbIncome = Double.parseDouble(income);
-                    income=getString(R.string.rupiah,df.format(dbIncome));
+                    income = getString(R.string.rupiah, df.format(dbIncome));
 
                     tvTotalTransaction.setText(transactionTotal);
                     tvIncome.setText(income);
@@ -327,7 +493,7 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
                 params.put("ENDDATE", endDate);
 
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(phpConf.URL_SUMMARY,params);
+                String res = rh.sendPostRequest(phpConf.URL_SUMMARY, params);
                 return res;
             }
         }
@@ -336,141 +502,94 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
         add.execute();
     }
 
-    private void createPieChart(){
-        PieDataSet dataSet = new PieDataSet(listTotalPie, "Sales Comparison");
+    private void createPieChart(String title) {
+        PieDataSet dataSet = new PieDataSet(listTotalPie, title);
         PieData data = new PieData(listTransaction, dataSet);
         pieChart.setData(data);
         dataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+        pieChart.setContentDescription(null);
+        pieChart.setDescription(null);
         pieChart.animateXY(3000, 3000);
     }
-    private void createBarChart(){
-        BarDataSet bardataset = new BarDataSet(listTotalBar, "Sales Comparison");
+
+    private void createBarChart(String title) {
+        BarDataSet bardataset = new BarDataSet(listTotalBar, title);
         barChart.animateY(3000);
         BarData data = new BarData(listTransaction, bardataset);
         bardataset.setColors(ColorTemplate.COLORFUL_COLORS);
         barChart.setData(data);
+        barChart.setDescription(null);
     }
 
-    private void printPdf() throws FileNotFoundException, DocumentException {
-        //create
-        Document document = new Document();
-        PdfWriter.getInstance(document, new FileOutputStream(new File(SummaryReportActivity.this.getFilesDir(), "myFile.xml")));
-        document.open();
-
-        // Document Settings
-        document.setPageSize(PageSize.A4);
-        document.addCreationDate();
-        document.addAuthor("icha");
-        document.addCreator("tedy");
-    }
-
-    public void createPdf(String dest) {
-
+    private void convertView(String dest) {
         if (new File(dest).exists()) {
             new File(dest).delete();
         }
+        if (spinnerReport.getSelectedItemPosition()==2){
+            convertCertViewToImage(dest);
+        }else{
+            if (barChart.getVisibility() == View.VISIBLE) {
+                barChart.buildDrawingCache();
+                Bitmap bm = barChart.getDrawingCache();
+                createPdf(bm, dest);
+            }
+            if(pieChart.getVisibility() == View.VISIBLE){
+                pieChart.buildDrawingCache();
+                Bitmap bm = pieChart.getDrawingCache();
+                createPdf(bm, dest);
+            }
+        }
+    }
+
+    public void convertCertViewToImage(String dest) {
 
         try {
-            /**
-             * Creating Document
-             */
-            Document document = new Document();
+            FileOutputStream fOut = new FileOutputStream(dest);
 
-            // Location to save
-            PdfWriter.getInstance(document, new FileOutputStream(dest));
-
-            // Open to write
-            document.open();
-
-            // Document Settings
-            document.setPageSize(PageSize.A4);
-            document.addCreationDate();
-            document.addAuthor("icha");
-            document.addCreator("tedy");
-
-            /***
-             * Variables for further use....
-             */
-            BaseColor mColorAccent = new BaseColor(0, 153, 204, 255);
-            float mHeadingFontSize = 20.0f;
-            float mValueFontSize = 26.0f;
-
-            /**
-             * How to USE FONT....
-             */
-            BaseFont urName = BaseFont.createFont("res/font/brandon_medium.otf", "UTF-8", BaseFont.EMBEDDED);
-
-            // LINE SEPARATOR
-            LineSeparator lineSeparator = new LineSeparator();
-            lineSeparator.setLineColor(new BaseColor(0, 0, 0, 68));
-
-            // Title Order Details...
-            // Adding Title....
-            Font mOrderDetailsTitleFont = new Font(urName, 36.0f, Font.NORMAL, BaseColor.BLACK);
-            Chunk mOrderDetailsTitleChunk = new Chunk("Order Details", mOrderDetailsTitleFont);
-            Paragraph mOrderDetailsTitleParagraph = new Paragraph(mOrderDetailsTitleChunk);
-            mOrderDetailsTitleParagraph.setAlignment(Element.ALIGN_CENTER);
-            document.add(mOrderDetailsTitleParagraph);
-
-            // Fields of Order Details...
-            // Adding Chunks for Title and value
-            Font mOrderIdFont = new Font(urName, mHeadingFontSize, Font.NORMAL, mColorAccent);
-            Chunk mOrderIdChunk = new Chunk("Order No:", mOrderIdFont);
-            Paragraph mOrderIdParagraph = new Paragraph(mOrderIdChunk);
-            document.add(mOrderIdParagraph);
-
-            Font mOrderIdValueFont = new Font(urName, mValueFontSize, Font.NORMAL, BaseColor.BLACK);
-            Chunk mOrderIdValueChunk = new Chunk("#123123", mOrderIdValueFont);
-            Paragraph mOrderIdValueParagraph = new Paragraph(mOrderIdValueChunk);
-            document.add(mOrderIdValueParagraph);
-
-            // Adding Line Breakable Space....
-            document.add(new Paragraph(""));
-            // Adding Horizontal Line...
-            document.add(new Chunk(lineSeparator));
-            // Adding Line Breakable Space....
-            document.add(new Paragraph(""));
-
-            // Fields of Order Details...
-            Font mOrderDateFont = new Font(urName, mHeadingFontSize, Font.NORMAL, mColorAccent);
-            Chunk mOrderDateChunk = new Chunk("Order Date:", mOrderDateFont);
-            Paragraph mOrderDateParagraph = new Paragraph(mOrderDateChunk);
-            document.add(mOrderDateParagraph);
-
-            Font mOrderDateValueFont = new Font(urName, mValueFontSize, Font.NORMAL, BaseColor.BLACK);
-            Chunk mOrderDateValueChunk = new Chunk("06/07/2017", mOrderDateValueFont);
-            Paragraph mOrderDateValueParagraph = new Paragraph(mOrderDateValueChunk);
-            document.add(mOrderDateValueParagraph);
-
-            document.add(new Paragraph(""));
-            document.add(new Chunk(lineSeparator));
-            document.add(new Paragraph(""));
-
-            // Fields of Order Details...
-            Font mOrderAcNameFont = new Font(urName, mHeadingFontSize, Font.NORMAL, mColorAccent);
-            Chunk mOrderAcNameChunk = new Chunk("Account Name:", mOrderAcNameFont);
-            Paragraph mOrderAcNameParagraph = new Paragraph(mOrderAcNameChunk);
-            document.add(mOrderAcNameParagraph);
-
-            Font mOrderAcNameValueFont = new Font(urName, mValueFontSize, Font.NORMAL, BaseColor.BLACK);
-            Chunk mOrderAcNameValueChunk = new Chunk("Pratik Butani", mOrderAcNameValueFont);
-            Paragraph mOrderAcNameValueParagraph = new Paragraph(mOrderAcNameValueChunk);
-            document.add(mOrderAcNameValueParagraph);
-
-            document.add(new Paragraph(""));
-            document.add(new Chunk(lineSeparator));
-            document.add(new Paragraph(""));
-
+            PdfDocument document = new PdfDocument();
+            LinearLayout view = findViewById(R.id.ll_gross);
+            Bitmap bm = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bm);
+            view.draw(canvas);
+            PdfDocument.PageInfo pageInfo = new
+                    PdfDocument.PageInfo.Builder(bm.getWidth(), bm.getHeight(), 1).create();
+            PdfDocument.Page page = document.startPage(pageInfo);
+            bm.prepareToDraw();
+            Canvas c;
+            c = page.getCanvas();
+            c.drawBitmap(bm,0,0,null);
+            document.finishPage(page);
+            document.writeTo(fOut);
             document.close();
 
-            Toast.makeText(SummaryReportActivity.this, "PDF is created... :)", Toast.LENGTH_SHORT).show();
 
+            Toast.makeText(SummaryReportActivity.this,"PDF generated successfully", Toast.LENGTH_SHORT).show();
             FileUtils.openFile(SummaryReportActivity.this, new File(dest));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        } catch (IOException | DocumentException ie) {
-            Log.d("createPdf: Error " , ie.getLocalizedMessage());
-        } catch (ActivityNotFoundException ae) {
-            Toast.makeText(SummaryReportActivity.this, "No application found to open this file.", Toast.LENGTH_SHORT).show();
+    private void createPdf(Bitmap bm, String dest){
+        try {
+            FileOutputStream fOut = new FileOutputStream(dest);
+
+            PdfDocument document = new PdfDocument();
+            PdfDocument.PageInfo pageInfo = new
+                    PdfDocument.PageInfo.Builder(bm.getWidth(), bm.getHeight(), 1).create();
+            PdfDocument.Page page = document.startPage(pageInfo);
+            bm.prepareToDraw();
+            Canvas c;
+            c = page.getCanvas();
+            c.drawBitmap(bm,0,0,null);
+            document.finishPage(page);
+            document.writeTo(fOut);
+            document.close();
+
+            Toast.makeText(SummaryReportActivity.this,"PDF generated successfully", Toast.LENGTH_SHORT).show();
+            FileUtils.openFile(SummaryReportActivity.this, new File(dest));
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -482,14 +601,14 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
 
         if (tag.equals(START_DATE_TAG)) {
             tvStartDate.setText(dateFormat.format(calendar.getTime()));
-            startDate=dateFormat.format(calendar.getTime());
+            startDate = dateFormat.format(calendar.getTime());
         } else if (tag.equals(END_DATE_TAG)) {
             tvEndDate.setText(dateFormat.format(calendar.getTime()));
-            endDate=dateFormat.format(calendar.getTime());
+            endDate = dateFormat.format(calendar.getTime());
         }
     }
 
-    public  boolean isStoragePermissionGranted() {
+    public boolean isStoragePermissionGranted() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     == PackageManager.PERMISSION_GRANTED) {
@@ -498,8 +617,7 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
                 ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
                 return false;
             }
-        }
-        else {
+        } else {
             return true;
         }
     }

@@ -5,12 +5,16 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -18,18 +22,30 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,17 +54,22 @@ public class DetailTransactionActivity extends AppCompatActivity {
 
     private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg,trxDate,status,totalPrice;
     private Bitmap medPict;
-    private ListView listViewCart;
     private ListAdapter adapter;
     private Button uploadBillBtn,submitBillBtn,confirmTrxBtn,endTrxBtn;
-    private ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
+    private ArrayList<HashMap<String,String>> listData = new ArrayList<>();
     private UserModel userModel;
     private UserPreference mUserPreference;
     private Uri selectedImage;
     private Bitmap bitmap;
     private ImageView targetImage;
+    private ImageView imgPrinter;
     Toolbar toolbar;
     private DecimalFormat df = new DecimalFormat("#,###.##");
+    private LinearLayout llPrint;
+    private RelativeLayout rlDetailTrans;
+    private ItemDetailAdapter itemDetailAdapter;
+    private RecyclerView rvItemDetail;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,10 +85,20 @@ public class DetailTransactionActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        itemDetailAdapter = new ItemDetailAdapter(DetailTransactionActivity.this, listData);
+        itemDetailAdapter.notifyDataSetChanged();
+        rvItemDetail = findViewById(R.id.rv_item_detail);
+        rvItemDetail.setHasFixedSize(true);
+        rvItemDetail.setLayoutManager(new LinearLayoutManager(DetailTransactionActivity.this));
+        rvItemDetail.setAdapter(itemDetailAdapter);
+
         uploadBillBtn = (Button) findViewById(R.id.uploadReceiptBtn);
         submitBillBtn = (Button) findViewById(R.id.submitBill);
         confirmTrxBtn = (Button) findViewById(R.id.confirmTrx);
         endTrxBtn = (Button) findViewById(R.id.endTrx);
+        imgPrinter = findViewById(R.id.img_download);
+        llPrint = findViewById(R.id.rel1);
+        rlDetailTrans = findViewById(R.id.rl_detail_trans);
 
         confirmTrxBtn.setVisibility(View.GONE);
         endTrxBtn.setVisibility(View.GONE);
@@ -114,7 +145,6 @@ public class DetailTransactionActivity extends AppCompatActivity {
         if(trxId.contains("TRX")){
             trxId = trxId.replace("TRX-","");
         }
-        listViewCart = (ListView) findViewById(R.id.detailList);
 
         mUserPreference = new UserPreference(this);
         userModel = mUserPreference.getUser();
@@ -155,6 +185,15 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 }
             }
         });
+
+        imgPrinter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String dest = FileUtils.getAppPath(DetailTransactionActivity.this) + trxId+".pdf";
+                createPdf(dest);
+            }
+        });
+
 
         if(userModel.getUserRole().equals("admin")){
 
@@ -210,9 +249,68 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 targetImage.setImageBitmap(bitmap);
                 BitmapHelper.getInstance().setBitmap(bitmap);
             } catch (FileNotFoundException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
+        }
+    }
+
+    private void createPdf(String dest){
+        if (new File(dest).exists()) {
+            new File(dest).delete();
+        }
+
+
+        try {
+            FileOutputStream fOut = new FileOutputStream(dest);
+
+            PdfDocument document = new PdfDocument();
+            LinearLayout view = findViewById(R.id.rel1);
+            Bitmap bm = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Bitmap.Config.ARGB_8888);
+            Canvas canvas = new Canvas(bm);
+            view.draw(canvas);
+            PdfDocument.PageInfo pageInfo = new
+                    PdfDocument.PageInfo.Builder(bm.getWidth(), bm.getHeight(), 1).create();
+            PdfDocument.Page page = document.startPage(pageInfo);
+            bm.prepareToDraw();
+            Canvas c;
+            c = page.getCanvas();
+            c.drawBitmap(bm,0,0,null);
+            document.finishPage(page);
+            document.writeTo(fOut);
+            document.close();
+
+            Toast.makeText(DetailTransactionActivity.this,"PDF generated successfully", Toast.LENGTH_SHORT).show();
+            FileUtils.openFile(DetailTransactionActivity.this, new File(dest));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void addImage(Document document,byte[] byteArray)
+    {
+        Image image = null;
+        try
+        {
+            image = Image.getInstance(byteArray);
+        }
+        catch (BadElementException e)
+        {
+            e.printStackTrace();
+        }
+        catch (MalformedURLException e)
+        {
+            e.printStackTrace();
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+        // image.scaleAbsolute(150f, 150f);
+        try
+        {
+            document.add(image);
+        } catch (DocumentException e) {
+            e.printStackTrace();
         }
     }
 
@@ -290,7 +388,6 @@ public class DetailTransactionActivity extends AppCompatActivity {
     }
 
     private void getListMedicine(){
-        listViewCart.setAdapter(null);
         JSONObject jsonObject = null;
         Context context = getApplicationContext();
         try {
@@ -312,7 +409,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
 
                 Uri imgUri = getImageUri(context,medPict);
 
-                HashMap<String,Object> medicine = new HashMap<>();
+                HashMap<String,String> medicine = new HashMap<>();
                 medicine.put("CART_ID",cartId);
                 medicine.put("MED_NAME",medName);
                 medicine.put("CATEGORY",medCategory);
@@ -320,24 +417,19 @@ public class DetailTransactionActivity extends AppCompatActivity {
                 medicine.put("FORMATTED_PRICE",  formattedMedPrice);
                 medicine.put("DESCRIPTION",medDesc);
                 medicine.put("QUANTITY",medQt);
-                medicine.put("MEDICINE_PICT",imgUri);
+                medicine.put("MEDICINE_PICT",imgUri.toString());
                 medicine.put("isChecked","false");
 
                 Log.d("tag", String.valueOf(medicine));
 
                 listData.add(medicine);
+                itemDetailAdapter.notifyDataSetChanged();
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        adapter = new SimpleAdapter(
-                getApplicationContext(), listData, R.layout.list_medicine,
-                new String[]{"MED_NAME","CATEGORY","MED_NAME","FORMATTED_PRICE","QUANTITY","MEDICINE_PICT"},
-                new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medName,R.id.medPrice, R.id.medQuantity, R.id.img});
-
-        listViewCart.setAdapter(adapter);
     }
 
     private void getJSON(){
@@ -471,4 +563,6 @@ public class DetailTransactionActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

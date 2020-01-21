@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:id="@+id/sv_summary"
     tools:context=".SummaryReportActivity">
 
     <LinearLayout
@@ -111,7 +112,8 @@
                 android:layout_gravity="center"
                 android:layout_marginStart="10dp"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/ic_printer_gray" />
+                android:src="@drawable/ic_printer"
+                android:visibility="gone"/>
         </LinearLayout>
 
         <LinearLayout
@@ -270,7 +272,7 @@
                     tools:text="121"/>
             </LinearLayout>
 
-            <!--<LinearLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
@@ -294,7 +296,7 @@
                     tools:text="Panadol"/>
             </LinearLayout>
 
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"

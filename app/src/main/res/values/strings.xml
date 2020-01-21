@@ -78,5 +78,7 @@
     <string name="name_category">Category Name</string>
     <string name="prescriptionTrx">Add Prescription Transaction</string>
     <string name="Done">Finish Transaction</string>
+    <string name="order_list">Order List</string>
+    <string name="order_info">Order Info</string>
 
 </resources>
