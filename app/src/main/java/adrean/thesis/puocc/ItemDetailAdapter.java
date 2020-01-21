@@ -1,7 +1,6 @@
 package adrean.thesis.puocc;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -11,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.net.URI;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,8 +35,8 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.It
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
 
-        holder.tvMedCategory.setText(data.get(position).get("ID"));
-        holder.tvMedName.setText(data.get(position).get("CATEGORY"));
+        holder.tvMedCategory.setText(data.get(position).get("CATEGORY"));
+        holder.tvMedName.setText(data.get(position).get("MED_NAME"));
         holder.tvMedPrice.setText(data.get(position).get("PRICE"));
         holder.tvMedQuantity.setText(data.get(position).get("QUANTITY"));
         holder.imgMedicine.setImageURI(Uri.parse(data.get(position).get("MEDICINE_PICT")));

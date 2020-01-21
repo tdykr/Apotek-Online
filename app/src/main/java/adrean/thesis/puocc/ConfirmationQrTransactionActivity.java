@@ -124,7 +124,7 @@ public class ConfirmationQrTransactionActivity extends AppCompatActivity {
 
                 HashMap<String,String> param = new HashMap<>();
                 param.put("UUID",trxId);
-                param.put("USER","SYSTEM");
+                param.put("USER",userModel.getUserName());
                 param.put("TOTAL_PRICE",totPrice);
                 param.put("TYPE","OFFLINE");
                 param.put("STATUS","DONE");
@@ -139,7 +139,7 @@ public class ConfirmationQrTransactionActivity extends AppCompatActivity {
                     params.put("TRX_ID",trxId);
                     params.put("STATUS","DONE");
                     params.put("QUANTITY",data.get("QUANTITY"));
-                    params.put("USER","SYSTEM");
+                    params.put("USER",userModel.getUserName());
 
                     res = rh.sendPostRequest(phpConf.URL_QR_ADD_CART, params);
                 }
