@@ -79,6 +79,12 @@ public class QrAdapter extends BaseAdapter {
 
                     vi.setTag(holder);
 
+                    if(holder.medQt.getText().toString().isEmpty()){
+                        Map<String,String> row = data.get(position);
+                        row.put("QUANTITY", "1");
+                        data.set(position, row);
+                    }
+
                     holder.medQt.addTextChangedListener(new TextWatcher(){// add text watcher to update your data after editing
                         public void afterTextChanged(Editable s) {
                             Map<String,String> row = data.get(position); // get the item from your ArrayList

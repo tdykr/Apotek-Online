@@ -2,13 +2,9 @@ package adrean.thesis.puocc;
 
 import android.Manifest;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.graphics.pdf.PdfDocument;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -18,7 +14,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -27,8 +22,6 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,30 +35,14 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.itextpdf.text.BadElementException;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.DocumentException;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.BaseFont;
-import com.itextpdf.text.pdf.PdfWriter;
-import com.itextpdf.text.pdf.draw.LineSeparator;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -74,8 +51,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import adrean.thesis.puocc.Fragment.DatePickerFragment;
-
-import static com.itextpdf.text.Annotation.FILE;
 
 public class SummaryReportActivity extends AppCompatActivity implements DatePickerFragment.DialogDateListener {
 
@@ -409,7 +384,7 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
                         JSONObject c = cast.getJSONObject(i);
 
                         listTotalPie.add(new Entry(Float.parseFloat(c.getString("TOTAL")), i));
-                        listTransaction.add(c.getString("MEDICINE_NAME"));
+                        listTransaction.add(c.getString("USER"));
                         listTotalBar.add(new BarEntry(Float.parseFloat(c.getString("TOTAL")), i));
                     }
 
@@ -430,7 +405,7 @@ public class SummaryReportActivity extends AppCompatActivity implements DatePick
                 params.put("ENDDATE", endDate);
 
                 RequestHandler rh = new RequestHandler();
-                String res = rh.sendPostRequest(phpConf.URL_SELLING_REPORT_MEDICINE, params);
+                String res = rh.sendPostRequest(phpConf.URL_SELLING_REPORT_PHARMACIST, params);
                 return res;
             }
         }
