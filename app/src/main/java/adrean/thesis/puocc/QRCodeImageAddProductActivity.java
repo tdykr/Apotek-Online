@@ -2,38 +2,23 @@ package adrean.thesis.puocc;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.media.MediaScannerConnection;
-import android.net.Uri;
-import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.w3c.dom.Text;
-
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 
 public class QRCodeImageAddProductActivity extends AppCompatActivity {
 
@@ -101,9 +86,9 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
         BitmapDrawable drawable = (BitmapDrawable) qrImg.getDrawable();
         Bitmap bitmap = drawable.getBitmap();
 
-        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "Pictures/QRObat");
+        File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/Pictures/QRObat");
         dir.mkdirs();
-        File file = new File(dir, "QRImg-" + medName + id + ".jpg");
+        File file = new File(dir, "QRImg-" + medName + ".jpg");
 
         outputStream = null;
         try {
@@ -113,6 +98,7 @@ public class QRCodeImageAddProductActivity extends AppCompatActivity {
             outputStream.close();
             Toast.makeText(QRCodeImageAddProductActivity.this, "Image has been Saved", Toast.LENGTH_SHORT).show();
         } catch (Exception e) {
+            Toast.makeText(QRCodeImageAddProductActivity.this, "Fail to save Image", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
     }
