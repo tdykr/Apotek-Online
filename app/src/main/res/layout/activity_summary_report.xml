@@ -51,7 +51,7 @@
 
             <ImageButton
                 android:id="@+id/btn_start_date"
-                style="@style/Base.Widget.AppCompat.ImageButton"
+                style="@style/Button.Neutral"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_date_range" />
@@ -76,7 +76,7 @@
 
             <ImageButton
                 android:id="@+id/btn_end_date"
-                style="@style/Base.Widget.AppCompat.ImageButton"
+                style="@style/Button.Neutral"
                 android:layout_width="50dp"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_date_range" />

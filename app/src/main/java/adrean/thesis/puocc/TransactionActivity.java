@@ -328,7 +328,6 @@ public class TransactionActivity extends AppCompatActivity {
                 iHeight += bitmap.getHeight();
                 bitmap.recycle();
             }
-
         }
         return bigBitmap;
     }

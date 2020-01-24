@@ -80,5 +80,7 @@
     <string name="Done">Finish Transaction</string>
     <string name="order_list">Order List</string>
     <string name="order_info">Order Info</string>
+    
+    <string name="search_medicine">Search Medicine</string>
 
 </resources>
