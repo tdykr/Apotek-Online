@@ -51,6 +51,7 @@ public class ConfirmationQrTransactionActivity extends AppCompatActivity {
         data = (List<Map<String, String>>) in.getSerializableExtra("data");
 
         for(Map<String, String> mapData : data){
+
             String price = mapData.get("PRICE");
             String quantity = mapData.get("QUANTITY");
 

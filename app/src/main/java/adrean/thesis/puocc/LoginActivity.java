@@ -105,6 +105,8 @@ public class LoginActivity extends AppCompatActivity {
                     String response = jo.getString("response");
                     String message = jo.getString("message");
 
+                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
+
                     if (response.equals("1")) {
                         saveUser(userId, userPass, userName, userEmail, userAddress, userPhone,
                                 userRole, response, message);
@@ -120,7 +122,6 @@ public class LoginActivity extends AppCompatActivity {
                         Intent ownerAct = new Intent(LoginActivity.this, OwnerMain.class);
                         startActivity(ownerAct);
                     }
-                    Toast.makeText(LoginActivity.this, message, Toast.LENGTH_SHORT).show();
 
                 } catch (JSONException e) {
                     e.printStackTrace();
