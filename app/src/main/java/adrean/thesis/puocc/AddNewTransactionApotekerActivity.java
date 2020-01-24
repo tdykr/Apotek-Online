@@ -93,6 +93,7 @@ public class AddNewTransactionApotekerActivity extends AppCompatActivity impleme
                     medicineMap.put("PRICE",mdPrice);
                     medicineMap.put("CATEGORY",mdCat);
                     medicineMap.put("ID",mdId);
+                    medicineMap.put("QUANTITY","1");
 
                     listScanMedicine.add(medicineMap);
 

@@ -2,6 +2,7 @@ package adrean.thesis.puocc;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.os.Build;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -79,16 +80,12 @@ public class QrAdapter extends BaseAdapter {
 
                     vi.setTag(holder);
 
-                    if(holder.medQt.getText().toString().isEmpty()){
-                        Map<String,String> row = data.get(position);
-                        row.put("QUANTITY", "1");
-                        data.set(position, row);
-                    }
-
                     holder.medQt.addTextChangedListener(new TextWatcher(){// add text watcher to update your data after editing
                         public void afterTextChanged(Editable s) {
                             Map<String,String> row = data.get(position); // get the item from your ArrayList
-                            row.put("QUANTITY", holder.medQt.getText().toString());// update your HashMap
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                row.replace("QUANTITY", holder.medQt.getText().toString());// update your HashMap
+                            }
                             data.set(position, row); // update your data ( your ArrayList )
                         }
                         public void beforeTextChanged(CharSequence s, int start, int count, int after){}
