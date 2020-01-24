@@ -7,8 +7,25 @@
     android:paddingStart="16dp"
     android:paddingEnd="16dp">
 
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="5dp"
+        android:hint="@string/search_medicine" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_item_detail"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
     <LinearLayout
-        android:id="@+id/rel1"
+        android:id="@+id/llHome"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">

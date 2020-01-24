@@ -35,8 +35,10 @@ public class ItemDetailAdapter extends RecyclerView.Adapter<ItemDetailAdapter.It
     @Override
     public void onBindViewHolder(@NonNull final ItemViewHolder holder, final int position) {
 
+        if (data.get(position).containsKey("MED_NAME")){
+            holder.tvMedName.setText(data.get(position).get("MED_NAME"));
+        }else  holder.tvMedName.setText(data.get(position).get("MEDICINE_NAME"));
         holder.tvMedCategory.setText(data.get(position).get("CATEGORY"));
-        holder.tvMedName.setText(data.get(position).get("MED_NAME"));
         holder.tvMedPrice.setText(data.get(position).get("PRICE"));
         holder.tvMedQuantity.setText(data.get(position).get("QUANTITY"));
         holder.imgMedicine.setImageURI(Uri.parse(data.get(position).get("MEDICINE_PICT")));
