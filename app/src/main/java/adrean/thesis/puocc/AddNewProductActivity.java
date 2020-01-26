@@ -195,6 +195,7 @@ public class AddNewProductActivity extends AppCompatActivity {
             }else if(requestCode == PIC_ID){
                 medBitmap = (Bitmap) data.getExtras().get("data");
                 medPict.setImageBitmap(medBitmap);
+                BitmapHelper.getInstance().setBitmap(medBitmap);
             }
         }
     }
