@@ -85,14 +85,16 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                 for(int i = 0; i <= listCategory.size(); i++){
                     if (sp.getSelectedItem().equals(listCategory.get(0))) {
                         changeList(listCat1);
-                    } else if (sp.getSelectedItem().equals(listCategory.get(1))) {
+                    }else if (sp.getSelectedItem().equals(listCategory.get(1))) {
                         changeList(listCat2);
-                    } else if (sp.getSelectedItem().equals(listCategory.get(2))) {
+                    }else if (sp.getSelectedItem().equals(listCategory.get(2))) {
                         changeList(listCat3);
-                    } else if (sp.getSelectedItem().equals(listCategory.get(3))) {
+                    }else if (sp.getSelectedItem().equals(listCategory.get(3))) {
                         changeList(listCat4);
-                    } else if (sp.getSelectedItem().equals(listCategory.get(4))) {
+                    }else if (sp.getSelectedItem().equals(listCategory.get(4))) {
                         changeList(listCat5);
+                    }else if(sp.getSelectedItem().equals("--Select Status--")){
+                        changeList(listAll);
                     }else if (sp.getSelectedItem().equals(listCategory.get(5))) {
                         changeList(listCat6);
                     }
