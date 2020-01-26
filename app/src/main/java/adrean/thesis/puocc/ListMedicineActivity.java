@@ -93,6 +93,8 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                         changeList(listCat4);
                     } else if (sp.getSelectedItem().equals(listCategory.get(4))) {
                         changeList(listCat5);
+                    }else if (sp.getSelectedItem().equals(listCategory.get(5))) {
+                        changeList(listCat6);
                     }
                 }
             }
@@ -192,15 +194,23 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                     for(int j = 0; j<= listCategory.size();j++){
                          if(category.equals(listCategory.get(0))){
                             listCat1.add(medicine);
+                            break;
                         }else if(category.equals(listCategory.get(1))){
                             listCat2.add(medicine);
+                             break;
                         }else if(category.equals(listCategory.get(2))){
                             listCat3.add(medicine);
+                             break;
                         }else if(category.equals(listCategory.get(3))){
                             listCat4.add(medicine);
+                             break;
                         }else if(category.equals(listCategory.get(4))){
                             listCat5.add(medicine);
-                        }
+                             break;
+                        }else if(category.equals(listCategory.get(5))){
+                             listCat6.add(medicine);
+                             break;
+                         }
                     }
                 }
 //                if (category.equals("Antibiotik")) {
