@@ -7,11 +7,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
+import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
@@ -21,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,6 +71,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
                 String category = jo.getString("CATEGORY");
                 String medName = jo.getString("MEDICINE_NAME");
                 String medPrice = jo.getString("PRICE");
+                String desc = jo.getString("DESCRIPTION");
 
                 double dbMedPrice = Double.parseDouble(medPrice);
                 String formattedMedPrice=getString(R.string.rupiah,df.format(dbMedPrice));
@@ -86,6 +85,7 @@ public class CategoryDetailActivity extends AppCompatActivity  implements ListVi
                 medicine.put("ID",id);
                 medicine.put("CATEGORY", category);
                 medicine.put("MEDICINE_NAME",medName);
+                medicine.put("DESCRIPTION",desc);
                 medicine.put("PRICE",medPrice);
                 medicine.put("FORMATTED_MED_PRICE",formattedMedPrice);
                 medicine.put("QUANTITY",medQuantity);

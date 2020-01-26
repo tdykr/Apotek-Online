@@ -43,10 +43,13 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
     Toolbar toolbar;
     ArrayList<HashMap<String, String>> list = new ArrayList<>();
     private ArrayList<HashMap<String, String>> listAll = new ArrayList<>();
-    private ArrayList<HashMap<String, String>> listAntibio = new ArrayList<>();
-    private ArrayList<HashMap<String, String>> listBatuk = new ArrayList<>();
-    private ArrayList<HashMap<String, String>> listKepala = new ArrayList<>();
-    private ArrayList<HashMap<String, String>> listTenggorokan = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat1 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat2 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat3 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat4 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat5 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat6 = new ArrayList<>();
+    List<String> listCategory = new ArrayList<>();
     MedicineAdapter medicineAdapter;
     private Spinner sp;
 
@@ -65,8 +68,8 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         listMed = findViewById(R.id.medList);
-        getJSON();
         getListStatus();
+        getJSON();
 
         medicineAdapter = new MedicineAdapter(ListMedicineActivity.this,list);
         medicineAdapter.notifyDataSetChanged();
@@ -79,14 +82,18 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
             @Override
             public void onClick(View v) {
                 Log.d("tag", (String) sp.getSelectedItem());
-                if (sp.getSelectedItem().equals("Antibiotik")) {
-                    changeList(listAntibio);
-                } else if (sp.getSelectedItem().equals("Obat Batuk")) {
-                    changeList(listBatuk);
-                } else if (sp.getSelectedItem().equals("Obat Sakit Kepala")) {
-                    changeList(listKepala);
-                } else if (sp.getSelectedItem().equals("Obat Tenggorokan")) {
-                    changeList(listTenggorokan);
+                for(int i = 0; i <= listCategory.size(); i++){
+                    if (sp.getSelectedItem().equals(listCategory.get(0))) {
+                        changeList(listCat1);
+                    } else if (sp.getSelectedItem().equals(listCategory.get(1))) {
+                        changeList(listCat2);
+                    } else if (sp.getSelectedItem().equals(listCategory.get(2))) {
+                        changeList(listCat3);
+                    } else if (sp.getSelectedItem().equals(listCategory.get(3))) {
+                        changeList(listCat4);
+                    } else if (sp.getSelectedItem().equals(listCategory.get(4))) {
+                        changeList(listCat5);
+                    }
                 }
             }
         });
@@ -136,6 +143,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                 String category = jo.getString("CATEGORY");
 
                 data.add(category);
+                listCategory.add(category);
             }
 
         } catch (JSONException e) {
@@ -180,16 +188,31 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
 
 //                list.add(medicine);
                 listAll.add(medicine);
-                if (category.equals("Antibiotik")) {
-                    listAntibio.add(medicine);
-                } else if (category.equals("Obat Sakit Kepala")) {
-                    listKepala.add(medicine);
-                } else if (category.equals("Obat Batuk")) {
-                    listBatuk.add(medicine);
-                } else if (category.equals("Obat Tenggorokan")) {
-                    listTenggorokan.add(medicine);
+//                if(listCategory.size() != 0){
+                    for(int j = 0; j<= listCategory.size();j++){
+                         if(category.equals(listCategory.get(0))){
+                            listCat1.add(medicine);
+                        }else if(category.equals(listCategory.get(1))){
+                            listCat2.add(medicine);
+                        }else if(category.equals(listCategory.get(2))){
+                            listCat3.add(medicine);
+                        }else if(category.equals(listCategory.get(3))){
+                            listCat4.add(medicine);
+                        }else if(category.equals(listCategory.get(4))){
+                            listCat5.add(medicine);
+                        }
+                    }
                 }
-            }
+//                if (category.equals("Antibiotik")) {
+//                    listCat1.add(medicine);
+//                } else if (category.equals("Obat Sakit Kepala")) {
+//                    listCat2.add(medicine);
+//                } else if (category.equals("Obat Batuk")) {
+//                    listCat3.add(medicine);
+//                } else if (category.equals("Obat Tenggorokan")) {
+//                    listCat4.add(medicine);
+//                }
+//            }
 
         } catch (JSONException e) {
             e.printStackTrace();

@@ -66,7 +66,7 @@ public class OrderMedicineActivity extends AppCompatActivity {
         userName = userModel.getUserName();
 
         ordAddress.setText(userAddress);
-        ordCat.setText(data.get("CATEGORY"));
+        ordCat.setText(data.get("DESCRIPTION"));
 
         qtDb = data.get("QUANTITY");
         medId = data.get("ID");
