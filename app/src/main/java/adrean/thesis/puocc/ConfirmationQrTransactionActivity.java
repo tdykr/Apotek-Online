@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListAdapter;
@@ -27,6 +28,7 @@ public class ConfirmationQrTransactionActivity extends AppCompatActivity {
 
     int totalPrice = 0;
     ListView medList;
+    Toolbar toolbar;
     UserPreference mUserPreferences;
     UserModel userModel;
     ListAdapter adapter;
@@ -38,6 +40,9 @@ public class ConfirmationQrTransactionActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_confirmation_qr_transaction);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Confirmation");
 
         String pattern = "dd-MM-yyyy";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
