@@ -127,7 +127,7 @@ public class HistoryFragment extends Fragment implements ListView.OnItemClickLis
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("USER",userModel.getUserName());
+                params.put("USER",userModel.getUserId());
 
                 RequestHandler rh = new RequestHandler();
                 String s = rh.sendPostRequest(phpConf.URL_GET_LIST_TRANSACTION,params);

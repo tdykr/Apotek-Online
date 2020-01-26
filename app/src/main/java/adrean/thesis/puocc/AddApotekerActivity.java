@@ -93,7 +93,7 @@ public class AddApotekerActivity extends AppCompatActivity {
                 loading.dismiss();
                 Toast.makeText(AddApotekerActivity.this,s,Toast.LENGTH_LONG).show();
                 if(!s.equals("Email Address Already Used")){
-                    Intent in = new Intent(AddApotekerActivity.this,LoginActivity.class);
+                    Intent in = new Intent(AddApotekerActivity.this,OwnerMain.class);
                     startActivity(in);
                 }
             }
