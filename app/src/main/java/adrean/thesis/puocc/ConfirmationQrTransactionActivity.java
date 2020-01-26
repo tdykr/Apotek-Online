@@ -50,30 +50,13 @@ public class ConfirmationQrTransactionActivity extends AppCompatActivity {
         Intent in = getIntent();
         data = (List<Map<String, String>>) in.getSerializableExtra("data");
 
+        for(Map<String, String> mapData : data){
 
+            String price = mapData.get("PRICE");
+            String quantity = mapData.get("QUANTITY");
 
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//            data.stream().collect(Collectors.groupingBy((Map<String,String> tempData) -> tempData.get("ID")));
-//        }
-
-        Map<String,String> tempMapData = new HashMap<>();
-        for(int i = 0; i < data.size(); i++){
-
-            String id = tempMapData.get("ID");
-            String price = tempMapData.get("PRICE");
-            String qt = tempMapData.get("QUANTITY");
-
-            totalPrice += Integer.parseInt(price)*Integer.parseInt(qt);
-
+            totalPrice += Integer.parseInt(price)*Integer.parseInt(quantity);
         }
-
-//        for(Map<String, String> mapData : data){
-//
-//            String price = mapData.get("PRICE");
-//            String quantity = mapData.get("QUANTITY");
-//
-//            totalPrice += Integer.parseInt(price)*Integer.parseInt(quantity);
-//        }
 
         String formattedTotalPrice=getString(R.string.rupiah,df.format(totalPrice));
         totalPriceTv.setText(formattedTotalPrice);

@@ -1,9 +1,13 @@
 package adrean.thesis.puocc;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -49,6 +53,7 @@ public class AddNewProductActivity extends AppCompatActivity {
     private static final int PIC_ID = 123;
     private Bitmap medBitmap;
     Spinner sp;
+    private Uri selectedImage;
     Toolbar toolbar;
 
     @Override
@@ -75,10 +80,7 @@ public class AddNewProductActivity extends AppCompatActivity {
         takePict.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(isCameraPermissionGranted()){
-                    Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(camera_intent, PIC_ID);
-                }else Toast.makeText(AddNewProductActivity.this, "Please allow camera permission!", Toast.LENGTH_SHORT).show();
+                showPictureDialog();
             }
         });
 
@@ -139,11 +141,61 @@ public class AddNewProductActivity extends AppCompatActivity {
         });
     }
 
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == PIC_ID) {
+    private void takePhotoFromCamera() {
+        if(isCameraPermissionGranted()){
+            Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(camera_intent, PIC_ID);
+        }else{
+            Toast.makeText(AddNewProductActivity.this, "Please allow camera permission!", Toast.LENGTH_SHORT).show();
+        }
+    }
 
-            medBitmap = (Bitmap) data.getExtras().get("data");
-            medPict.setImageBitmap(medBitmap);
+    private void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
+
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(galleryIntent,0);
+    }
+
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if(resultCode == RESULT_OK && data != null){
+            if(requestCode == 0){
+                selectedImage = data.getData();
+                try {
+                    medBitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
+                    medPict.setImageBitmap(medBitmap);
+                    BitmapHelper.getInstance().setBitmap(medBitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if(requestCode == PIC_ID){
+                medBitmap = (Bitmap) data.getExtras().get("data");
+                medPict.setImageBitmap(medBitmap);
+            }
         }
     }
 

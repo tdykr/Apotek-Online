@@ -1,17 +1,23 @@
 package adrean.thesis.puocc;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -24,9 +30,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
-import android.widget.ListView;
 import android.widget.RelativeLayout;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,7 +38,6 @@ import com.itextpdf.text.BadElementException;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
 import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -42,7 +45,6 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -50,11 +52,14 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static android.Manifest.permission.CAMERA;
+
 public class DetailTransactionActivity extends AppCompatActivity {
 
     private String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,trxId,imgStr,billImg,trxDate,status,totalPrice;
     private Bitmap medPict;
     private ListAdapter adapter;
+    private static final int PIC_ID = 123;
     private Button uploadBillBtn,submitBillBtn,confirmTrxBtn,endTrxBtn;
     private ArrayList<HashMap<String,String>> listData = new ArrayList<>();
     private UserModel userModel;
@@ -154,9 +159,7 @@ public class DetailTransactionActivity extends AppCompatActivity {
         uploadBillBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent in = new Intent(Intent.ACTION_PICK,
-                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                startActivityForResult(in,0);
+                showPictureDialog();
             }
         });
 
@@ -237,19 +240,71 @@ public class DetailTransactionActivity extends AppCompatActivity {
             targetImage.setVisibility(View.GONE);
             confirmTrxBtn.setVisibility(View.GONE);
         }
+    }
 
+    private void showPictureDialog(){
+        AlertDialog.Builder pictureDialog = new AlertDialog.Builder(this);
+        pictureDialog.setTitle("Select Action");
+        String[] pictureDialogItems = {
+                "Select photo from gallery",
+                "Capture photo from camera" };
+        pictureDialog.setItems(pictureDialogItems,
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        switch (which) {
+                            case 0:
+                                choosePhotoFromGallary();
+                                break;
+                            case 1:
+                                takePhotoFromCamera();
+                                break;
+                        }
+                    }
+                });
+        pictureDialog.show();
+    }
 
+    private void takePhotoFromCamera() {
+        if(isCameraPermissionGranted()){
+            Intent camera_intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(camera_intent, PIC_ID);
+        }else{
+            Toast.makeText(DetailTransactionActivity.this, "Please allow camera permission!", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void choosePhotoFromGallary() {
+        Intent galleryIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+
+        startActivityForResult(galleryIntent,0);
     }
 
     protected void onActivityResult(int requestCode,int resultCode,Intent data) {
-        if (resultCode == RESULT_OK) {
-            selectedImage = data.getData();
-            try {
-                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
+//        if (resultCode == RESULT_OK) {
+//            selectedImage = data.getData();
+//            try {
+//                bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
+//                targetImage.setImageBitmap(bitmap);
+//                BitmapHelper.getInstance().setBitmap(bitmap);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//        }
+        if(resultCode == RESULT_OK && data != null){
+            if(requestCode == 0){
+                selectedImage = data.getData();
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(selectedImage));
+                    targetImage.setImageBitmap(bitmap);
+                    BitmapHelper.getInstance().setBitmap(bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if(requestCode == PIC_ID){
+                bitmap = (Bitmap) data.getExtras().get("data");
                 targetImage.setImageBitmap(bitmap);
-                BitmapHelper.getInstance().setBitmap(bitmap);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -564,5 +619,16 @@ public class DetailTransactionActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    public  boolean isCameraPermissionGranted() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(getApplicationContext(), CAMERA) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this, new String[]{CAMERA}, 1);                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
 }

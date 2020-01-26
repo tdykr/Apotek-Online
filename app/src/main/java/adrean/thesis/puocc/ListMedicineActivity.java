@@ -11,15 +11,18 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -29,13 +32,23 @@ import java.io.ByteArrayOutputStream;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class ListMedicineActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
-    private ListView listMed;
+    private ArrayAdapter<String> adapter;
+    private RecyclerView listMed;
     private String JSON_STRING;
     private DecimalFormat df = new DecimalFormat("#,###.##");
     Toolbar toolbar;
+    ArrayList<HashMap<String, String>> list = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listAll = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listAntibio = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listBatuk = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listKepala = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listTenggorokan = new ArrayList<>();
+    MedicineAdapter medicineAdapter;
+    private Spinner sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,19 +58,99 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("Medicine List");
 
+        sp = (Spinner) findViewById(R.id.medCategory);
+        Button btnFilter = findViewById(R.id.btnFilter);
+
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        listMed = (ListView) findViewById(R.id.medList);
+        listMed = findViewById(R.id.medList);
         getJSON();
-        listMed.setOnItemClickListener(this);
+        getListStatus();
+
+        medicineAdapter = new MedicineAdapter(ListMedicineActivity.this,list);
+        medicineAdapter.notifyDataSetChanged();
+        listMed = findViewById(R.id.medList);
+        listMed.setHasFixedSize(true);
+        listMed.setLayoutManager(new LinearLayoutManager(ListMedicineActivity.this));
+        listMed.setAdapter(medicineAdapter);
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("tag", (String) sp.getSelectedItem());
+                if (sp.getSelectedItem().equals("Antibiotik")) {
+                    changeList(listAntibio);
+                } else if (sp.getSelectedItem().equals("Obat Batuk")) {
+                    changeList(listBatuk);
+                } else if (sp.getSelectedItem().equals("Obat Sakit Kepala")) {
+                    changeList(listKepala);
+                } else if (sp.getSelectedItem().equals("Obat Tenggorokan")) {
+                    changeList(listTenggorokan);
+                }
+            }
+        });
+//        listMed.setOnItemClickListener(this);
+    }
+
+    private void getListStatus() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(ListMedicineActivity.this, "Fetching Data", "Please Wait...", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                JSON_STRING = s;
+                getCategory();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(phpConf.URL_GET_LIST_CATEGORY);
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
+    }
+
+    private void getCategory() {
+        JSONObject jsonObject = null;
+        List<String> data = new ArrayList<>();
+        data.add("--Select Status--");
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            JSONArray result = jsonObject.getJSONArray("result");
+
+            for (int i = 0; i < result.length(); i++) {
+                JSONObject jo = result.getJSONObject(i);
+                String category = jo.getString("CATEGORY");
+
+                data.add(category);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, data);
+
+        sp.setAdapter(adapter);
     }
 
     private void getListMedicine() {
         JSONObject jsonObject = null;
         Context context = getApplicationContext();
-        ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
         try {
             jsonObject = new JSONObject(JSON_STRING);
             JSONArray result = jsonObject.getJSONArray("result");
@@ -75,29 +168,47 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
 
                 Uri imgUri = getImageUri(context, medImg);
 
-                HashMap<String, Object> medicine = new HashMap<>();
+                HashMap<String, String> medicine = new HashMap<>();
                 medicine.put("ID", id);
                 medicine.put("CATEGORY", category);
                 medicine.put("MEDICINE_NAME", medName);
                 medicine.put("PRICE", medPrice);
                 medicine.put("QUANTITY", medQuantity + " Pcs");
-                medicine.put("MEDICINE_PICT", imgUri);
+                medicine.put("MEDICINE_PICT", jo.getString("MEDICINE_PICT"));
 
                 Log.d("tag", String.valueOf(medicine));
 
-                list.add(medicine);
+//                list.add(medicine);
+                listAll.add(medicine);
+                if (category.equals("Antibiotik")) {
+                    listAntibio.add(medicine);
+                } else if (category.equals("Obat Sakit Kepala")) {
+                    listKepala.add(medicine);
+                } else if (category.equals("Obat Batuk")) {
+                    listBatuk.add(medicine);
+                } else if (category.equals("Obat Tenggorokan")) {
+                    listTenggorokan.add(medicine);
+                }
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        changeList(listAll);
 
-        ListAdapter adapter = new SimpleAdapter(
-                ListMedicineActivity.this, list, R.layout.list_medicine,
-                new String[]{"CATEGORY", "MEDICINE_NAME", "PRICE", "QUANTITY", "MEDICINE_PICT"},
-                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.medQuantity, R.id.img});
+//        ListAdapter adapter = new SimpleAdapter(
+//                ListMedicineActivity.this, list, R.layout.list_medicine,
+//                new String[]{"CATEGORY", "MEDICINE_NAME", "PRICE", "QUANTITY", "MEDICINE_PICT"},
+//                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.medQuantity, R.id.img});
+//
+//        listMed.setAdapter(adapter);
+    }
 
-        listMed.setAdapter(adapter);
+    private void changeList(ArrayList<HashMap<String, String>> newList) {
+        Log.d("tag", String.valueOf(newList));
+        list.clear();
+        list.addAll(newList);
+        medicineAdapter.notifyDataSetChanged();
     }
 
     private void getJSON() {
