@@ -124,7 +124,7 @@ public class AddNewProductActivity extends AppCompatActivity {
                         mdBitmapStr = getStringImage(medBitmap);
                         addMedicine();
 
-                        in.putExtra("mdPict", medBitmap);
+//                        in.putExtra("mdPict", medBitmap);
                         in.putExtra("id",id);
                         in.putExtra("bitmap", bitmap);
                         in.putExtra("mdName", mdName);
@@ -202,7 +202,7 @@ public class AddNewProductActivity extends AppCompatActivity {
 
     public String getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 10, baos);
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;

@@ -190,9 +190,7 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
 
                 Log.d("tag", String.valueOf(medicine));
 
-//                list.add(medicine);
                 listAll.add(medicine);
-//                if(listCategory.size() != 0){
                     for(int j = 0; j<= listCategory.size();j++){
                          if(category.equals(listCategory.get(0))){
                             listCat1.add(medicine);
@@ -215,28 +213,10 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
                          }
                     }
                 }
-//                if (category.equals("Antibiotik")) {
-//                    listCat1.add(medicine);
-//                } else if (category.equals("Obat Sakit Kepala")) {
-//                    listCat2.add(medicine);
-//                } else if (category.equals("Obat Batuk")) {
-//                    listCat3.add(medicine);
-//                } else if (category.equals("Obat Tenggorokan")) {
-//                    listCat4.add(medicine);
-//                }
-//            }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }
         changeList(listAll);
-
-//        ListAdapter adapter = new SimpleAdapter(
-//                ListMedicineActivity.this, list, R.layout.list_medicine,
-//                new String[]{"CATEGORY", "MEDICINE_NAME", "PRICE", "QUANTITY", "MEDICINE_PICT"},
-//                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.medQuantity, R.id.img});
-//
-//        listMed.setAdapter(adapter);
     }
 
     private void changeList(ArrayList<HashMap<String, String>> newList) {
