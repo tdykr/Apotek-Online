@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".OwnerMain">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_pharmacy_white"
+            tools:ignore="ContentDescription" />
+    </android.support.v7.widget.Toolbar>
+
+    <RelativeLayout
+        android:id="@+id/rel1"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:padding="16dp"
+        android:layout_centerInParent="true">
+
+        <ImageView
+            android:id="@+id/img_add_apoteker"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/ic_add_user"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="50dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/addApoteker"
+            android:text="@string/add_apoteker"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/img_add_apoteker"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginTop="10dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGreen"
+            android:textAlignment="center"/>
+
+        <TextView
+            android:layout_width="250dp"
+            android:layout_height="30dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:textAlignment="center"
+            android:textSize="20sp"
+            />
+
+        <ImageView
+            android:id="@+id/addCategory"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:background="@drawable/ic_add_category"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="50dp"
+            android:layout_marginTop="50dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_below="@id/addCategory"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="43dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGreen"
+            android:layout_marginTop="10dp"
+            android:text="@string/add_category"
+            android:textAlignment="center"/>
+
+        <ImageView
+            android:id="@+id/summary_report"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginLeft="50dp"
+            android:background="@drawable/ic_report"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="50dp"/>
+
+        <TextView
+            android:id="@+id/txtSummary"
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_marginLeft="30dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGreen"
+            android:layout_marginBottom="15dp"
+            android:layout_alignParentBottom="true"
+            android:text="@string/summary_report"
+            android:textAlignment="center"/>
+
+        <ImageView
+            android:id="@+id/listTransaction"
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            android:layout_marginBottom="50dp"
+            android:background="@drawable/ic_transaction"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="50dp"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="25dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="35dp"
+            android:layout_marginBottom="15dp"
+            android:textSize="15sp"
+            android:textColor="@color/colorDarkGreen"
+            android:text="@string/transaction_list"
+            android:textAlignment="center"/>
+    </RelativeLayout>
+</RelativeLayout>

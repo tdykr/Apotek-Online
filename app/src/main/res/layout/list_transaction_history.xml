@@ -1,59 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
+    android:padding="3dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center_vertical">
-
+    android:layout_height="match_parent">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:cardCornerRadius="10dp"
-        android:layout_margin="8dp">
+        android:layout_marginTop="3dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/bgcol">
+            android:padding="5dp"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:layout_marginLeft="10dp"/>
+                android:drawableStart="@drawable/ic_no"
+                android:drawablePadding="10dp"
+                tools:text="No"/>
 
             <TextView
                 android:id="@+id/transactionId"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/no"
-                android:layout_marginTop="5dp" />
+                android:drawableStart="@drawable/ic_id"
+                android:drawablePadding="10dp"
+                tools:text="Id" />
 
             <TextView
                 android:id="@+id/trxStatus"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/transactionId"
-                android:layout_marginLeft="20dp"/>
+                android:drawableStart="@drawable/ic_timeline"
+                android:drawablePadding="10dp"
+                tools:text="Status"/>
 
             <TextView
                 android:id="@+id/trxDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/trxStatus"
-                android:layout_marginLeft="20dp"/>
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="10dp"
+                tools:text="Date"/>
 
             <TextView
-                android:id="@+id/trxAmount"
+                android:id="@+id/trxPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/trxDate"
-                android:layout_marginLeft="20dp"/>
+                android:drawableStart="@drawable/ic_cash"
+                android:drawablePadding="10dp"
+                tools:text="Price"/>
 
-        </RelativeLayout>
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 
 

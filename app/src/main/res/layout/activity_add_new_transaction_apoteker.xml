@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AddNewTransactionApotekerActivity">
+
+    <ListView
+        android:id="@+id/listScanItem"
+        android:layout_width="match_parent"
+        android:layout_height="350dp"
+        android:layout_margin="5dp"
+        android:background="@drawable/side"/>
+
+    <TextView
+        android:id="@+id/trxPrescription"
+        android:layout_margin="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:textSize="20sp"
+        android:text="@string/prescriptionTrx"
+        android:layout_below="@id/listScanItem"/>
+
+    <Button
+        android:id="@+id/BtnScan"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        style="@style/Button.Neutral"
+        android:layout_marginTop="10dp"
+        android:layout_below="@id/trxPrescription"
+        android:text="Scan QR Code" />
+
+    <Button
+        android:id="@+id/submitQr"
+        android:layout_width="match_parent"
+        android:layout_height="45dp"
+        android:layout_margin="10dp"
+        style="@style/Button.Positive"
+        android:layout_alignParentBottom="true"
+        android:text="@string/submit" />
+
+</RelativeLayout>

@@ -18,10 +18,11 @@ import android.widget.Toast;
 
 import java.util.HashMap;
 
-import adrean.thesis.puocc.DetailTransactionActivity;
 import adrean.thesis.puocc.LoginActivity;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
+import adrean.thesis.puocc.UserModel;
+import adrean.thesis.puocc.UserPreference;
 import adrean.thesis.puocc.phpConf;
 
 public class ProfileFragment extends Fragment {
@@ -33,6 +34,9 @@ public class ProfileFragment extends Fragment {
     private TextView changePassTrigger;
     private RelativeLayout relPass;
     private EditText newPassET,newPassConfET;
+    UserModel userModel;
+    UserPreference mUserPreference;
+
     public ProfileFragment(){
 
     }
@@ -45,9 +49,13 @@ public class ProfileFragment extends Fragment {
         TextView uName = (TextView) view.findViewById(R.id.userNameTv);
         TextView uEmail = (TextView) view.findViewById(R.id.userEmailTv);
         TextView uPhone = (TextView) view.findViewById(R.id.userPhoneTv);
+        TextView uAddress = (TextView) view.findViewById(R.id.userAddressTv);
+
+        mUserPreference = new UserPreference(getContext());
+        userModel = mUserPreference.getUser();
 
         relPass = view.findViewById(R.id.relPass);
-        relPass.setVisibility(View.INVISIBLE);
+        relPass.setVisibility(View.GONE);
 
         changePassBtn = (Button) view.findViewById(R.id.changePassBtn);
         newPassET = (EditText) view.findViewById(R.id.newPass);
@@ -56,7 +64,9 @@ public class ProfileFragment extends Fragment {
         changePassTrigger.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                relPass.setVisibility(View.VISIBLE);
+                if(relPass.getVisibility()== View.GONE){
+                    relPass.setVisibility(View.VISIBLE);
+                }else relPass.setVisibility(View.GONE);
             }
         });
 
@@ -86,8 +96,9 @@ public class ProfileFragment extends Fragment {
         logoutBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getContext(), LoginActivity.class);
-                mPreferences.edit().clear().apply();
+
+                Intent intent = new Intent(getContext(),LoginActivity.class);
+                mUserPreference.logoutUser();
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
             }
@@ -96,15 +107,16 @@ public class ProfileFragment extends Fragment {
         Intent in = getActivity().getIntent();
         userData = (HashMap<String, String>) in.getSerializableExtra("userData");
 
-        userId = mPreferences.getString("userId","");
-        userName = mPreferences.getString("userName","");
-        userEmail = mPreferences.getString("userEmail","");
-        userAddress = mPreferences.getString("userAddress","");
-        userPhone = mPreferences.getString("userPhone","");
+        userId = userModel.getUserId();
+        userName = userModel.getUserName();
+        userEmail = userModel.getUserEmail();
+        userAddress = userModel.getUserAddress();
+        userPhone = userModel.getUserPhone();
 
         uName.setText(userName);
         uEmail.setText(userEmail);
         uPhone.setText(userPhone);
+        uAddress.setText(userAddress);
 
         return view;
     }
@@ -130,7 +142,7 @@ public class ProfileFragment extends Fragment {
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-                params.put("ID",mPreferences.getString("userId",""));
+                params.put("ID",userId);
                 params.put("NEW_PASS",newPass);
 
                 RequestHandler rh = new RequestHandler();

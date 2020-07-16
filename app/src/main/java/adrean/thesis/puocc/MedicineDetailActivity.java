@@ -2,7 +2,6 @@ package adrean.thesis.puocc;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -11,17 +10,24 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
-import android.os.Environment;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -36,8 +42,9 @@ import static java.lang.Integer.parseInt;
 
 public class MedicineDetailActivity extends AppCompatActivity {
 
+    private IntentIntegrator qrScan;
     private String id,medicineName,medicinePrice,medicineCategory,medicineQt,medicineDesc;
-    private TextView medName,medCategory,medDesc;
+    private TextView medName,medCategory,medDesc,qrScanTxt;
     private EditText qtVal,medPrice;
     private String updatedQt,updatedPrice;
     private OutputStream outputStream;
@@ -49,15 +56,23 @@ public class MedicineDetailActivity extends AppCompatActivity {
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_detail);
 
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Medicine Detail");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         qtMin = (ImageView) findViewById(R.id.qtMin);
         qtAdd = (ImageView) findViewById(R.id.qtAdd);
         qtVal = (EditText) findViewById(R.id.qtVal);
+        qrScanTxt = (TextView) findViewById(R.id.scanQr);
         medName = (TextView) findViewById(R.id.medName);
         medCategory = (TextView) findViewById(R.id.medCategory);
         medPrice = (EditText) findViewById(R.id.medPrice);
@@ -67,10 +82,22 @@ public class MedicineDetailActivity extends AppCompatActivity {
         updateBtn = (Button) findViewById(R.id.btnUpdate);
         saveQrBtn = (Button) findViewById(R.id.saveQR);
 
+        updateBtn.setVisibility(View.GONE);
+        qtAdd.setVisibility(View.INVISIBLE);
+        qtMin.setVisibility(View.INVISIBLE);
+
         Intent intent  = getIntent();
         id = intent.getStringExtra("ID");
 
         getMedicine();
+
+        qrScan = new IntentIntegrator(this);
+        qrScanTxt.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                qrScan.initiateScan();
+            }
+        });
 
         qtAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +122,29 @@ public class MedicineDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 updatedQt = qtVal.getText().toString();
                 updatedPrice = medPrice.getText().toString();
-                updateQuantity();
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(MedicineDetailActivity.this);
+                alertDialogBuilder.setMessage("Are You Sure to Update This Record ?");
+
+                alertDialogBuilder.setPositiveButton("Yes",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+                                updateQuantity();
+                            }
+                        });
+
+                alertDialogBuilder.setNegativeButton("No",
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface arg0, int arg1) {
+
+                            }
+                        });
+
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
+
             }
         });
 
@@ -111,7 +160,37 @@ public class MedicineDetailActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        if (result != null) {
 
+            if (result.getContents() == null) {
+                Toast.makeText(this, "Result Not Found", Toast.LENGTH_LONG).show();
+            }else{
+                try {
+                    JSONObject obj = new JSONObject(result.getContents());
+                    String mdId = obj.getString("id");
+
+                    if(mdId.equals(id)){
+                        updateBtn.setVisibility(View.VISIBLE);
+                        qtAdd.setVisibility(View.VISIBLE);
+                        qtMin.setVisibility(View.VISIBLE);
+                        qrScanTxt.setVisibility(View.GONE);
+                    }else{
+                        Toast.makeText(this, "QR Code Doesn't Match!", Toast.LENGTH_LONG).show();
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, result.getContents(), Toast.LENGTH_LONG).show();
+                }
+
+            }
+        }else{
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
 
     private void saveImg(Bitmap bp) {
         BitmapDrawable drawable = (BitmapDrawable) qrCode.getDrawable();
@@ -119,7 +198,7 @@ public class MedicineDetailActivity extends AppCompatActivity {
 
         File dir = new File(Environment.getExternalStorageDirectory().getPath() + "/Pictures/QRObat");
         dir.mkdirs();
-        File file = new File(dir, "QRImg-" + medName + ".jpg");
+        File file = new File(dir, "QRImg-" + medName.getText().toString() + ".jpg");
 
         outputStream = null;
         try {
@@ -252,16 +331,13 @@ public class MedicineDetailActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        MedicineDetailActivity.super.onBackPressed();
-                    }
-                }).create().show();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
+
 }

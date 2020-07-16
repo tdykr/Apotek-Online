@@ -2,6 +2,8 @@ package adrean.thesis.puocc.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
@@ -10,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
 import java.util.List;
 
 import adrean.thesis.puocc.CategoryDetailActivity;
@@ -43,10 +46,21 @@ public class Adapter extends PagerAdapter {
         View view = layoutInflater.inflate(R.layout.list_category, container, false);
 
         TextView category;
+        ImageView imageCategory;
 
         category = view.findViewById(R.id.category);
+        imageCategory = view.findViewById(R.id.image);
 
+        Uri imgSource = models.get(position).getImage();
         category.setText(models.get(position).getCategory());
+        try {
+            imageCategory.setImageDrawable(Drawable.createFromStream(
+                    context.getContentResolver().openInputStream(imgSource),
+                    null));
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
 
         view.setOnClickListener(new View.OnClickListener() {
             @Override

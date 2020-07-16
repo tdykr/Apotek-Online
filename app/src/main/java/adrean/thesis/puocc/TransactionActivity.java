@@ -1,99 +1,262 @@
 package adrean.thesis.puocc;
 
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Base64;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.LruCache;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ListAdapter;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import com.itextpdf.text.Document;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class TransactionActivity extends AppCompatActivity{
+public class TransactionActivity extends AppCompatActivity {
 
-    private ListView listMed;
+    private ArrayAdapter<String> adapter;
+    ArrayList<HashMap<String, String>> list = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listAll = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listPending = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listPaid = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listConfirmed = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listDone = new ArrayList<>();
     private String JSON_STRING, trxId;
+    private Spinner sp;
+    private ItemAdapter itemAdapter;
+    private RecyclerView rvTransaction;
+
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_transaction);
 
-        listMed = (ListView) findViewById(R.id.medList);
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Transaction List");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        sp = (Spinner) findViewById(R.id.trxCategory);
+        Button btnFilter = findViewById(R.id.btnFilter);
+        ImageView imgPrint = findViewById(R.id.img_download);
+
+        itemAdapter = new ItemAdapter(TransactionActivity.this, list);
+        itemAdapter.notifyDataSetChanged();
+        rvTransaction = findViewById(R.id.medList);
+        rvTransaction.setHasFixedSize(true);
+        rvTransaction.setLayoutManager(new LinearLayoutManager(TransactionActivity.this));
+        rvTransaction.setAdapter(itemAdapter);
 
         getJSON();
-        listMed.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, final View view, final int i, long l) {
+        getListStatus();
 
-                    HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
-                    trxId = map.get("ID");
-                    updateTransactionPaid(trxId);
+        btnFilter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("tag", (String) sp.getSelectedItem());
+                if (sp.getSelectedItem().equals("PENDING")) {
+                    changeList(listPending);
+                } else if (sp.getSelectedItem().equals("PAID")) {
+                    changeList(listPaid);
+                } else if (sp.getSelectedItem().equals("DONE")) {
+                    changeList(listDone);
+                } else if (sp.getSelectedItem().equals("CONFIRMED")) {
+                    changeList(listConfirmed);
                 }
-            });
+            }
+        });
+
+        imgPrint.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Bitmap recycler_view_bm = getScreenshotFromRecyclerView(rvTransaction);
+
+                try {
+                    String title=null;
+                    if ( sp.getSelectedItemPosition()==0){
+                        title="Transaction List";
+                    }else title = "Transaction List - "+ sp.getSelectedItem();
+
+                    String dest = FileUtils.getAppPath(TransactionActivity.this) + title+".pdf";
+
+                    //File pdfFile= new File(TransactionActivity.this.getFilesDir(), "myfile.pdf");
+                    FileOutputStream fOut = new FileOutputStream(dest);
+
+                    PdfDocument document = new PdfDocument();
+                    PdfDocument.PageInfo pageInfo = new
+                            PdfDocument.PageInfo.Builder(recycler_view_bm.getWidth(), recycler_view_bm.getHeight(), 1).create();
+                    PdfDocument.Page page = document.startPage(pageInfo);
+                    recycler_view_bm.prepareToDraw();
+                    Canvas c;
+                    c = page.getCanvas();
+                    c.drawBitmap(recycler_view_bm,0,0,null);
+                    document.finishPage(page);
+                    document.writeTo(fOut);
+                    document.close();
+                    Toast.makeText(TransactionActivity.this,"PDF generated successfully", Toast.LENGTH_SHORT).show();
+                    FileUtils.openFile(TransactionActivity.this, new File(dest));
+
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
-    private void getListMedicine(){
+    private void getTrxStatus() {
         JSONObject jsonObject = null;
-        Context context = getApplicationContext();
-        ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
+        List<String> data = new ArrayList<>();
+        data.add("--Select Status--");
         try {
             jsonObject = new JSONObject(JSON_STRING);
             JSONArray result = jsonObject.getJSONArray("result");
 
-            for(int i = 0; i<result.length(); i++){
+            for (int i = 0; i < result.length(); i++) {
                 JSONObject jo = result.getJSONObject(i);
-                String id = jo.getString("ID");
-                String createdBy = jo.getString("CREATED_BY");
-                String createdDate = jo.getString("CREATED_DT");
+                String category = jo.getString("STATUS");
 
-                HashMap<String,Object> medicine = new HashMap<>();
-                medicine.put("ID","TRX-"+id);
-                medicine.put("CREATED_BY",createdBy);
-                medicine.put("CREATED_DT",createdDate);
-
-                Log.d("tag", String.valueOf(medicine));
-
-                list.add(medicine);
+                data.add(category);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ListAdapter adapter = new SimpleAdapter(
-                TransactionActivity.this, list, R.layout.list_transaction_admin,
-                new String[]{"ID","CREATED_BY","CREATED_DT"},
-                new int[]{R.id.id, R.id.createdBy, R.id.createdDate});
+        adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, data);
 
-        listMed.setAdapter(adapter);
+        sp.setAdapter(adapter);
     }
 
-    private void getJSON(){
-        class GetJSON extends AsyncTask<Void,Void,String> {
+    private void getListStatus() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
 
             ProgressDialog loading;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(TransactionActivity.this,"Fetching Data","Please Wait...",false,false);
+                loading = ProgressDialog.show(TransactionActivity.this, "Fetching Data", "Please Wait...", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                JSON_STRING = s;
+                getTrxStatus();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(phpConf.URL_GET_LIST_STATUS);
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
+    }
+
+    private void getListMedicine() {
+        JSONObject jsonObject = null;
+        Context context = getApplicationContext();
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            JSONArray result = jsonObject.getJSONArray("result");
+
+            for (int i = 0; i < result.length(); i++) {
+                JSONObject jo = result.getJSONObject(i);
+                String id = jo.getString("ID");
+                String createdBy = jo.getString("CREATED_BY");
+                String createdDate = jo.getString("DATE");
+                String totPrice = jo.getString("TOTAL_PRICE");
+                String status = jo.getString("STATUS");
+                String type = jo.getString("TRX_TYPE");
+                String address = jo.getString("ADDRESS");
+                String billImg = jo.getString("BILL_IMG");
+
+                HashMap<String, String> listTrx = new HashMap<>();
+                listTrx.put("ID", "TRX-" + id);
+                listTrx.put("CREATED_BY", createdBy);
+                listTrx.put("CREATED_DT", createdDate);
+                listTrx.put("STATUS", status);
+                listTrx.put("ADDRESS", address);
+                listTrx.put("TYPE", type);
+                listTrx.put("BILL_IMG", billImg);
+                listTrx.put("TOTAL_PRICE", totPrice);
+
+                Log.d("tag", String.valueOf(listTrx));
+
+                listAll.add(listTrx);
+                if (status.equals("PENDING")) {
+                    listPending.add(listTrx);
+                } else if (status.equals("PAID")) {
+                    listPaid.add(listTrx);
+                } else if (status.equals("DONE")) {
+                    listDone.add(listTrx);
+                } else if (status.equals("CONFIRMED")) {
+                    listConfirmed.add(listTrx);
+                }
+            }
+            changeList(listAll);
+            //listAdapter.notifyDataSetChanged();
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void changeList(ArrayList<HashMap<String, String>> newList) {
+        Log.d("tag", String.valueOf(newList));
+        list.clear();
+        list.addAll(newList);
+        itemAdapter.notifyDataSetChanged();
+    }
+
+    private void getJSON() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(TransactionActivity.this, "Fetching Data", "Please Wait...", false, false);
             }
 
             @Override
@@ -107,7 +270,7 @@ public class TransactionActivity extends AppCompatActivity{
             @Override
             protected String doInBackground(Void... params) {
                 RequestHandler rh = new RequestHandler();
-                String s = rh.sendGetRequest(phpConf.URL_GET_LIST_PENDING_APOTEKER);
+                String s = rh.sendGetRequest(phpConf.URL_GET_LIST_ALL_TRANSACTION_APOTEKER);
                 return s;
             }
         }
@@ -115,58 +278,57 @@ public class TransactionActivity extends AppCompatActivity{
         gj.execute();
     }
 
-    private void updateTransactionPaid(final String cartID){
-        class updateTransactionPaid extends AsyncTask<Void,Void,String> {
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-            ProgressDialog loading;
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                loading = ProgressDialog.show(TransactionActivity.this,"Fetching Data","Please Wait...",false,false);
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public Bitmap getScreenshotFromRecyclerView(RecyclerView view) {
+        RecyclerView.Adapter adapter = view.getAdapter();
+        Bitmap bigBitmap = null;
+        if (adapter != null) {
+            int size = adapter.getItemCount();
+            int height = 0;
+            Paint paint = new Paint();
+            int iHeight = 0;
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+            // Use 1/8th of the available memory for this memory cache.
+            final int cacheSize = maxMemory / 8;
+            LruCache<String, Bitmap> bitmaCache = new LruCache<>(cacheSize);
+            for (int i = 0; i < size; i++) {
+                RecyclerView.ViewHolder holder = adapter.createViewHolder(view, adapter.getItemViewType(i));
+                adapter.onBindViewHolder(holder, i);
+                holder.itemView.measure(View.MeasureSpec.makeMeasureSpec(view.getWidth(), View.MeasureSpec.EXACTLY),
+                        View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+                holder.itemView.layout(0, 0, holder.itemView.getMeasuredWidth(), holder.itemView.getMeasuredHeight());
+                holder.itemView.setDrawingCacheEnabled(true);
+                holder.itemView.buildDrawingCache();
+                Bitmap drawingCache = holder.itemView.getDrawingCache();
+                if (drawingCache != null) {
+
+                    bitmaCache.put(String.valueOf(i), drawingCache);
+                }
+
+                height += holder.itemView.getMeasuredHeight();
             }
 
-            @Override
-            protected void onPostExecute(String s) {
-                super.onPostExecute(s);
-                loading.dismiss();
-                JSON_STRING = s;
-                Intent intent = new Intent(getApplicationContext(), PaymentConfirmationApotekerActivity.class);
-                startActivity(intent);
-            }
+            bigBitmap = Bitmap.createBitmap(view.getMeasuredWidth(), height, Bitmap.Config.ARGB_8888);
+            Canvas bigCanvas = new Canvas(bigBitmap);
+            bigCanvas.drawColor(Color.WHITE);
 
-            @Override
-            protected String doInBackground(Void... v) {
-                HashMap<String,String> params = new HashMap<>();
-                params.put("ID",cartID);
-
-                RequestHandler rh = new RequestHandler();
-                String s = rh.sendPostRequest(phpConf.URL_UPDATE_CART_ORDER_STATUS_PAID,params);
-                return s;
+            for (int i = 0; i < size; i++) {
+                Bitmap bitmap = bitmaCache.get(String.valueOf(i));
+                bigCanvas.drawBitmap(bitmap, 0f, iHeight, paint);
+                iHeight += bitmap.getHeight();
+                bitmap.recycle();
             }
         }
-        updateTransactionPaid gj = new updateTransactionPaid();
-        gj.execute();
-    }
-
-    public Bitmap encodedStringImage(String imgString){
-        byte[] decodedString = Base64.decode(imgString, Base64.DEFAULT);
-        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
-
-        return decodedBitmap;
-    }
-
-    public Uri getImageUri(Context inContext, Bitmap inImage) {
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
-        return Uri.parse(path);
-    }
-
-    public String getStringImage(Bitmap bmp){
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-        byte[] imageBytes = baos.toByteArray();
-        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
-        return encodedImage;
+        return bigBitmap;
     }
 }

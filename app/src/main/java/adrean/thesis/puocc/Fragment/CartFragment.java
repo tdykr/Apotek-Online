@@ -8,23 +8,18 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.annotation.RequiresApi;
 import android.support.v4.app.Fragment;
 import android.util.Base64;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
@@ -37,19 +32,17 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
-import adrean.thesis.puocc.CategoryDetailActivity;
-import adrean.thesis.puocc.CustomerMain;
 import adrean.thesis.puocc.R;
 import adrean.thesis.puocc.RequestHandler;
-import adrean.thesis.puocc.UploadReceiptConfirmationPayActivity;
-//import adrean.thesis.puocc.UserModel;
-//import adrean.thesis.puocc.UserPreference;
+import adrean.thesis.puocc.ReceiptConfirmationPayActivity;
+import adrean.thesis.puocc.UserModel;
+import adrean.thesis.puocc.UserPreference;
 import adrean.thesis.puocc.phpConf;
 
 public class CartFragment extends Fragment{
@@ -58,6 +51,7 @@ public class CartFragment extends Fragment{
 
     }
 
+    UserPreference mUserPreference;
     TextView id, medNameTv;
     String JSON_STRING,cartId,medName,medCategory,medPrice,medDesc,medQt,check;
     Bitmap medPict;
@@ -65,10 +59,12 @@ public class CartFragment extends Fragment{
     ListView listViewCart;
     CheckBox checkBox;
     ListAdapter adapter;
+    String userName;
     ArrayList<HashMap<String,Object>> listData = new ArrayList<HashMap<String, Object>>();
     View view1;
-//    UserPreference mUserPreferences;
-//    UserModel userModel;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
+    private int itemCount=0;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -76,9 +72,9 @@ public class CartFragment extends Fragment{
         View view = inflater.inflate(R.layout.fragment_cart, container, false);
         view1 = inflater.inflate(R.layout.list_cart,container,false);
 
-//        mUserPreferences = new UserPreference(getContext());
-//        userModel = mUserPreferences.getUser();
-
+        mUserPreference = new UserPreference(getActivity());
+        UserModel userModel = mUserPreference.getUser();
+        userName = userModel.getUserName();
         listViewCart = (ListView) view.findViewById(R.id.cartList);
         id = (TextView) view.findViewById(R.id.medCategory);
         btnSubmitCart = (Button) view.findViewById(R.id.btnSubmitCart);
@@ -98,11 +94,13 @@ public class CartFragment extends Fragment{
                     check1.setChecked(true);
                     data.put("isChecked","true");
                     listData.set(i,data);
+                    itemCount+=1;
                 }else if(check.equals("true")){
                     CheckBox check1 = view.findViewById(R.id.rowCheckBox);
                     check1.setChecked(false);
                     data.put("isChecked","false");
                     listData.set(i,data);
+                    itemCount-=1;
                 }
             }
         });
@@ -113,6 +111,7 @@ public class CartFragment extends Fragment{
                 List<String> currCartID = new ArrayList<>();
                 List<Map<String,Object>> tempData = new ArrayList<>();
 
+
                 for(HashMap<String,Object> mapData : listData){
                     if(mapData.get("isChecked").equals("true")){
                         tempData.add(mapData);
@@ -121,9 +120,14 @@ public class CartFragment extends Fragment{
                         currCartID.add(tempCurrCartID);
                     }
                 }
-                Intent in = new Intent(getContext(), UploadReceiptConfirmationPayActivity.class);
-                in.putExtra("data", (Serializable) tempData);
-                startActivity(in);
+                if (itemCount>0){
+                    Intent in = new Intent(getContext(), ReceiptConfirmationPayActivity.class);
+                    in.putExtra("data", (Serializable) tempData);
+                    startActivity(in);
+                }else{
+                    Toast.makeText(getActivity(), "Please choose item first!"+ itemCount, Toast.LENGTH_SHORT).show();
+                }
+
 //                addOrder(currCartID);
             }
         });
@@ -145,6 +149,9 @@ public class CartFragment extends Fragment{
                 medName = jo.getString("MED_NAME");
                 medCategory = jo.getString("CATEGORY");
                 medPrice = jo.getString("PRICE");
+                double dbMedPrice = Double.parseDouble(medPrice);
+                String formattedMedPrice=getString(R.string.rupiah,df.format(dbMedPrice));
+
                 medQt = jo.getString("QUANTITY");
                 medDesc = jo.getString("DESCRIPTION");
                 medPict = encodedStringImage(jo.getString("MEDICINE_PICT"));
@@ -156,6 +163,7 @@ public class CartFragment extends Fragment{
                 medicine.put("MED_NAME",medName);
                 medicine.put("CATEGORY",medCategory);
                 medicine.put("PRICE",medPrice);
+                medicine.put("FORMATTED_MED_PRICE",formattedMedPrice);
                 medicine.put("DESCRIPTION",medDesc);
                 medicine.put("QUANTITY",medQt);
                 medicine.put("MEDICINE_PICT",imgUri);
@@ -172,7 +180,7 @@ public class CartFragment extends Fragment{
 
          adapter = new SimpleAdapter(
                 getContext(), listData, R.layout.list_cart,
-                new String[]{"MED_NAME","CATEGORY","MED_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
+                new String[]{"MED_NAME","CATEGORY","MED_NAME","FORMATTED_MED_PRICE","QUANTITY","MEDICINE_PICT"},
                 new int[]{R.id.rowCheckBox,R.id.medCategory, R.id.medName,R.id.medPrice, R.id.medQuantity, R.id.img});
 
         listViewCart.setAdapter(adapter);
@@ -199,7 +207,7 @@ public class CartFragment extends Fragment{
             @Override
             protected String doInBackground(Void... v) {
                 HashMap<String,String> params = new HashMap<>();
-//                params.put("USER",userModel.getUserName());
+                params.put("USER",userName);
 
                 RequestHandler rh = new RequestHandler();
                 String s = rh.sendPostRequest(phpConf.URL_GET_CART,params);

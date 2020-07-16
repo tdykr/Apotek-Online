@@ -1,44 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/gray4"
     tools:context=".ListMedicineActivity">
 
-    <TextView
-        android:id="@+id/text"
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:textSize="24dp"
-        android:textAlignment="center"
-        android:text="Medicine List"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimaryDark"
+        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <RelativeLayout
-        android:id="@+id/rel"
-        android:layout_below="@id/text"
-        android:layout_margin="15dp"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
-        <ListView
-            android:id="@+id/medList"
-            android:background="@drawable/side"
-            android:layout_centerVertical="true"
-            android:layout_width="match_parent"
-            android:layout_height="425dp"/>
+        <Spinner
+            android:id="@+id/medCategory"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:layout_gravity="center"
+            android:backgroundTint="@color/colorPrimaryDark"
+            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
 
         <Button
-            android:id="@+id/home"
-            android:layout_width="100dp"
-            android:layout_height="45dp"
-            android:layout_below="@id/medList"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="12dp"
-            android:textColor="#ffff"
-            android:background="@drawable/button_shape"
-            android:text="Back" />
-    </RelativeLayout>
+            android:id="@+id/btnFilter"
+            android:layout_width="0dp"
+            android:layout_height="40dp"
+            android:layout_weight="0.4"
+            android:layout_gravity="center"
+            style="@style/Button.Positive"
+            android:text="@string/filter" />
 
-</RelativeLayout>
+    </LinearLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/medList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:dividerHeight="0dp"/>
+
+</LinearLayout>

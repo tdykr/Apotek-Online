@@ -1,72 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="10dp"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
-    <RelativeLayout
-        android:id="@+id/rel1"
+    <EditText
+        android:id="@+id/etSearch"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="wrap_content"
+        android:drawableStart="@drawable/ic_search"
+        android:drawablePadding="5dp"
+        android:hint="@string/search_medicine" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rv_item_detail"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:id="@+id/llHome"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
         <android.support.v7.widget.CardView
             android:id="@+id/card1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            android:layout_margin="5dp">
+            android:layout_margin="5dp"
+            app:cardCornerRadius="10dp">
+
             <TextView
                 android:id="@+id/prescription"
                 android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:text="Have some Prescription ?"/>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:padding="5dp"
+                android:text="@string/have_a_prescription" />
+
         </android.support.v7.widget.CardView>
 
-        <!--<android.support.v7.widget.CardView
-            android:layout_below="@id/card1"
+        <ImageView
+            android:id="@+id/img_pharmacy"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_weight="0.1"
+            android:src="@drawable/ic_pharmacy_illustration" />
+
+        <TextView
+            android:id="@+id/txt"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:cardCornerRadius="10dp"
-            android:layout_margin="5dp">
-            <TextView
-                android:id="@+id/chatPharmacist"
-                android:layout_below="@id/prescription"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_margin="5dp"
-                android:text="Need some Consultation With Our Pharmacist ?"/>
-        </android.support.v7.widget.CardView>-->
-    </RelativeLayout>
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginTop="10dp"
+            android:text="@string/medicine_category"
+            android:textColor="@color/colorDarkGreen"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-    <TextView
-        android:layout_below="@id/rel1"
-        android:id="@+id/txt"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Medicine Category"
-        android:textSize="20sp"
-        android:textStyle="bold"/>
-
-    <RelativeLayout
-        android:layout_below="@+id/txt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <android.support.v4.view.ViewPager
-            android:foregroundGravity="center"
+            android:layout_weight="1"
             android:id="@+id/medCat"
-            android:layout_centerInParent="true"
-            android:overScrollMode="never"
-            android:clipToPadding="false"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </android.support.v4.view.ViewPager>
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:foregroundGravity="center"
+            android:overScrollMode="never"/>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
-</RelativeLayout>
+
+</LinearLayout>

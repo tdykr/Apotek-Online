@@ -3,8 +3,11 @@ package adrean.thesis.puocc;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -16,11 +19,18 @@ public class RegisterActivity extends AppCompatActivity {
 
     EditText uName,uEmail,uPhone,uAddress,uPass,uRePass;
     String userName,userEmail,userPhone,userAddress,userPass,userRePass;
+    Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Register");
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         uName = (EditText) findViewById(R.id.userName);
         uEmail = (EditText) findViewById(R.id.userEmail);
@@ -111,5 +121,15 @@ public class RegisterActivity extends AppCompatActivity {
 
         addUser add = new addUser();
         add.execute();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

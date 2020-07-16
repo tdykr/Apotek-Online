@@ -1,110 +1,240 @@
 package adrean.thesis.puocc;
 
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.MediaStore;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Base64;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
+import android.widget.Spinner;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
-public class ListMedicineActivity extends AppCompatActivity implements ListView.OnItemClickListener{
+public class ListMedicineActivity extends AppCompatActivity implements ListView.OnItemClickListener {
 
-    private ListView listMed;
+    private ArrayAdapter<String> adapter;
+    private RecyclerView listMed;
     private String JSON_STRING;
+    private DecimalFormat df = new DecimalFormat("#,###.##");
+    Toolbar toolbar;
+    ArrayList<HashMap<String, String>> list = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listAll = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat1 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat2 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat3 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat4 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat5 = new ArrayList<>();
+    private ArrayList<HashMap<String, String>> listCat6 = new ArrayList<>();
+    List<String> listCategory = new ArrayList<>();
+    MedicineAdapter medicineAdapter;
+    private Spinner sp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_medicine);
 
-        Button home = (Button) findViewById(R.id.home);
-        home.setOnClickListener(new View.OnClickListener() {
+        toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("Medicine List");
+
+        sp = (Spinner) findViewById(R.id.medCategory);
+        Button btnFilter = findViewById(R.id.btnFilter);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        listMed = findViewById(R.id.medList);
+        getListStatus();
+        getJSON();
+
+        medicineAdapter = new MedicineAdapter(ListMedicineActivity.this,list);
+        medicineAdapter.notifyDataSetChanged();
+        listMed = findViewById(R.id.medList);
+        listMed.setHasFixedSize(true);
+        listMed.setLayoutManager(new LinearLayoutManager(ListMedicineActivity.this));
+        listMed.setAdapter(medicineAdapter);
+
+        btnFilter.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent in = new Intent(ListMedicineActivity.this,ApotekerMain.class);
-                finish();
+            public void onClick(View v) {
+                Log.d("tag", (String) sp.getSelectedItem());
+                for(int i = 0; i <= listCategory.size(); i++){
+                    if (sp.getSelectedItem().equals(listCategory.get(0))) {
+                        changeList(listCat1);
+                    }else if (sp.getSelectedItem().equals(listCategory.get(1))) {
+                        changeList(listCat2);
+                    }else if (sp.getSelectedItem().equals(listCategory.get(2))) {
+                        changeList(listCat3);
+                    }else if (sp.getSelectedItem().equals(listCategory.get(3))) {
+                        changeList(listCat4);
+                    }else if (sp.getSelectedItem().equals(listCategory.get(4))) {
+                        changeList(listCat5);
+                    }else if(sp.getSelectedItem().equals("--Select Status--")){
+                        changeList(listAll);
+                    }else if (sp.getSelectedItem().equals(listCategory.get(5))) {
+                        changeList(listCat6);
+                    }
+                }
             }
         });
-
-        listMed = (ListView) findViewById(R.id.medList);
-        getJSON();
-        listMed.setOnItemClickListener(this);
+//        listMed.setOnItemClickListener(this);
     }
 
-    private void getListMedicine(){
+    private void getListStatus() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
+
+            ProgressDialog loading;
+
+            @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                loading = ProgressDialog.show(ListMedicineActivity.this, "Fetching Data", "Please Wait...", false, false);
+            }
+
+            @Override
+            protected void onPostExecute(String s) {
+                super.onPostExecute(s);
+                loading.dismiss();
+                JSON_STRING = s;
+                getCategory();
+            }
+
+            @Override
+            protected String doInBackground(Void... params) {
+                RequestHandler rh = new RequestHandler();
+                String s = rh.sendGetRequest(phpConf.URL_GET_LIST_CATEGORY);
+                return s;
+            }
+        }
+        GetJSON gj = new GetJSON();
+        gj.execute();
+    }
+
+    private void getCategory() {
         JSONObject jsonObject = null;
-        Context context = getApplicationContext();
-        ArrayList<HashMap<String,Object>> list = new ArrayList<HashMap<String, Object>>();
+        List<String> data = new ArrayList<>();
+        data.add("--Select Status--");
         try {
             jsonObject = new JSONObject(JSON_STRING);
             JSONArray result = jsonObject.getJSONArray("result");
 
-            for(int i = 0; i<result.length(); i++){
+            for (int i = 0; i < result.length(); i++) {
                 JSONObject jo = result.getJSONObject(i);
-                String id = jo.getString("ID");
                 String category = jo.getString("CATEGORY");
-                String medName = jo.getString("MEDICINE_NAME");
-                String medPrice = jo.getString("PRICE");
-                String medQuantity = jo.getString("QUANTITY");
-                Bitmap medImg = encodedStringImage(jo.getString("MEDICINE_PICT"));
 
-                Uri imgUri = getImageUri(context,medImg);
-
-                HashMap<String,Object> medicine = new HashMap<>();
-                medicine.put("ID",id);
-                medicine.put("CATEGORY","Category : " + category);
-                medicine.put("MEDICINE_NAME",medName);
-                medicine.put("PRICE","Rp." + medPrice);
-                medicine.put("QUANTITY","Quantity : " + medQuantity);
-                medicine.put("MEDICINE_PICT",imgUri);
-
-                Log.d("tag", String.valueOf(medicine));
-
-                list.add(medicine);
+                data.add(category);
+                listCategory.add(category);
             }
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
 
-        ListAdapter adapter = new SimpleAdapter(
-                ListMedicineActivity.this, list, R.layout.list_medicine,
-                new String[]{"CATEGORY","MEDICINE_NAME","PRICE","QUANTITY","MEDICINE_PICT"},
-                new int[]{R.id.medCategory, R.id.medName, R.id.medPrice, R.id.qt, R.id.img});
+        adapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, data);
 
-        listMed.setAdapter(adapter);
+        sp.setAdapter(adapter);
     }
 
-    private void getJSON(){
-        class GetJSON extends AsyncTask<Void,Void,String> {
+    private void getListMedicine() {
+        JSONObject jsonObject = null;
+        Context context = getApplicationContext();
+        ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
+        try {
+            jsonObject = new JSONObject(JSON_STRING);
+            JSONArray result = jsonObject.getJSONArray("result");
+
+            for (int i = 0; i < result.length(); i++) {
+                JSONObject jo = result.getJSONObject(i);
+                String id = jo.getString("ID");
+                String category = jo.getString("CATEGORY");
+                String medName = jo.getString("MEDICINE_NAME");
+                String medPrice = jo.getString("PRICE");
+                double dbMedPrice = Double.parseDouble(medPrice);
+                medPrice=getString(R.string.rupiah,df.format(dbMedPrice));
+                String medQuantity = jo.getString("QUANTITY");
+                Bitmap medImg = encodedStringImage(jo.getString("MEDICINE_PICT"));
+
+                Uri imgUri = getImageUri(context, medImg);
+
+                HashMap<String, String> medicine = new HashMap<>();
+                medicine.put("ID", id);
+                medicine.put("CATEGORY", category);
+                medicine.put("MEDICINE_NAME", medName);
+                medicine.put("PRICE", medPrice);
+                medicine.put("QUANTITY", medQuantity + " Pcs");
+                medicine.put("MEDICINE_PICT", jo.getString("MEDICINE_PICT"));
+
+                Log.d("tag", String.valueOf(medicine));
+
+                listAll.add(medicine);
+                    for(int j = 0; j<= listCategory.size();j++){
+                         if(category.equals(listCategory.get(0))){
+                            listCat1.add(medicine);
+                            break;
+                        }else if(category.equals(listCategory.get(1))){
+                            listCat2.add(medicine);
+                             break;
+                        }else if(category.equals(listCategory.get(2))){
+                            listCat3.add(medicine);
+                             break;
+                        }else if(category.equals(listCategory.get(3))){
+                            listCat4.add(medicine);
+                             break;
+                        }else if(category.equals(listCategory.get(4))){
+                            listCat5.add(medicine);
+                             break;
+                        }else if(category.equals(listCategory.get(5))){
+                             listCat6.add(medicine);
+                             break;
+                         }
+                    }
+                }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        changeList(listAll);
+    }
+
+    private void changeList(ArrayList<HashMap<String, String>> newList) {
+        Log.d("tag", String.valueOf(newList));
+        list.clear();
+        list.addAll(newList);
+        medicineAdapter.notifyDataSetChanged();
+    }
+
+    private void getJSON() {
+        class GetJSON extends AsyncTask<Void, Void, String> {
 
             ProgressDialog loading;
+
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                loading = ProgressDialog.show(ListMedicineActivity.this,"Fetching Data","Please Wait...",false,false);
+                loading = ProgressDialog.show(ListMedicineActivity.this, "Fetching Data", "Please Wait...", false, false);
             }
 
             @Override
@@ -129,15 +259,15 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
     @Override
     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
         Intent intent = new Intent(this, MedicineDetailActivity.class);
-        HashMap<String,String> map =(HashMap)adapterView.getItemAtPosition(i);
+        HashMap<String, String> map = (HashMap) adapterView.getItemAtPosition(i);
         String medicineId = map.get("ID");
-        intent.putExtra("ID",medicineId);
+        intent.putExtra("ID", medicineId);
         startActivity(intent);
     }
 
-    public Bitmap encodedStringImage(String imgString){
+    public Bitmap encodedStringImage(String imgString) {
         byte[] decodedString = Base64.decode(imgString, Base64.DEFAULT);
-        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString,0,decodedString.length);
+        Bitmap decodedBitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
 
         return decodedBitmap;
     }
@@ -150,16 +280,13 @@ public class ListMedicineActivity extends AppCompatActivity implements ListView.
     }
 
     @Override
-    public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Really Exit?")
-                .setMessage("Are you sure you want to exit?")
-                .setNegativeButton(android.R.string.no, null)
-                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
 
-                    public void onClick(DialogInterface arg0, int arg1) {
-                        ListMedicineActivity.super.onBackPressed();
-                    }
-                }).create().show();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
+
 }
